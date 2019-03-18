@@ -2,6 +2,7 @@
 To mock Interfaces you only need easymock-xxx.jar
 To mock Classes you also need cglib-xxx.jar and objenesis-xxx.jar
 
+
 Add these to your Java build path
 Project > Properties > Java Build Path > Add External Jars
 

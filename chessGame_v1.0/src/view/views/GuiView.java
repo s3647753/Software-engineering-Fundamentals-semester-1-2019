@@ -1,4 +1,4 @@
-package view;
+package view.views;
 
 import view_interfaces.ViewType;
 

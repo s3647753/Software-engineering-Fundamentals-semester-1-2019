@@ -1,4 +1,4 @@
-package view;
+package view.model;
 
 import view_interfaces.ViewType;
 import model_Interfaces.GameEngine;

@@ -1,8 +1,5 @@
 package application;
 
-import view.GuiView;
-import view.TextView;
-import view.ViewModel;
 import view_interfaces.ViewType;
 import view_interfaces.View;
 
@@ -10,6 +7,9 @@ import model.BoardImpl;
 import model.GameEngineImpl;
 import model_Interfaces.Board;
 import model_Interfaces.GameEngine;
+import view.model.ViewModel;
+import view.views.GuiView;
+import view.views.TextView;
 
 /**
  * launches the Chess-Like-Game.
