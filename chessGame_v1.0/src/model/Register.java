@@ -5,8 +5,10 @@ package src.model;
  * takes player name + password;
  * checks player name is not already taken + doesn't include weird characters (no spaces, maybe?)
  * saves player name and password hash to file!
+ * 
+ * blabla
  */
 
 public class Register {
-
+	
 }
