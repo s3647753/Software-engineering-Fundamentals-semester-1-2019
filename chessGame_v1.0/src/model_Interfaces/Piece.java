@@ -8,6 +8,8 @@ import model.Point;
 
 /**
  * Interface for the Chess Pieces
+ * Note: Pieces are immutable so they should be made in the constructor 
+ * and contain no setters.
  * 
  * @author Bernard O'Meara + TBA
  *
@@ -18,10 +20,8 @@ public interface Piece {
 	public Colr getColour();
 
 	public Type getType();
-
-	public Point getPosition();
-
-	public Point setPosition(Point Position);
+	
+	
 	
 
 	/**
@@ -35,11 +35,26 @@ public interface Piece {
 	public ArrayList<Point> getPotentialMoves();
 	
 	/**
-	 * Overrides the Object.toString() method.
-	 * Should be implemented at the subclass level.
+	 * TODO
+	 * @return
 	 */
 	@Override
 	public String toString();
+
+	/**
+	 * TODO
+	 * @param obj
+	 * @return
+	 */
+	@Override
+	boolean equals(Object obj);
+	
+	/**
+	 * TODO
+	 * @return
+	 */
+	@Override
+	int hashCode();
 
 
 }

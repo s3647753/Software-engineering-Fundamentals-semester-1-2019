@@ -22,17 +22,23 @@ public class BoardImpl implements Board{
 	public BoardImpl(int width, int height) {
 		// TODO
 	}
-
-
+	
 	@Override
-	public ArrayList<Point> getLegalMoves(Point position) {
+	public int getHeight() {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 
 	@Override
-	public Colr getCellColor(Point position) {
+	public int getWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public ArrayList<Point> getLegalMoves(Point position) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -46,14 +52,7 @@ public class BoardImpl implements Board{
 
 
 	@Override
-	public Piece[][] getPieces() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public ArrayList<Piece> getPieces(Point position) {
+	public ArrayList<Piece> getPiecesAt(Point point) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -78,5 +77,7 @@ public class BoardImpl implements Board{
 		// TODO
 		return null;
 	}
+
+
 	
 }

@@ -15,15 +15,20 @@ import model.Point;
  */
 
 public interface Board {
-
+	
 	/**
-	 * Returns a list of the Pieces that are in the cell.
-	 * Empty list if the cell is empty.
+	 * Returns the height of the board.
 	 * 
-	 * @param position
-	 * @return The pieces in the cell
+	 * @return The number of cells in each column.
 	 */
-	public ArrayList<Piece> getPieces(Point position);
+	public int getHeight();
+	
+	
+	/**
+	 * Returns the width of the board.
+	 * @return The number of cells in each row.
+	 */
+	public int getWidth();
 	
 
 	/**
@@ -79,19 +84,13 @@ public interface Board {
 	
 	
 	/**
-	 * Returns a 2D array of the pieces on the board
-	 * @return The board pieces.
+	 * Returns a List of the pieces presently located at the nominated point on the board.
+	 * If the cell is empty an empty List is returned.
+	 * Note: Pieces and not the cell are returned.
+	 * 
+	 * @return A list of the pieces at the board location.
 	 */
-	public Piece[][] getPieces();
-	
-	
-	/**
-	 * Returns the background color of the board cell/position.
-	 * Position(0, 0) should be WHITE.
-	 *  
-	 * @return The cell color
-	 */
-	public Colr getCellColor(Point position);
+	public ArrayList<Piece> getPiecesAt(Point point);
 	
 
 	/**

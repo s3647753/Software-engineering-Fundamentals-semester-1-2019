@@ -2,30 +2,83 @@ package model;
 
 /**
  * Class to encapsulate the coordinate locations on the game board.
+ * The point class is immutable, hence it has no settters.
  * 
- * TODO complete this class and change it from an abstract class to a concrete class
- * 
- * @author TBA
+ * @author Bernard O'Meara
  *
  */
 
-public abstract class Point {
-	private int x;
-	private int y;
+public class Point {
+	private final int x;
+	private final int y;
 	
-	public abstract int getX();
+	public Point(int x, int y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+
 	
-	public abstract int setX(int x);
+	/**
+	 * TODO
+	 * @return
+	 */
+	public int getX() {
+		return x;
+	}
+
 	
-	public abstract int getY();
+	/**
+	 * TODO
+	 * @return
+	 */
+	public int getY() {
+		return y;
+	}
+
+
+	/**
+	 * Calculates the sum of like fields and returns a new Point of the result. 
+	 * Negative values are permitted. <br>
+	 * e.g., Point(2, 5) + Point(2, -1) returns Point(4, 4)
+	 * 
+	 * @param point1 The first operand.
+	 * @param point2 The second operand.
+	 * @return The vector sum of the two operands.
+	 */
+	public Point add(Point point1, Point point2) {
+		// TODO
+		return null;
+	}
 	
-	public abstract void setY(int y);
-	
-	
+
 	/**
 	 * Overrides the Object.toString() method.
 	 */
 	@Override
-	public abstract String toString();
+	public String toString() {
+		// TODO
+		return null;
+	}
+
+
+	/**
+	 * TODO
+	 */
+	@Override
+	public boolean equals(Object arg0) {
+		// TODO Auto-generated method stub
+		return super.equals(arg0);
+	}
+
+
+	/**
+	 * TODO
+	 */
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
 
 }
