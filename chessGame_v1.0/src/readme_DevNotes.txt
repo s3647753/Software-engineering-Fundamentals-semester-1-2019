@@ -76,7 +76,7 @@ Piece, Cell, Board, move and split rational
         When moving a merged cell the player will be asked if they wish to move the piece
 -----------------		
 		
-
+Bernie
 			
 				
 				
