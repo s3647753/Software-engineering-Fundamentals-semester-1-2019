@@ -32,6 +32,47 @@ public class Cell {
 	public void addPiece(Piece piece) throws IllegalMoveException {
 		// TODO
 	}
+	
+	/**
+	 * Removes the nominated piece from the cell and returns a reference to the removed piece.
+	 * 
+	 * @param piece The piece to be removed.
+	 * @return A reference to the removed piece;
+	 */
+	public Piece removePiece(Piece piece) {
+		// TODO
+		return null;
+	}
+	
+	
+	/**
+	 * Overrides the Object.toString() method.
+	 */
+	@Override
+	public String toString() {
+		// TODO
+		return null;
+	}
+
+
+	/**
+	 * TODO
+	 */
+	@Override
+	public boolean equals(Object arg0) {
+		// TODO
+		return super.equals(arg0);
+	}
+
+
+	/**
+	 * TODO
+	 */
+	@Override
+	public int hashCode() {
+		// TODO
+		return super.hashCode();
+	}
 
 	
 }

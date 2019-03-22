@@ -20,17 +20,6 @@ public class AbstractPiece implements Piece {
 		return null;
 	}
 
-	@Override
-	public Point getPosition() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Point setPosition(Point Position) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public ArrayList<Point> getPotentialMoves() {
