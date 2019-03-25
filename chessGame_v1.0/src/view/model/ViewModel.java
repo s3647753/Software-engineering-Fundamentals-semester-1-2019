@@ -12,10 +12,13 @@ public class ViewModel implements View {
 	public ViewModel(GameEngine engine, ViewType viewType) {
 		this.engine = engine;
 		this.viewType = viewType;
-		
-		
-		
-		
+
+	}
+
+	@Override
+	public boolean splitPieces() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 

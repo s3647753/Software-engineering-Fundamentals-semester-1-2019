@@ -64,4 +64,4 @@ public class CreateMockOfInterface
 The above are very simple yet effective examples of mocks
 EasyMock can do a lot more if you are interested
 
-Bernie
+Bernie.
