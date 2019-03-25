@@ -44,8 +44,10 @@ public class ChessLikeGame {
 //		viewType = new GuiView();
 		
 		ChessLikeGame game = new ChessLikeGame();
-		game.startGame(viewType);
-
+		//game.startGame(viewType);
+		
+		float test = 3/2;
+		
 	}
 	
 	/**
