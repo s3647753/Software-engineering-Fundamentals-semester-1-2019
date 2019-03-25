@@ -1,5 +1,6 @@
-package src.model;
+package model;
 
+import java.util.ArrayList;
 import model.PlayerNotFoundException;
 
 /**
@@ -8,19 +9,18 @@ import model.PlayerNotFoundException;
  * 1. the player name exists in the players file
  * 2. the given password's hash matches the corresponding one in the file
  * 
+ * this class stores the list of currently logged in players.
+ * 
  * @author Shaun Davis
  * 
  **/
 
 public class Login {
 	
-	private String playerID;
-	private String passwordHash;
+	private ArrayList<String> playerList;
 	
-	public Login(String playerID, String password) {
-		this.playerID = playerID;
-		this.passwordHash = stringToSHA256(password);
-		
+	public Login() {
+		playerList = new ArrayList<String>();
 	}
 	
 	/**
@@ -30,7 +30,7 @@ public class Login {
 	 */
 	private String stringToSHA256(String inputString) {
 		String hashString = null;
-		// oh no
+		// i have no idea how hashes work yet
 		return hashString;
 	}
 	
@@ -40,29 +40,25 @@ public class Login {
 	 * @return true if the ID was found, false if it was not.
 	 * @author Shaun Davis
 	 */
-	private boolean playerExists() throws PlayerNotFoundException {
-		
+	private boolean playerExists(String username) throws PlayerNotFoundException {
+		// open the players file
+		// search for the username
+		// return true if it's there!
 		return false;
 	}
 	
-	/**
-	 * checks that the password hash matches the one in the Players file.
-	 * 
-	 * @return true if the password hash matches, false if it doesn't.
-	 * @author Shaun Davis
-	 */
-	private boolean verifyPassword() {
-		try {
-			if (playerExists()) {
-				
-			}
-		} catch (PlayerNotFoundException e) {
-			// print the error or something?
+	protected boolean loginPlayer(String username, String password) throws PlayerNotFoundException {
+		
+		if (playerExists(username)) {
+			// verify their password hash matches the one in the players file
+			// if so, append the player username to playerList
 		}
-		
-		
-		
+
 		return false;
+	}
+	
+	protected ArrayList<String> getPlayerList() {
+		return playerList;
 	}
 	
 }
