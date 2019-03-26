@@ -2,7 +2,7 @@ package model;
 
 /**
  * Class to encapsulate the coordinate locations on the game board.
- * The point class is immutable, hence it has no settters.
+ * The point class is immutable, hence it has no setters.
  * 
  * @author Bernard O'Meara
  *
@@ -20,8 +20,8 @@ public class Point {
 
 	
 	/**
-	 * TODO
-	 * @return
+	 * Returns the X value of this point.
+	 * @return The X value.
 	 */
 	public int getX() {
 		return x;
@@ -29,8 +29,8 @@ public class Point {
 
 	
 	/**
-	 * TODO
-	 * @return
+	 * Returns the Y value of this point.
+	 * @return The Y value.
 	 */
 	public int getY() {
 		return y;
@@ -46,39 +46,50 @@ public class Point {
 	 * @param point2 The second operand.
 	 * @return The vector sum of the two operands.
 	 */
-	public Point add(Point point1, Point point2) {
-		// TODO
-		return null;
+	public Point add(Point that) {
+		
+		return new Point(this.getX() + that.getX(), this.getY() + that.getY());
 	}
 	
 
-	/**
-	 * Overrides the Object.toString() method.
+	/*
+	 * Returns a human friendly string representation of the Point.
 	 */
 	@Override
 	public String toString() {
-		// TODO
-		return null;
+		return String.format("Point(%d, %d)", getX(), getY());
 	}
 
 
-	/**
-	 * TODO
+	/*
+	 * Compares this Point Object with another Point Object for equality,
+	 * compares both X values are equal and Y values are equal.
+	 * 
+	 * @return true if this point and other point are equal, else false
 	 */
 	@Override
-	public boolean equals(Object arg0) {
-		// TODO Auto-generated method stub
-		return super.equals(arg0);
+	public boolean equals(Object that) {
+		if(this.getClass() != that.getClass()) {
+			return false;
+		}
+		
+		Point point2 = (Point)that;
+
+		if(getX() == point2.getX() && getY() == point2.getY()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 
-	/**
-	 * TODO
+	/*
+	 * Returns the hashCode for this Point.
 	 */
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+		return toString().hashCode();
 	}
 
 }
