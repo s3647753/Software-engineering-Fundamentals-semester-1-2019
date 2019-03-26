@@ -40,8 +40,8 @@ public class ChessLikeGame {
 		
 		// select one viewType, this is for development purposes
 		// this could even be a command line thing
-		viewType = new TextView();
-//		viewType = new GuiView();
+//		viewType = new TextView();
+		viewType = new GuiView();
 		
 		ChessLikeGame game = new ChessLikeGame();
 		//game.startGame(viewType);
