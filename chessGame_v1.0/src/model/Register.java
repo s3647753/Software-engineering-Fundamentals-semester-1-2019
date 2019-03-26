@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 /*
  * this class can handle registering players.
