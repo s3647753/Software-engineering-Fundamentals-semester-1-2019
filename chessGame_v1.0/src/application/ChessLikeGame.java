@@ -23,8 +23,8 @@ import view.views.TextView;
  */
 
 public class ChessLikeGame {
-	private final int WIDTH = 8;
-	private final int HEIGHT = 8;
+	private final int WIDTH = 6;
+	private final int HEIGHT = 6;
 	
 	private GameEngine engine;
 	private View view;
