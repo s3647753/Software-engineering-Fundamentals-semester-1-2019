@@ -1,9 +1,9 @@
 package model;
 
 /**
- * when a playerID isn't found in the players file, this exception should be thrown.
+ * when a username isn't found in the players file, this exception is thrown.
  * 
- * @author Shaun
+ * @author Shaun Davis
  *
  */
 
