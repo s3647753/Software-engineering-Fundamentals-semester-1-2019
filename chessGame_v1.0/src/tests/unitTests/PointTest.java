@@ -8,6 +8,12 @@ import org.junit.Test;
 
 import model.Point;
 
+/**
+ * Unit tests for the Point class
+ * 
+ * @author CS Bernard O'Meara
+ *
+ */
 public class PointTest {
 	private Point point0, point1, point2, point3, negVals;
 

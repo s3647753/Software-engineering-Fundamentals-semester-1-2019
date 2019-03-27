@@ -16,10 +16,10 @@ import model_Interfaces.Piece;
 public class BoardImpl implements Board{
 	
 	// TODO example only (the magic numbers have to go value comes from the constructor)
-	private Cell[][] cells = new Cell[8][8];
+	private Cell[][] cells = new Cell[HEIGHT][WIDTH];
 	
 	
-	public BoardImpl(int width, int height) {
+	public BoardImpl() {
 		// TODO
 	}
 	
