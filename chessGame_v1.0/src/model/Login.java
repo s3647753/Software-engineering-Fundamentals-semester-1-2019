@@ -1,12 +1,6 @@
 package model;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-
-import javax.xml.bind.DatatypeConverter;
-
 import model.PlayerNotFoundException;
 
 /**
@@ -22,48 +16,11 @@ public class Login {
 	
 	/**
 	 * the constructor for the Login class simply initalizes the playerList.
-	 * @author Shaun Davis
-	 */
-	public Login() {
-		playerList = new ArrayList<String>();
-	}
-	
-	/**
-	 * hashes the given String with the SHA256 algorithm, because MD5 is for chumps. this method is static so that
-	 * the Register class can also make use of it without instantiating Login.
-	 * @param inputString the String to convert to a SHA256 hash
-	 * @return the hashed String
-	 * @author Shaun Davis
-	 */
-	protected static String stringToSHA256(String inputString) {
-		String hashString = null;
-		
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			// update/populate the digest with the bytes of the inputString
-			// we specify UTF-8, just in case it tries to use something else.
-			md.update(inputString.getBytes(StandardCharsets.UTF_8));
-			byte[] hash = md.digest();
-			hashString = DatatypeConverter.printHexBinary(hash);
-		} catch (NoSuchAlgorithmException e) {
-			// this should never happen
-		}
-		
-		return hashString;
-	}
-
-	/**
-	 * checks that a player exists in the registered players file.
 	 * 
-	 * @param username the username to search for
-	 * @return true if the player exists, false if it doesn't
 	 * @author Shaun Davis
 	 */
-	private boolean playerExists(String username) {
-		// open the players file
-		// search for the username
-		// return true if it's there!
-		return false;
+	protected Login() {
+		playerList = new ArrayList<String>();
 	}
 	
 	/**
@@ -76,13 +33,15 @@ public class Login {
 	 * @author Shaun Davis
 	 */
 	protected boolean loginPlayer(String username, String password) throws PlayerNotFoundException {
-		
-		if (playerExists(username)) {
+		String passHash = LoginUtils.getPlayerHash(username);
+		if (passHash != null) {
 			// verify their password hash matches the one in the players file
 			// if so, append the player username to playerList
 			// return true!
 		}
 		else {
+			// if this is ever the case, the first line of this method (initializing passHash) should throw this already.
+			// nonetheless, we'll throw it here too, in case something goes wronger.
 			throw new PlayerNotFoundException();
 		}
 
@@ -91,6 +50,7 @@ public class Login {
 	
 	/**
 	 * returns the playerList!!!!!!!!!!!!!!!!!!!!!
+	 * 
 	 * @return the playerList!!!!!!!!!!!!!!!!!
 	 * @author Shaun Daviasdaagfasd
 	 */

@@ -7,6 +7,7 @@ package model;
  * @author Shaun Davis
  *
  */
+
 public class DuplicateNameException extends Exception {
 
 }
