@@ -16,6 +16,9 @@ import model.Point;
 
 public interface Board {
 	
+	static final int WIDTH = 6;
+	static final int HEIGHT = 6;
+	
 	/**
 	 * Returns the height of the board.
 	 * 
