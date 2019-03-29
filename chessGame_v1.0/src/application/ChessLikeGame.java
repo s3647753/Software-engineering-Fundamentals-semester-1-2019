@@ -7,9 +7,9 @@ import model.BoardImpl;
 import model.GameEngineImpl;
 import model_Interfaces.Board;
 import model_Interfaces.GameEngine;
+import view.gui.GuiView;
 import view.model.ViewModel;
-import view.views.GuiView;
-import view.views.TextView;
+import view.text.TextView;
 
 /**
  * launches the Chess-Like-Game.
@@ -23,12 +23,10 @@ import view.views.TextView;
  */
 
 public class ChessLikeGame {
-	private final int WIDTH = 6;
-	private final int HEIGHT = 6;
 	
-	private GameEngine engine;
-	private View view;
-	private Board board;
+//	private GameEngine engine;
+//	private View view;
+//	private Board board;
 	
 
 	/**
@@ -38,15 +36,13 @@ public class ChessLikeGame {
 	public static void main(String[] args) {
 		ViewType viewType;
 		
-		// select one viewType, this is for development purposes
-		// this could even be a command line thing
+		// select one viewType
 //		viewType = new TextView();
 		viewType = new GuiView();
 		
 		ChessLikeGame game = new ChessLikeGame();
-		//game.startGame(viewType);
-		
-		float test = 3/2;
+		game.startGame(viewType);
+
 		
 	}
 	
@@ -56,9 +52,10 @@ public class ChessLikeGame {
 	 * @param viewType Type of user interface, text for development, GUI for release.
 	 */
 	private void startGame(ViewType viewType) {
-		board = new BoardImpl(WIDTH, HEIGHT);
-		engine = new GameEngineImpl(board);
-		view = new ViewModel(engine, viewType);
+		Board board = new BoardImpl();
+		GameEngine engine = new GameEngineImpl(board);
+		View viewModel = new ViewModel(engine, viewType);
+		viewType.initView(viewModel);
 	}
 
 }
