@@ -2,7 +2,10 @@ package tests.unitTests;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
+import java.util.ArrayList;
+import java.util.List;
+
+//import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,40 +18,37 @@ import model.Point;
  *
  */
 public class PointTest {
-	private Point point0, point1, point2, point3, negVals;
+	private Point point0, point1, point2, point3, point4, negVals;
 
 	@Before
 	public void setUp() throws Exception {
 		point0 = new Point(0, 0);
 		point1 = new Point(3, 5);
 		point2 = new Point(3, 5);
-		point3 = new Point(5, 3);
+		point3 = new Point(5, 5);
+		point4 = new Point(3, 3);
 		negVals = new Point(-10, -20);
 	}
 	
 	@Test
-	public void testGetX() {
-		assertEquals("Point.getX() failed", 3, point1.getX());
-	}
-	
-	@Test
-	public void testGetY() {
-		assertEquals("Point.getY() failed", 5, point2.getY());
+	public void testGetters() {
+		assertEquals("Point.getRow() failed", 3, point1.getRow());
+		assertEquals("Point.getCol() failed", 5, point2.getCol());
 	}
 
 	@Test
 	public void testAdd() {
 		Point sum = point1.add(point2);
-		assertEquals("Add points X value failed", 6, sum.getX());
-		assertEquals("Add points Y value failed", 10, sum.getY());
+		assertEquals("Add points Row value failed", 6, sum.getRow());
+		assertEquals("Add points Col value failed", 10, sum.getCol());
 	}
 	
 	@Test
 	public void testAddNegVals() {
 		Point sum = point1.add(negVals);
 		
-		assertEquals("Add points X neg value failed", -7, sum.getX());
-		assertEquals("Add points Y neg value failed", -15, sum.getY());
+		assertEquals("Add points Row neg value failed", -7, sum.getRow());
+		assertEquals("Add points Col neg value failed", -15, sum.getCol());
 	}
 	
 	@Test
@@ -56,12 +56,12 @@ public class PointTest {
 		Point point0 = new Point(0, 0);
 		
 		// adding zero to a point
-		assertEquals("Add zero point X failed", point1.getX(), point1.add(point0).getX());
-		assertEquals("Add zero point Y failed", point1.getY(), point1.add(point0).getY());
+		assertEquals("Add zero point Row failed", point1.getRow(), point1.add(point0).getRow());
+		assertEquals("Add zero point Col failed", point1.getCol(), point1.add(point0).getCol());
 		
 		// adding a point to itself
-		assertEquals("Add double point X failed", 2 * point1.getX(), point1.add(point1).getX());
-		assertEquals("Add double point Y failed", 2 * point1.getY(), point1.add(point1).getY());
+		assertEquals("Add double point Row failed", 2 * point1.getRow(), point1.add(point1).getRow());
+		assertEquals("Add double point Col failed", 2 * point1.getCol(), point1.add(point1).getCol());
 	}
 	
 
@@ -77,8 +77,20 @@ public class PointTest {
 	
 	@Test
 	public void testEquals() {
-		assertTrue("Like Points not indicating equal", point1.equals(point2));
-		assertFalse("Dis-Like Points indicating equal", point1.equals(point3));
+		assertTrue("Points with matching attributes", point1.equals(point2));
+		assertFalse("Points with not matching attributes", point1.equals(point3));
+	}
+	
+	// testing that the List.contains() method works
+	@Test
+	public void testListContains() {
+		List<Point> list = new ArrayList<>();
+		list.add(point1);
+		
+		assertTrue("List contains the same instance", list.contains(point1));
+		assertTrue("List containing equal Point", list.contains(point2));
+		assertFalse("List containing != Point", list.contains(point3));
+		
 	}
 
 }

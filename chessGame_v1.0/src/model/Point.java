@@ -9,13 +9,13 @@ package model;
  */
 
 public class Point {
-	private final int x;
-	private final int y;
+	private final int row;
+	private final int col;
 	
-	public Point(int x, int y) {
+	public Point(int row, int col) {
 		super();
-		this.x = x;
-		this.y = y;
+		this.row = row;
+		this.col = col;
 	}
 
 	
@@ -23,8 +23,8 @@ public class Point {
 	 * Returns the X value of this point.
 	 * @return The X value.
 	 */
-	public int getX() {
-		return x;
+	public int getRow() {
+		return row;
 	}
 
 	
@@ -32,8 +32,8 @@ public class Point {
 	 * Returns the Y value of this point.
 	 * @return The Y value.
 	 */
-	public int getY() {
-		return y;
+	public int getCol() {
+		return col;
 	}
 
 
@@ -48,7 +48,7 @@ public class Point {
 	 */
 	public Point add(Point that) {
 		
-		return new Point(this.getX() + that.getX(), this.getY() + that.getY());
+		return new Point(this.getRow() + that.getRow(), this.getCol() + that.getCol());
 	}
 	
 
@@ -57,7 +57,7 @@ public class Point {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Point(%d, %d)", getX(), getY());
+		return String.format("Point(%d, %d)", getRow(), getCol());
 	}
 
 
@@ -75,7 +75,7 @@ public class Point {
 		
 		Point point2 = (Point)that;
 
-		if(getX() == point2.getX() && getY() == point2.getY()) {
+		if(getRow() == point2.getRow() && getCol() == point2.getCol()) {
 			return true;
 		}
 		else {
