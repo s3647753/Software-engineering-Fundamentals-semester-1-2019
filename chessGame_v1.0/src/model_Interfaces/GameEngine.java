@@ -3,7 +3,9 @@ package model_Interfaces;
 import java.util.ArrayList;
 
 import enums.Colr;
+import model.DuplicateNameException;
 import model.IllegalMoveException;
+import model.PlayerNotFoundException;
 import model.Players;
 import model.Point;
 import view_interfaces.View;
@@ -17,30 +19,36 @@ import view_interfaces.View;
 
 public interface GameEngine {
 
+	/**
+	 * Set the views that will be used by the game engine
+	 * In current design this may not end up being used to remove if so
+	 * @param The view to be added
+	 */
 	void setView(View view);
 	
+	/**
+	 * Updates a player's scores in the engine
+	 *  
+	 * @param The username of the player
+	 * @param how much the player's score has increased
+	 */
+	public void updateScore(String Username, int scoreIncrease);
 	
-	public void movePiece(Point positionPrevious, Point positionNew);
-	
-	//calls a method on player that will add the int given to the players score\
-	//or maybe just updates a map with player/playerid as key
-	public void updateScore(String Username, int score);
-	
-	//add a board to the game engine
+	/**
+	 * Adds a game board for the game engine to use
+	 *  
+	 * @param The gameboard to be used by the engine
+	 */
 	public void addBoard(Board board);
 	
-	//passes both the users move amount in to the engine to average out and decide max moves
+	/**
+	 * Passes both the users chosen turn amounts into the engine to average out and decide max moves.
+	 * The max moves is stored as double the average value as it is reduced each time a players does a turn
+	 * not once each player has completed a pair of turns
+	 * @param The first players preferred moves
+	 * @param The Second players preferred moves
+	 */
 	public void setMaxMoves(int player1Moves, int player2Moves);
-	
-	/*reduces moves left by 1
-	maybe reduce by 2, while storing max moves as double what it actually is so 
-	it can be reduced after each players turn
-	sounds kinda messy though*/
-	//maybe remove from interface
-	void reduceMoves();
-	
-	//maybe remove from interface
-	void endGame();
 	
 	/**
 	 * Moves a player from point A to point B
@@ -70,7 +78,7 @@ public interface GameEngine {
 	 * @param password The players password
 	 * @return The message to be displayed to the player
 	 */
-	public String register(String name, String password);
+	public String register(String username, String password) throws DuplicateNameException;
 	
 	/**
 	 * Requests the login of a player
@@ -81,7 +89,7 @@ public interface GameEngine {
 	 * @param password The players password
 	 * @return The message to be displayed to the player
 	 */
-	public String login(String name, String password);
+	public String login(String username, String password) throws PlayerNotFoundException;
 	
 	
 	/**
@@ -92,7 +100,7 @@ public interface GameEngine {
 	 * @param name The players name
 	 * @return The message to be displayed to the player
 	 */
-	public String logout(String name);
+	public String logout(String username);
 	
 	/**
 	 * Returns a list of the registered players names

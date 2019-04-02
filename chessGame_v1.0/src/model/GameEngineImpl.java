@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import enums.Colr;
@@ -13,36 +14,28 @@ import view_interfaces.View;
 
 /**
  * Application of the Game Engine Interface
- * 
+ * This class deals with most of the game logic
  * @author Matt Eletva
  *
  */
 
 public class GameEngineImpl implements GameEngine {
 	private Board board;
-	private ArrayList<String> loggedInPlayers = new ArrayList<String>();
 	private Map<String, Integer> players = new HashMap<String, Integer>();
-	private View view;
+	private Collection<View> views = new HashSet<>();
 	private int currentMove;
+	private Login login;
+	private Colr currentTurn;
 	
-	public GameEngineImpl(Board board2) {
-		// TODO Auto-generated constructor stub
+	public GameEngineImpl(Board board) {
+		this.board = board;
+		currentTurn = Colr.WHITE;
 	}
 
 
 	@Override
 	public void setView(View view) {
-		this.view = view;
-	}
-
-/*	@Override
-	public void addPlayer(String Username) {
-		players.put(Username, 0);
-	}*/
-
-	@Override
-	public void movePiece(Point positionPrevious, Point positionNew) {
-		// TODO Auto-generated method stub
+		views.add(view);
 	}
 
 	@Override
@@ -59,71 +52,93 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public void setMaxMoves(int player1Moves, int player2Moves) {
-		//might turn out as float so deal with that soon
-		currentMove = (player1Moves/player2Moves)*2;
-	}
-
-	@Override
-	public void reduceMoves() {
-		currentMove--;
-	}
-
-	@Override
-	public void endGame() {
-		// TODO Auto-generated method stub
+		currentMove = Math.round((player1Moves/player2Moves)*2)*2;
 	}
 
 	@Override
 	public boolean movePlayer(Point from, Point to) throws IllegalMoveException {
+		/*Currently Implemented: 
+		 	Moving piece
+		 	Does not check what the piece is moving onto ye*/
 		ArrayList<Piece> pieces = board.getPiecesAt(from);
+		boolean moveSuccessful = false;
 		if(pieces.size()>1) {
-			//todo
-			return true;
+			board.moveMergedPiece(from, to);
+			moveSuccessful = true;
+			reduceMoves();
+			swapTurn();
 		}else if(pieces.size() == 1) {
 			board.moveSinglePiece(pieces.get(0), from, to);
-			return true;
+			moveSuccessful = true;
+			reduceMoves();
+			swapTurn();
+		}
+		//think about how to implement this more
+		if(currentMove == 0) {
+			endGame();
+		}
+		return moveSuccessful;
+	}
+	
+	private void swapTurn() {
+		if(currentTurn == Colr.WHITE) {
+			currentTurn = Colr.BLACK;
 		}else {
-			return false;
+			currentTurn = Colr.WHITE;
 		}
 	}
 
 	@Override
 	public Colr whoseTurn() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentTurn;
 	}
 
 	@Override
-	public String register(String name, String password) {
-		// TODO Auto-generated method stub
-		return null;
+	public String register(String username, String password) throws DuplicateNameException {
+		Boolean registerSuccess = Register.registerPlayer(username, password);
+		String message;
+		if(registerSuccess) {
+			message = "Username " + username + " has successfully registered";
+		}else {
+			message = "Username " + username + " has not successfully registered";
+		}
+		return message;
 	}
 
 	@Override
-	public String login(String name, String password) {
-		// TODO Auto-generated method stub
-		return null;
+	public String login(String username, String password) throws PlayerNotFoundException {
+		login.loginPlayer(username, password);
+		return username + " has successfully logged in";
 	}
 
 	@Override
-	public String logout(String name) {
-		// TODO Auto-generated method stub
+	public String logout(String username) {
+		
 		return null;
 	}
 
 	@Override
 	public ArrayList<String> getRegisteredPlayerNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return login.getPlayerList();
 	}
 
 	@Override
 	public ArrayList<String> getLoggedInPlayerNames() {
-		return loggedInPlayers;
+		ArrayList<String> playerList = new ArrayList<String>();
+		playerList.addAll((players.keySet()));
+		return playerList;
 	}
 
 	@Override
 	public ArrayList<Point> getLegalMoves(Point position) {
 		return board.getLegalMoves(position);
+	}
+	
+	public void reduceMoves() {
+		currentMove--;
+	}
+
+	public void endGame() {
+		
 	}
 }
