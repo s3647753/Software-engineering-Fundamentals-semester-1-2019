@@ -20,8 +20,9 @@ public class GuiView extends JFrame implements ViewType {
 		setBounds(300, 50, 600, 600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		setJMenuBar(new ChessMenuBar(viewModel));
-		add(new ChessBoard(), BorderLayout.CENTER);
+//		// TODO move to the init method
+//		setJMenuBar(new ChessMenuBar(viewModel));
+//		add(new ChessBoard(viewModel), BorderLayout.CENTER);
 
 		setVisible(true);
 	}
@@ -31,7 +32,7 @@ public class GuiView extends JFrame implements ViewType {
 		this.viewModel = viewModel;
 		
 		setJMenuBar(new ChessMenuBar(viewModel));
-		add(new ChessBoard(), BorderLayout.CENTER);
+		add(new ChessBoard(viewModel), BorderLayout.CENTER);
 	}
 
 	@Override
@@ -62,7 +63,11 @@ public class GuiView extends JFrame implements ViewType {
 
 	@Override
 	public boolean updateBoard(Board gameBoard) {
-		// TODO Auto-generated method stub
+		// have as a field a 2D array of 
+		
+		// get the list of pieces from the board
+		
+		
 		return false;
 	}
 
