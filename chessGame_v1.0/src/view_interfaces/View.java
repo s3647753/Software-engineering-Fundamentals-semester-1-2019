@@ -1,6 +1,9 @@
 package view_interfaces;
 
+import java.util.List;
+
 import model_Interfaces.Board;
+import model_Interfaces.Piece;
 
 public interface View {
 	
@@ -58,5 +61,17 @@ public interface View {
 	 * @return true to split else false to move both pieces
 	 */
 	public boolean splitPieces();
+
+	/**
+	 * Returns a list of the Pieces at a position on the board
+	 * For an empty square, an empty list will be returned.
+	 * For a single piece in the square, a list of size one will be returned
+	 * For a merged piece in the square, a list of size two will be returned.
+	 *  
+	 * @param row TODO
+	 * @param column TODO
+	 * @return A list of Pieces on on the board position.
+	 */
+	public List<Piece> getPieceList(int row, int column);
 
 }

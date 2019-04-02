@@ -40,11 +40,10 @@ public class Point {
 	/**
 	 * Calculates the sum of like fields and returns a new Point of the result. 
 	 * Negative values are permitted. <br>
-	 * e.g., Point(2, 5) + Point(2, -1) returns Point(4, 4)
+	 * e.g., Point(2, 7) + Point(2, -1) returns Point(4, 6)
 	 * 
-	 * @param point1 The first operand.
-	 * @param point2 The second operand.
-	 * @return The vector sum of the two operands.
+	 * @param that The first operand.
+	 * @return The vector sum of the this Point and the passed point.
 	 */
 	public Point add(Point that) {
 		

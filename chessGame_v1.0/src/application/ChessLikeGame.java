@@ -37,8 +37,8 @@ public class ChessLikeGame {
 		ViewType viewType;
 		
 		// select one viewType
-//		viewType = new TextView();
-		viewType = new GuiView();
+		viewType = new TextView();
+//		viewType = new GuiView();
 		
 		ChessLikeGame game = new ChessLikeGame();
 		game.startGame(viewType);
