@@ -4,6 +4,8 @@ import view_interfaces.ViewType;
 
 import java.util.List;
 
+import model.DuplicateNameException;
+import model.PlayerNotFoundException;
 import model_Interfaces.Board;
 import model_Interfaces.GameEngine;
 import model_Interfaces.Piece;
@@ -42,6 +44,8 @@ public class ViewModel implements View {
 		} catch (OperationCancelledException e) {
 			System.out.println("> Registration Cancelled"); // TODO do I keep this for release
 			userInterface.setStatus("> Registration Cancelled");
+		} catch (DuplicateNameException e) {
+			userInterface.setStatus("> Name Already Exists, Registration Failed");
 		}
 
 	}
@@ -72,6 +76,8 @@ public class ViewModel implements View {
 		} catch (OperationCancelledException e) {
 			System.out.println("> Login Cancelled"); // TODO delete before final release
 			userInterface.setStatus("> Login Cancelled");
+		} catch (PlayerNotFoundException e) {
+			userInterface.setStatus("> Player not Found, Login Failed");
 		}
 
 	}
