@@ -13,6 +13,8 @@ import view.gui.NameAndPasswordDialog;
 import view.gui.OperationCancelledException;
 import view_interfaces.View;
 
+
+
 public class ViewModel implements View {
 	// can be either text or GUI
 	private ViewType userInterface;
