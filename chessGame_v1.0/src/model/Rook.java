@@ -20,8 +20,8 @@ public class Rook extends AbstractPiece {
 	private static List<Point> moveVectors = null;
 
 
-	public Rook(Type type, Colr color) {
-		super(type, color);
+	public Rook(Colr color) {
+		super(Type.ROOK, color);
 		initMoveVector();
 	}
 	

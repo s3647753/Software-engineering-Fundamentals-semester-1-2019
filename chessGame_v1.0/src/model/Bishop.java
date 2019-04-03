@@ -19,8 +19,8 @@ public class Bishop extends AbstractPiece {
 	private static List<Point> moveVectors = null;
 
 
-	public Bishop(Type type, Colr color) {
-		super(type, color);
+	public Bishop(Colr color) {
+		super(Type.BISHOP, color);
 		initMoveVector();
 	}
 	
