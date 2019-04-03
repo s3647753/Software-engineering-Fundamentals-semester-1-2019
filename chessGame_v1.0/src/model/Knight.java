@@ -22,8 +22,8 @@ public class Knight extends AbstractPiece {;
 	private static List<Point> moveVectors = null;
 
 
-	public Knight(Type type, Colr color) {
-		super(type, color);
+	public Knight(Colr color) {
+		super(Type.KNIGHT, color);
 		initMoveVector();
 	}
 	

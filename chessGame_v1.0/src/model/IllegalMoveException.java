@@ -1,25 +1,20 @@
 package model;
 
 /**
+ * Exception for when an illegal move is attempted
  * 
- * TODO finish and test
- * 
- * @author TBA
+ * @author Bernard O'Meara
  */
 
 @SuppressWarnings("serial")
 public class IllegalMoveException extends Exception {
 
-	public IllegalMoveException() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+   public IllegalMoveException() {
+      super("Illegal move");
+   }
 
-	public IllegalMoveException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
-	
-	
+   public IllegalMoveException(String msg) {
+      super(msg);
+   }
 
 }
