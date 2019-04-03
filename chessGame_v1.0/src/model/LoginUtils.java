@@ -1,8 +1,12 @@
 package model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Scanner;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -16,6 +20,7 @@ import javax.xml.bind.DatatypeConverter;
 public final class LoginUtils {
 	
 	private static final String SHA_256 = "SHA-256";
+	private static final String REGISTERED_PLAYERS_FILENAME = "registered_players.txt";
 
 	private LoginUtils() {
 	}
@@ -55,9 +60,27 @@ public final class LoginUtils {
 	 */
 	protected static String getPlayerHash(String username) throws PlayerNotFoundException {
 		String passHash = null;
-		// open the players file
+		HashMap<String, String> registeredList = getRegisteredPlayers();
 		// search for the username
 		// grab their hash if they exist and return it
 		return passHash;
+	}
+	
+	private static HashMap<String, String> getRegisteredPlayers() {
+		HashMap<String, String> list = new HashMap<String, String>();
+		
+		try {
+			Scanner in = new Scanner(new File(REGISTERED_PLAYERS_FILENAME));
+			in.useDelimiter(":");
+			
+			while (in.hasNext()) {
+				list.put(in.next(), in.next());
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			// the File is instantiated in the Scanner, this should never be thrown.
+		}
+		
+		return list;
 	}
 }
