@@ -88,10 +88,10 @@ public class ChessBoard extends JPanel {
 		
 		switch(pieces.size()) {
 		case 2: 
-			filename.add(pieces.get(1).getColour().toString().substring(0, 0).toLowerCase());
+			filename.add(pieces.get(1).getColor().toString().substring(0, 0).toLowerCase());
 			filename.add(pieces.get(1).getType().toString().substring(0, 0).toLowerCase());	
 		case 1:
-			filename.add(pieces.get(0).getColour().toString().substring(0, 0).toLowerCase());
+			filename.add(pieces.get(0).getColor().toString().substring(0, 0).toLowerCase());
 			filename.add(pieces.get(0).getType().toString().substring(0, 0).toLowerCase());
 			filename.add("On");
 		case 0:

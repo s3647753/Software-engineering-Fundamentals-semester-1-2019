@@ -1,60 +1,52 @@
 package model_Interfaces;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import enums.Colr;
 import enums.Type;
 import model.Point;
 
+
 /**
- * Interface for the Chess Pieces
- * Note: Pieces are immutable so they should be made in the constructor 
- * and contain no setters.
+ * Interface for the Chess Pieces.
+ * Note: Pieces are immutable.
  * 
- * @author Bernard O'Meara + TBA
+ * @author Bernard O'Meara + Ben Hunter
  *
  */
+public interface Piece extends Comparable<Piece> {
 
-public interface Piece {
+	/**
+	 * Returns the enum value for the piece color.
+	 * 
+	 * @return The color of the piece.
+	 */
+	public Colr getColor();
 
-	public Colr getColour();
-
+	/**
+	 * Returns the enum value for the type.
+	 * 
+	 * @return The type of the piece.
+	 */
 	public Type getType();
-	
-	
-	
 
 	/**
 	 * Returns the potential moves the piece could possibly make with no regard to
 	 * the bounds of the board. May be negative or out of the board. 
-	 * Board will determine if it is a valid move.
 	 * 
-	 * @return An ArrayList of potential moves.
+	 * @return an UnmodifiableList of potential moves.
 	 * 
 	 */
-	public ArrayList<Point> getPotentialMoves();
+	public List<Point> getPotentialMoves();
+	
 	
 	/**
-	 * TODO
-	 * @return
+	 * Builds a code for the piece suitable for text display or
+	 * building filenames for piece images.
+	 * <color type> e.g. blackRook = "br", whiteKnight = "wk"
+	 * 
+	 * @return A two char String of the pieces code.
 	 */
-	@Override
-	public String toString();
-
-	/**
-	 * TODO
-	 * @param obj
-	 * @return
-	 */
-	@Override
-	boolean equals(Object obj);
-	
-	/**
-	 * TODO
-	 * @return
-	 */
-	@Override
-	int hashCode();
-
+	public String getCode();
 
 }
