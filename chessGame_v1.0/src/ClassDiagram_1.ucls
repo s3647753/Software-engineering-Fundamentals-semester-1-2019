@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="view.model.ViewModel" project="chessGame_v1.0" 
-    file="/chessGame_v1.0/src/view/model/ViewModel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="104" width="241" x="13" y="525"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="model.GameEngineImpl" project="chessGame_v1.0" 
+  <class id="1" language="java" name="model.GameEngineImpl" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/model/GameEngineImpl.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="400" y="723"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -19,7 +10,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="3" language="java" name="view_interfaces.ViewType" project="chessGame_v1.0" 
+  <interface id="2" language="java" name="view_interfaces.ViewType" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/view_interfaces/ViewType.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="123" y="697"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -28,7 +19,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <enumeration id="4" language="java" name="enums.Type" project="chessGame_v1.0" 
+  <enumeration id="3" language="java" name="enums.Type" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/enums/Type.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1396" y="102"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -37,7 +28,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <enumeration id="5" language="java" name="enums.Colr" project="chessGame_v1.0" 
+  <enumeration id="4" language="java" name="enums.Colr" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/enums/Colr.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1402" y="260"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -46,7 +37,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="6" language="java" name="model.Point" project="chessGame_v1.0" file="/chessGame_v1.0/src/model/Point.java" 
+  <class id="5" language="java" name="model.Point" project="chessGame_v1.0" file="/chessGame_v1.0/src/model/Point.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1391" y="455"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -55,7 +46,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="7" language="java" name="model_Interfaces.Board" project="chessGame_v1.0" 
+  <interface id="6" language="java" name="model_Interfaces.Board" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/model_Interfaces/Board.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="680" y="124"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -64,7 +55,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="8" language="java" name="model_Interfaces.Piece" project="chessGame_v1.0" 
+  <interface id="7" language="java" name="model_Interfaces.Piece" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/model_Interfaces/Piece.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="946" y="340"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -73,7 +64,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="9" language="java" name="model.IllegalMoveException" project="chessGame_v1.0" 
+  <class id="8" language="java" name="model.IllegalMoveException" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/model/IllegalMoveException.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1382" y="634"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -82,7 +73,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="application.ChessLikeGame" project="chessGame_v1.0" 
+  <class id="9" language="java" name="application.ChessLikeGame" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/application/ChessLikeGame.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="124" y="99"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -91,7 +82,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="model.DuplicateNameException" project="chessGame_v1.0" 
+  <class id="10" language="java" name="model.DuplicateNameException" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/model/DuplicateNameException.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1396" y="749"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -100,7 +91,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="model.Login" project="chessGame_v1.0" file="/chessGame_v1.0/src/model/Login.java" 
+  <class id="11" language="java" name="model.Login" project="chessGame_v1.0" file="/chessGame_v1.0/src/model/Login.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1195" y="107"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -109,7 +100,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="model.Register" project="chessGame_v1.0" 
+  <class id="12" language="java" name="model.Register" project="chessGame_v1.0" 
     file="/chessGame_v1.0/src/model/Register.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1189" y="320"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -118,18 +109,6 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="14">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="15" name="userInterface">        
-        <position height="0" width="0" x="48" y="434"/>      
-      </attribute>      
-      <multiplicity id="16" minimum="0" maximum="1">        
-        <position height="0" width="0" x="48" y="434"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

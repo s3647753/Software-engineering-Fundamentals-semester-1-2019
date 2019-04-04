@@ -38,8 +38,8 @@ public abstract class AbstractPiece implements Piece {
 	@Override
 	public String getCode() {
 		return String.format("%s%s",
-				color.toString().toLowerCase().charAt(0),
-				type.toString().toLowerCase().charAt(0));
+				color.toString().charAt(0),
+				type.toString().charAt(0));
 	}
 	
 	@Override

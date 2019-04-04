@@ -23,6 +23,7 @@ public class ChessBoardTest {
 	public void setUp() throws Exception {
 	}
 
+	// NB: this test is incomplete
 	@Test
 	public void testGetImageFullPath_NoPieces() {
 		System.out.println("test start");

@@ -9,17 +9,36 @@ import enums.Colr;
 import enums.Type;
 import model_Interfaces.Piece;
 
+/**
+ * Cell class one of each lives in each square of the chess board. The cell
+ * class holds pieces, <br>
+ * Zero if there is no piece in that board location, One if there is one piece
+ * in the board location and Two if there is a merged piece in the location.
+ * 
+ * @author Bernard O'Meara + Ben Hunter
+ *
+ */
 public class Cell {
+   private Colr background;
 
-   // the pieces in the cell (2 if merged)
-   private ArrayList<Piece> pieces;
+   // the pieces in the cell (size 2 if merged)
+   private List<Piece> pieces;
 
-   public Cell() {
+   public Cell(Colr background) {
+      this.background = background;
       pieces = new ArrayList<>();
+   }
+   
+   /**
+    * Returns the enum Colr value of the background of this cell
+    * @return
+    */
+   public Colr getBackground() {
+      return background;
    }
 
    /**
-    * Returns the pieces in the cell
+    * Returns an unmodifiableList of the pieces in the cell
     * 
     * @return The pieces in the cell
     */
@@ -40,31 +59,16 @@ public class Cell {
     * @throws IllegalMoveException
     */
    public void addPiece(Piece piece) throws IllegalMoveException {
-
-      // filter moves
-      switch (pieces.size()) {
-         case 1:
-            // opponents piece in the cell (take it)
-            if (!piece.getColor().equals(pieces.get(0).getColor())) {
-               pieces.clear();
-            } else {
-               // players piece of same type in the cell
-               if (piece.getType().equals(pieces.get(0).getType())) {
-                  throw new IllegalMoveException("Cannot merge like pieces");
-               }
-            }
-            break;
-         case 2:
-            // opponents piece is merged (take it)
-            if (!piece.getColor().equals(pieces.get(0).getColor())) {
-               pieces.clear();
-            } else {
-               // current player already has a merged piece in cell
-               throw new IllegalMoveException("Piece already merged.");
-            }
+      // the move is illegal
+      if(!isLegal(piece)) {
+         throw new IllegalMoveException("Illegal Move");
+      }
+      
+      // there is an opposite color piece in the cell
+      if(pieces.size() > 0 && !piece.getColor().equals(pieces.get(0).getColor())) {
+         pieces.clear();
       }
 
-      // all checks passed, add the piece
       pieces.add(piece);
    }
 
@@ -87,12 +91,94 @@ public class Cell {
       return pieces.remove(pieces.indexOf(piece));
    }
 
-   //Overrides the Object.toString() method.
+   /**
+    * Returns the potential moves the piece/s in this cell could make if
+    * unobstructed. If the cell is empty an empty list will be returned. Else the
+    * combined moves of any pieces in the cell will be returned.
+    * 
+    * @return A new list of potential moves.
+    */
+   public List<Point> getPotentialMoves() {
+      List<Point> moves = new ArrayList<>();
+
+      for (Piece piece : pieces) {
+         moves.addAll(piece.getPotentialMoves());
+      }
+
+      return moves;
+   }
+
+   /**
+    * Determines if the supplied piece can be legally put into this Cell. This
+    * method does not move, delete or change any properties. <br>
+    * Returns false if: 
+    * There is a piece, same color and same type in the cell or 
+    * there is a merged piece of same color in the cell
+    * 
+    * @param piece
+    *           The piece that is asking if it can be put into this cell
+    * @return True if the move would be legal, else false
+    */
+   public boolean isLegal(Piece piece) {
+      boolean isLegal = true;
+
+      // illegal if there is already a piece of same type and color in the cell
+      // or if there is a merged piece of the same color in the cell
+      switch (pieces.size()) {
+         // same type and color
+         case 1:
+            if (piece.equals(pieces.get(0))) {
+               isLegal = false;
+            }
+            break;
+         case 2:
+            // merged Piece of same color
+            if (piece.getColor().equals(pieces.get(0).getColor())) {
+               isLegal = false;
+            }
+      }
+
+      return isLegal;
+   }
+   
+   
+   /**
+    * Returns the code for the pieces in the cell.
+    * Pieces are sorted in lexicological order.<br>
+    * Code is xxyyc, for a merged piece.<br>
+    * Code is yyc, for a single piece.<br>
+    * Code is c, for an empty cell.<br>
+    * Where pieces xx and yy are Piece.type Piece.color.<br>
+    * Chars xx only exist if it is a merged piece.<br>
+    * Chars yy only exist if there is at least one piece in the cell.<br>
+    * Char c is the board color.<br>
+    * e.g., Black Rook on White = BRW
+    * 
+    * @return The code for this cell.
+    */
+   public String getCode() {
+      StringJoiner code = new StringJoiner("");
+      
+      // always return merged pieces in the same order
+      Collections.sort(pieces);
+      
+      // add the piece codes
+      for(Piece piece: pieces) {
+         code.add(piece.getCode());
+      }
+      
+      // add the background
+      code.add(background.toString().substring(0, 1));
+      
+      return code.toString();
+   }
+
+   // Overrides the Object.toString() method.
    @Override
    public String toString() {
       StringJoiner sj = new StringJoiner(", ", "Cell[", "]");
-      for (Piece p : pieces) {
-         sj.add(p.toString());
+      for (Piece piece : pieces) {
+         sj.add(piece.toString());
       }
 
       return sj.toString();
@@ -112,17 +198,6 @@ public class Cell {
    @Override
    public int hashCode() {
       return toString().hashCode();
-   }
-   
-   
-   // TODO remove before release
-   public static void main(String[] args) throws IllegalMoveException {
-      Cell c = new Cell();
-      System.out.println(c);
-      c.addPiece(new Rook(Colr.BLACK));
-      System.out.println(c);
-      c.addPiece(new Rook(Colr.BLACK));
-      System.out.println(c);
    }
 
 }
