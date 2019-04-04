@@ -42,6 +42,9 @@ public class Login {
 			}
 			else {
 				// the password's wrong.
+				
+				// TODO: what happens if the player is already logged in?
+				
 				return false;
 			}
 		}
@@ -57,6 +60,7 @@ public class Login {
 	 * 
 	 * @param username of player to logout
 	 * @return true if the player was logged out successfully, false if the player isn't logged in/username isn't in the list.
+	 * @author Shaun Davis
 	 */
 	protected boolean logoutPlayer(String username) {
 		return playerList.remove(username);
