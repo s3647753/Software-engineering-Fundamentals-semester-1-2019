@@ -53,6 +53,16 @@ public class Login {
 	}
 	
 	/**
+	 * logs this player out of the game by removing their username from the playerList.
+	 * 
+	 * @param username of player to logout
+	 * @return true if the player was logged out successfully, false if the player isn't logged in/username isn't in the list.
+	 */
+	protected boolean logoutPlayer(String username) {
+		return playerList.remove(username);
+	}
+	
+	/**
 	 * returns the playerList!!!!!!!!!!!!!!!!!!!!!
 	 * 
 	 * @return the playerList!!!!!!!!!!!!!!!!!
