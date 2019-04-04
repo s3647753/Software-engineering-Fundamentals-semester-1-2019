@@ -6,6 +6,7 @@ import java.util.List;
 
 import enums.Colr;
 import enums.Type;
+import model_Interfaces.Piece;
 
 /**
  * Rook subclass for Chess Like Game
@@ -46,19 +47,5 @@ public class Rook extends AbstractPiece {
 	public List<Point> getPotentialMoves() {
 		return Collections.unmodifiableList(moveVectors);
 	}
-
-
-//	// TODO get rid of for final release
-//	public static void main(String[] args) {
-//		Piece p = new Rook(Type.ROOK, Colr.BLACK);
-//		System.out.println(p.getType());
-//		System.out.println(p.getColor());
-//		System.out.println(p);
-//		System.out.println(p.getCode());
-//		
-//		for(Point pt: p.getPotentialMoves())
-//			System.out.println(pt);
-//	}
-
 
 }

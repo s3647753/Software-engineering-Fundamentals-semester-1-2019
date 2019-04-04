@@ -43,7 +43,7 @@ public interface Piece extends Comparable<Piece> {
 	/**
 	 * Builds a code for the piece suitable for text display or
 	 * building filenames for piece images.
-	 * <color type> e.g. blackRook = "br", whiteKnight = "wk"
+	 * <color, type> e.g. blackRook = "BR", whiteKnight = "WK"
 	 * 
 	 * @return A two char String of the pieces code.
 	 */
