@@ -104,7 +104,7 @@ public interface Board {
     *           The position of the piece
     * @return All legal moves for the piece at the position
     */
-   public ArrayList<Point> getLegalMoves(Point position);
+   public List<Point> getLegalMoves(Point position);
 
    /**
     * Returns a List of the pieces presently located at the nominated point on the

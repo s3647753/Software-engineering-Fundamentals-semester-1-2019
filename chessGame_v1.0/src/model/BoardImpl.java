@@ -12,7 +12,7 @@ import model_Interfaces.Piece;
 /**
  * Object representation of the game board
  * 
- * @author TBA
+ * @author Bernard O'Meara
  *
  */
 public class BoardImpl implements Board{
@@ -74,14 +74,21 @@ public class BoardImpl implements Board{
 		return WIDTH;
 	}
 
-
+	// TODO there is a bug rook and bishop jump pieces
+	// milestone 2 problem
 	@Override
-	public ArrayList<Point> getLegalMoves(Point from) {
+	public List<Point> getLegalMoves(Point from) {
 	   // the piece/merged piece that wishes to move
 	   List<Piece> pieceList = cells[from.getRow()][from.getCol()].getPieces();
-	   // the potential moves
-	   List<Point> moves = cells[from.getRow()][from.getCol()].getPotentialMoves();
 	   
+	   // the potential moves
+	   List<Point> rawMoves = cells[from.getRow()][from.getCol()].getPotentialMoves();
+	   List<Point> moves = new ArrayList<>();
+	   
+	   // add the potential moves to the present location into a mutable list
+	   for(Point rMove: rawMoves) {
+	      moves.add(rMove.add(from));
+	   }
 
 	   Iterator<Point> iter = moves.iterator();
 	   Point to;
@@ -117,7 +124,7 @@ public class BoardImpl implements Board{
 	    
 	   }
 
-      return null;
+      return moves;
 	}
 
 
