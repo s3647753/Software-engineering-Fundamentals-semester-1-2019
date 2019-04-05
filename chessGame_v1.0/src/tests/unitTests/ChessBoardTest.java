@@ -26,25 +26,19 @@ public class ChessBoardTest {
 	// NB: this test is incomplete
 	@Test
 	public void testGetImageFullPath_NoPieces() {
-		System.out.println("test start");
-		
 		View model = createMock(View.class);
 		List<Piece> list = new ArrayList<>();
-		System.out.println("point 1");
+
 		// add just one piece
-//		list.add(new Knight(Type.ROOK, Colr.BLACK));
+		list.add(new Knight(Colr.BLACK));
 		
 		
 		expect(model.getPieceList(0, 0)).andReturn(list);
+		replay(model);
+		
 		// TODO model is returning null
 		System.out.println(model.getPieceList(0, 0));
-		
-		
-		System.out.println("point 2");
-		ChessBoard cb = new ChessBoard(model);
-		System.out.println("point 3");
-		System.out.println(cb.getImageFullPath(0, 0));
-		System.out.println("hello world");
+
 		
 		fail("Not yet implemented");
 	}
