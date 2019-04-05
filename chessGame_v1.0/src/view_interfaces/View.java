@@ -2,8 +2,15 @@ package view_interfaces;
 
 import java.util.List;
 
+import model.Point;
 import model_Interfaces.Board;
 import model_Interfaces.Piece;
+
+/**
+ * 
+ * @author Bernard O'Meara
+ *
+ */
 
 public interface View {
 	
@@ -35,7 +42,7 @@ public interface View {
 	 * @param gameBoard The Board that shuld be displayed.
 	 * @return true if successful;
 	 */
-	public boolean updateBoard(Board gameBoard);
+	public void updateBoard(Board gameBoard);
 	
 	/**
 	 * Requests the user interface to update all user views
@@ -43,7 +50,7 @@ public interface View {
 	 * 
 	 * @return true if successful;
 	 */
-	public boolean update();
+	public void update(Board gameBoard);
 	
 	/**
 	 * Requests that the status message be displayed to the user.
@@ -73,5 +80,20 @@ public interface View {
 	 * @return A list of Pieces on on the board position.
 	 */
 	public List<Piece> getPieceList(int row, int column);
+	
+	/**
+	 * Moves a piece from one point to another
+	 * TODO
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	public boolean movePlayer(Point from, Point to);
+	
+	/**
+	 * Resets everything for a new game
+	 */
+	public void newGame();
+	
 
 }
