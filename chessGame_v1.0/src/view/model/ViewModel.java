@@ -5,7 +5,10 @@ import view_interfaces.ViewType;
 import java.util.List;
 
 import model.DuplicateNameException;
+import model.IllegalMoveException;
+import model.PieceNotFoundException;
 import model.PlayerNotFoundException;
+import model.Point;
 import model_Interfaces.Board;
 import model_Interfaces.GameEngine;
 import model_Interfaces.Piece;
@@ -13,7 +16,11 @@ import view.gui.NameAndPasswordDialog;
 import view.gui.OperationCancelledException;
 import view_interfaces.View;
 
-
+/**
+ * 
+ * @author Bernard O'Meara
+ *
+ */
 
 public class ViewModel implements View {
 	// can be either text or GUI
@@ -104,15 +111,16 @@ public class ViewModel implements View {
 	}
 
 	@Override
-	public boolean updateBoard(Board gameBoard) {
-		// TODO Auto-generated method stub
-		return false;
+	public void updateBoard(Board gameBoard) {
+		// TODO temp for testing should use the passes in board
+	   
+
 	}
 
 	@Override
-	public boolean update() {
+	public void update(Board gameBoard) {
 		// TODO Auto-generated method stub
-		return false;
+
 	}
 
 	@Override
@@ -132,5 +140,25 @@ public class ViewModel implements View {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+   @Override
+   public boolean movePlayer(Point from, Point to) {
+      try {
+         return engine.movePlayer(from, to);
+      } catch (IllegalMoveException | PieceNotFoundException e) {
+         setStatus(e.getMessage());
+      } catch (Exception e) {
+         System.out.println("> Error: Illegal Move");
+      }
+      
+      return false;
+   }
+
+   @Override
+   public void newGame() {
+      // TODO
+      System.out.println("new game not implemented for milestone 1");
+      
+   }
 
 }
