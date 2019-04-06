@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import enums.Colr;
@@ -56,24 +57,29 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
-	public boolean movePlayer(Point from, Point to) throws IllegalMoveException {
+	public boolean movePlayer(Point from, Point to) {
 		/*Currently Implemented: 
 		 	Moving piece
-		 	Does not check what the piece is moving onto ye*/
-		ArrayList<Piece> pieces = board.getPiecesAt(from);
+		 	Does not check what the piece is moving onto yet*/
+		List<Piece> pieces = board.getPiecesAt(from);
 		boolean moveSuccessful = false;
-		if(pieces.size()>1) {
-			board.moveMergedPiece(from, to);
-			moveSuccessful = true;
-			reduceMoves();
-			swapTurn();
-		}else if(pieces.size() == 1) {
-			board.moveSinglePiece(pieces.get(0), from, to);
-			moveSuccessful = true;
-			reduceMoves();
-			swapTurn();
+		try {
+			if(pieces.size()>1) {
+				board.moveMergedPiece(from, to);
+				moveSuccessful = true;
+				reduceMoves();
+				swapTurn();
+			}else if(pieces.size() == 1) {
+				board.moveSinglePiece(pieces.get(0), from, to);
+				moveSuccessful = true;
+				reduceMoves();
+				swapTurn();
+			}
+		}catch(IllegalMoveException e){
+			moveSuccessful = false;
+		}catch(PieceNotFoundException e) {
+			moveSuccessful = false;
 		}
-		//think about how to implement this more
 		if(currentMove == 0) {
 			endGame();
 		}
@@ -130,7 +136,7 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
-	public ArrayList<Point> getLegalMoves(Point position) {
+	public List<Point> getLegalMoves(Point position) {
 		return board.getLegalMoves(position);
 	}
 	
@@ -140,5 +146,12 @@ public class GameEngineImpl implements GameEngine {
 
 	public void endGame() {
 		
+	}
+
+
+	@Override
+	public Board getBoard() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
