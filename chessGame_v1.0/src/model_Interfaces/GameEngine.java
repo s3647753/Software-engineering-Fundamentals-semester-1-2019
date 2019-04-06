@@ -134,4 +134,6 @@ public interface GameEngine {
 	 * @return The game board
 	 */
 	public Board getBoard();
+	
+	public void setColr(String username, Colr colour);
 }
