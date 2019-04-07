@@ -1,6 +1,7 @@
 package model_Interfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import enums.Colr;
 import model.DuplicateNameException;
@@ -124,5 +125,15 @@ public interface GameEngine {
 	 * @param position The position of the piece that wishes to move
 	 * @return The legal moves that the piece can move to
 	 */
-	public ArrayList<Point> getLegalMoves(Point position);
+	public List<Point> getLegalMoves(Point position);
+	
+	
+	/**
+	 * Returns the gameboard being used by the game engine
+	 * 
+	 * @return The game board
+	 */
+	public Board getBoard();
+	
+	public void setColr(String username, Colr colour);
 }
