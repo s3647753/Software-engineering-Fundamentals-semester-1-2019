@@ -108,9 +108,8 @@ public class TextView implements ViewType {
 	}
 
 	@Override
-	public boolean updateBoard(Board gameBoard) {
+	public void updateBoard(Board gameBoard) {
 		System.out.println(gameBoard.toString());
-		return true; // TODO do I need this return, I think not
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public interface ViewType {
 	 *            The Board that shuld be displayed.
 	 * @return true if successful;
 	 */
-	public boolean updateBoard(Board gameBoard);
+	public void updateBoard(Board gameBoard);
 
 	/**
 	 * Requests the user interface to update all user views to match the fields from
