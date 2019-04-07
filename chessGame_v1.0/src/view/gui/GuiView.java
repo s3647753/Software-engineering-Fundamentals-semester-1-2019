@@ -62,13 +62,8 @@ public class GuiView extends JFrame implements ViewType {
 	}
 
 	@Override
-	public boolean updateBoard(Board gameBoard) {
-		// have as a field a 2D array of 
-		
-		// get the list of pieces from the board
-		
-		
-		return false;
+	public void updateBoard(Board gameBoard) {
+		// TODO
 	}
 
 	@Override

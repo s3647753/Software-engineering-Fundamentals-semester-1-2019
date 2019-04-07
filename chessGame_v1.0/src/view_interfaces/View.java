@@ -2,6 +2,7 @@ package view_interfaces;
 
 import java.util.List;
 
+import enums.Colr;
 import model.Point;
 import model_Interfaces.Board;
 import model_Interfaces.Piece;
@@ -94,6 +95,26 @@ public interface View {
 	 * Resets everything for a new game
 	 */
 	public void newGame();
+	
+	
+	public void updateScore(int player1, int player2);
+	
+	public void setPlayerName(int playerNum, String name);
+	
+	public void setPlayerColor(int playerNum, Colr color);
+	
+	public void setPlayerTurn(int playerNum);
+	
+	public void notifyGameOver(String message);
+	
+	public void notifyMoveIsDangerous(String message);
+	
+	// I already have an updateBoard
+	// public void update(Board gameBoard);
+	
+	public boolean askIfPlayerWantsToSplit(String message);
+	
+	
 	
 
 }

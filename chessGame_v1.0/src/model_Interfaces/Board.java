@@ -58,8 +58,8 @@ public interface Board {
     * Moves a single piece from one point to another point. If it is a merged pair
     * only the nominated piece will be moved. If there is an opponents piece in the
     * cell, the opponents piece will be removed. If there is a players piece on the
-    * to-point and a merge is legal they will be merged If the move is illegal an
-    * IllegalMoveException is thrown
+    * to-point and a merge is legal they will be merged. Does not guarantee to check
+    * for all illegal moves due to the added movement of a merged piece.
     * 
     * @param piece
     *           The piece to be moved
@@ -67,25 +67,28 @@ public interface Board {
     *           The point the piece is moved from
     * @param to
     *           The point the piece is moved to
-    * @throws IllegalMoveException
+    * @return The number of enemy pieces taken
     * @throws PieceNotFoundException 
+    * @throws IllegalMoveException 
     */
-   public void moveSinglePiece(Piece piece, Point from, Point to) 
-         throws IllegalMoveException, PieceNotFoundException;
+   public int moveSinglePiece(Piece piece, Point from, Point to) 
+         throws PieceNotFoundException, IllegalMoveException;
 
    /**
     * Moves a pair of merged pieces from one point to another point. If there is an
     * opponents piece in the cell, the opponents piece will be removed. If the move
-    * is illegal an IllegalMoveException is thrown
+    * is illegal an IllegalMoveException is thrown 
+    * If the piece is not a merged piece a PieceNotFoundException will be thrown
     * 
     * @param from
     *           The point the merged pair are moved from
     * @param to
     *           The point the merged pair are moved to
+    * @return The number of enemy pieces taken
     * @throws IllegalMoveException
     * @throws PieceNotFoundException 
     */
-   public void moveMergedPiece(Point from, Point to) 
+   public int moveMergedPiece(Point from, Point to) 
          throws IllegalMoveException, PieceNotFoundException;
 
    /**
@@ -131,5 +134,25 @@ public interface Board {
     * @return The code for the cell
     */
    public String getCode(Point cell);
+   
+   /**
+    * Determines if a move by a piece is obstructed by another piece
+    * 
+    * @param from The point the piece is moving from.
+    * @param to The point the piece is moving to.
+    * @return True if the move is obstructed, else false
+    */
+   boolean isObstructed(Point from, Point to);
+
+   /**
+    * Determines if the Pieces in the two points the same color. 
+    * Returns true if both cells contain pieces and the pieces are the same color.
+    * 
+    * @param point1 The first test point.
+    * @param point2 The point comparing the first point to.
+    * @return True if both cells contain pieces of the same color.
+    */
+   boolean areSameColor(Point point1, Point point2);
+    
 
 }

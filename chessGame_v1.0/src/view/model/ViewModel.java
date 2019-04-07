@@ -4,6 +4,7 @@ import view_interfaces.ViewType;
 
 import java.util.List;
 
+import enums.Colr;
 import model.DuplicateNameException;
 import model.IllegalMoveException;
 import model.PieceNotFoundException;
@@ -112,9 +113,7 @@ public class ViewModel implements View {
 
 	@Override
 	public void updateBoard(Board gameBoard) {
-		// TODO temp for testing should use the passes in board
-	   
-
+		userInterface.updateBoard(gameBoard);
 	}
 
 	@Override
@@ -159,6 +158,48 @@ public class ViewModel implements View {
       // TODO
       System.out.println("new game not implemented for milestone 1");
       
+   }
+
+   @Override
+   public void updateScore(int player1, int player2) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void setPlayerName(int playerNum, String name) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void setPlayerColor(int playerNum, Colr color) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void setPlayerTurn(int playerNum) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void notifyGameOver(String message) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void notifyMoveIsDangerous(String message) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public boolean askIfPlayerWantsToSplit(String message) {
+      // TODO Auto-generated method stub
+      return false;
    }
 
 }
