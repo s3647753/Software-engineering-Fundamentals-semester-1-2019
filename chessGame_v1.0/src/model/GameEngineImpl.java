@@ -32,6 +32,7 @@ public class GameEngineImpl implements GameEngine {
 	
 	public GameEngineImpl(Board board) {
 		this.board = board;
+		login = new Login();
 		currentTurn = Colr.WHITE;
 	}
 
@@ -65,12 +66,16 @@ public class GameEngineImpl implements GameEngine {
 		List<Piece> pieces = board.getPiecesAt(from);
 		boolean moveSuccessful = false;
 		int piecesTaken = 0;
+		System.out.println(pieces.size());
+		Piece piece = pieces.get(0);
+		System.out.println(piece.getColor());
 		try {
 			if(pieces.size()>1) {
 				piecesTaken = board.moveMergedPiece(from, to);
 				moveSuccessful = true;
 				reduceMoves();
 				swapTurn();
+				System.out.println("more than 1");
 			}else if(pieces.size() == 1) {
 				piecesTaken = board.moveSinglePiece(pieces.get(0), from, to);
 				moveSuccessful = true;
@@ -125,7 +130,6 @@ public class GameEngineImpl implements GameEngine {
 		String message = username + " has successfully logged in";
 		try{
 			login.loginPlayer(username, password);
-			players.put(username, 0);
 		}catch(PlayerNotFoundException e) {
 			message = "Player with username " + username + "does not exist";
 		}
@@ -193,6 +197,13 @@ public class GameEngineImpl implements GameEngine {
 		}
 		//TODO
 		//view.updateScore();
+	}
+
+
+	@Override
+	public void setPlayingUsers(String player1, String player2) {
+		players.put(player1, 0);
+		players.put(player2, 0);
 	}
 
 

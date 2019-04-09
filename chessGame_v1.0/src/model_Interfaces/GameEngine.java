@@ -61,7 +61,7 @@ public interface GameEngine {
 	 * @return true is successful else false
 	 * @throws IllegalMoveException Thrown when the move is illegal
 	 */
-	public boolean movePlayer(Point from, Point to) throws IllegalMoveException;
+	public boolean movePlayer(Point from, Point to);
 	
 	/**
 	 * Returns the Colr value of the player whose turn it is
@@ -79,7 +79,7 @@ public interface GameEngine {
 	 * @param password The players password
 	 * @return The message to be displayed to the player
 	 */
-	public String register(String username, String password) throws DuplicateNameException;
+	public String register(String username, String password);
 	
 	/**
 	 * Requests the login of a player
@@ -90,7 +90,7 @@ public interface GameEngine {
 	 * @param password The players password
 	 * @return The message to be displayed to the player
 	 */
-	public String login(String username, String password) throws PlayerNotFoundException;
+	public String login(String username, String password);
 	
 	
 	/**
@@ -136,4 +136,6 @@ public interface GameEngine {
 	public Board getBoard();
 	
 	public void setColr(String username, Colr colour);
+	
+	public void setPlayingUsers(String player1, String player2);
 }
