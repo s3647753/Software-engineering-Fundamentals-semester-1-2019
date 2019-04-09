@@ -41,21 +41,23 @@ public class BoardImpl implements Board {
       }
 
       try {
+         
          // add blacks pieces
-         cells[0][0].addPiece(new Rook(Colr.BLACK));
-         cells[0][1].addPiece(new Bishop(Colr.BLACK));
-         cells[0][2].addPiece(new Knight(Colr.BLACK));
-         cells[0][3].addPiece(new Knight(Colr.BLACK));
-         cells[0][4].addPiece(new Bishop(Colr.BLACK));
-         cells[0][5].addPiece(new Rook(Colr.BLACK));
+         setPiece(new Rook(Colr.BLACK), new Point(0, 0));
+         setPiece(new Bishop(Colr.BLACK), new Point(0, 1));
+         setPiece(new Knight(Colr.BLACK), new Point(0, 2));
+         setPiece(new Knight(Colr.BLACK), new Point(0, 3));
+         setPiece(new Bishop(Colr.BLACK), new Point(0, 4));
+         setPiece(new Rook(Colr.BLACK), new Point(0, 5));
+         
+      // add whites pieces
+         setPiece(new Rook(Colr.WHITE), new Point(5, 0));
+         setPiece(new Bishop(Colr.WHITE), new Point(5, 1));
+         setPiece(new Knight(Colr.WHITE), new Point(5, 2));
+         setPiece(new Knight(Colr.WHITE), new Point(5, 3));
+         setPiece(new Bishop(Colr.WHITE), new Point(5, 4));
+         setPiece(new Rook(Colr.WHITE), new Point(5, 5));
 
-         // add whites pieces
-         cells[5][0].addPiece(new Rook(Colr.WHITE));
-         cells[5][1].addPiece(new Bishop(Colr.WHITE));
-         cells[5][2].addPiece(new Knight(Colr.WHITE));
-         cells[5][3].addPiece(new Knight(Colr.WHITE));
-         cells[5][4].addPiece(new Bishop(Colr.WHITE));
-         cells[5][5].addPiece(new Rook(Colr.WHITE));
       } catch (IllegalMoveException e) {
          return false;
       }
@@ -170,10 +172,6 @@ public class BoardImpl implements Board {
    public int moveMergedPiece(Point from, Point to)
          throws IllegalMoveException, PieceNotFoundException {
       List<Piece> pieces = getPiecesAt(from);
-      
-//      System.out.println(">>>>");
-//      System.out.print(from);System.out.println(to);
-//      System.out.println(getLegalMoves(from));
       
       // the piece must be a merged piece
       if(pieces.size() != 2) {
