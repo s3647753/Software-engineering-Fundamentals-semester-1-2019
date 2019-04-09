@@ -17,7 +17,7 @@ import view_interfaces.View;
 
 import static org.easymock.EasyMock.*;
 
-public class ChessBoardTest {
+public class ChessBoardTest_GUI {
 
 	@Before
 	public void setUp() throws Exception {
