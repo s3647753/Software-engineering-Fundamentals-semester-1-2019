@@ -32,7 +32,7 @@ public final class LoginUtils {
 	 * @return the hexadecimal representation of the hash as a String
 	 * @author Shaun Davis
 	 */
-	protected static String stringToSHA256(String inputString) {
+	public static String stringToSHA256(String inputString) {
 		String hashString = null;
 		
 		try {
@@ -60,7 +60,7 @@ public final class LoginUtils {
 	 * @throws PlayerNotFoundException if the player isn't registered.
 	 * @author Shaun Davis
 	 */
-	protected static String getPlayerHash(String username) throws PlayerNotFoundException {
+	public static String getPlayerHash(String username) throws PlayerNotFoundException {
 		String playerHash = null;
 		HashMap<String, String> registeredList = getRegisteredPlayers();
 		
@@ -90,7 +90,7 @@ public final class LoginUtils {
 			in.useDelimiter(":");
 			
 			while (in.hasNext()) {
-				list.put(in.next(), in.next());
+				list.put(in.next(), in.next().trim());
 			}
 			in.close();
 		} catch (FileNotFoundException e) {

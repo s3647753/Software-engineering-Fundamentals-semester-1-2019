@@ -19,7 +19,7 @@ public class Login {
 	 * 
 	 * @author Shaun Davis
 	 */
-	protected Login() {
+	public Login() {
 		playerList = new ArrayList<String>();
 	}
 	
@@ -32,7 +32,7 @@ public class Login {
 	 * @throws PlayerNotFoundException if the player isn't registered i.e. the username wasn't found in the registered players file
 	 * @author Shaun Davis
 	 */
-	protected boolean loginPlayer(String username, String password) throws PlayerNotFoundException {
+	public boolean loginPlayer(String username, String password) throws PlayerNotFoundException {
 		String passHash = LoginUtils.getPlayerHash(username);
 		
 		if (passHash.equals(LoginUtils.stringToSHA256(password))) {
@@ -56,7 +56,7 @@ public class Login {
 	 * @return true if the player was logged out successfully, false if the player isn't logged in/username isn't in the list.
 	 * @author Shaun Davis
 	 */
-	protected boolean logoutPlayer(String username) {
+	public boolean logoutPlayer(String username) {
 		return playerList.remove(username);
 	}
 	
@@ -66,7 +66,7 @@ public class Login {
 	 * @return the playerList!!!!!!!!!!!!!!!!!
 	 * @author Shaun Daviasdaagfasd
 	 */
-	protected ArrayList<String> getPlayerList() {
+	public ArrayList<String> getPlayerList() {
 		return playerList;
 	}
 	
