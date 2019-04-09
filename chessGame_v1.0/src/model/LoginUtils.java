@@ -52,25 +52,41 @@ public final class LoginUtils {
 	
 	/**
 	 * checks that a player exists in the registered players file.
+	 * the returned String will never be null; if this is the case,
+	 * the player is not in the registered players list, so a PlayerNotFoundException is thrown instead of returning null.
 	 * 
 	 * @param username the username to search for
-	 * @return the player's password hash string if they were found, null string if not
+	 * @return the player's password hash string if they were found, null string if not (but PlayerNotFoundException is always thrown in this case)
 	 * @throws PlayerNotFoundException if the player isn't registered.
 	 * @author Shaun Davis
 	 */
 	protected static String getPlayerHash(String username) throws PlayerNotFoundException {
-		String passHash = null;
+		String playerHash = null;
 		HashMap<String, String> registeredList = getRegisteredPlayers();
-		// search for the username
-		// grab their hash if they exist and return it
-		return passHash;
+		
+		playerHash = registeredList.get(username);
+		if (playerHash != null) {
+			return playerHash;
+		} else {
+			throw new PlayerNotFoundException();
+		}
+		
 	}
 	
+	/**
+	 * searches the filename defined by REGISTERED_PLAYERS_FILENAME and returns a HashMap of all
+	 * usernames and their corresponding password hashes found in the file.
+	 * 
+	 * @return a HashMap of the format "username":"passHash"
+	 */
 	private static HashMap<String, String> getRegisteredPlayers() {
 		HashMap<String, String> list = new HashMap<String, String>();
 		
 		try {
 			Scanner in = new Scanner(new File(REGISTERED_PLAYERS_FILENAME));
+			
+			// entries in the file are in the format
+			// username:HASH\n
 			in.useDelimiter(":");
 			
 			while (in.hasNext()) {
@@ -78,7 +94,7 @@ public final class LoginUtils {
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
-			// the File is instantiated in the Scanner, this should never be thrown.
+			// the File is instantiated (created) in the Scanner, this should never be thrown.
 		}
 		
 		return list;

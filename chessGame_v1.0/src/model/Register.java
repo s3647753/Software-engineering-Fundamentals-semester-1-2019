@@ -25,14 +25,12 @@ public class Register {
 	protected static boolean registerPlayer(String username, String password) throws DuplicateNameException {
 		try {
 			// this first line will immediately throw a PlayerNotFoundException if there's a matching username.
-			String passHash = LoginUtils.getPlayerHash(username);
+			LoginUtils.getPlayerHash(username);
 			// so if it ever passes that first line, the username already exists.
 			throw new DuplicateNameException();
 		} catch (PlayerNotFoundException e) {
 			String passHash = LoginUtils.stringToSHA256(password);
-			// saveToFile(username, passHash);
-			// the username is free!
-			// save the username and password hash to file.
+			saveToFile(username, passHash);
 		}
 		return false;
 	}
@@ -44,7 +42,7 @@ public class Register {
 	 * @param passHash the corresponding hash of the password
 	 * @author Shaun Davis
 	 */
-	private void saveToFile(String username, String passHash) {
+	private static void saveToFile(String username, String passHash) {
 		// TODO: make this one do thing
 	}
 }

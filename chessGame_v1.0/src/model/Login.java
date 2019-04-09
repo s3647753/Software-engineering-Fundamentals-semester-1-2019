@@ -34,24 +34,18 @@ public class Login {
 	 */
 	protected boolean loginPlayer(String username, String password) throws PlayerNotFoundException {
 		String passHash = LoginUtils.getPlayerHash(username);
-		if (passHash != null) {
-			if (passHash.equals(LoginUtils.stringToSHA256(password))) {
-				// the password hashes match!
-				playerList.add(username);
-				return true;
-			}
-			else {
-				// the password's wrong.
-				
-				// TODO: what happens if the player is already logged in?
-				
-				return false;
-			}
+		
+		if (passHash.equals(LoginUtils.stringToSHA256(password))) {
+			// the password hashes match!
+			playerList.add(username);
+			return true;
 		}
 		else {
-			// if this is ever the case, the first line of this method (initializing passHash) should throw this already.
-			// nonetheless, we'll throw it here too, in case something goes wronger.
-			throw new PlayerNotFoundException();
+			// the password's wrong.
+			
+			// TODO: what happens if the player is already logged in?
+			
+			return false;
 		}
 	}
 	
