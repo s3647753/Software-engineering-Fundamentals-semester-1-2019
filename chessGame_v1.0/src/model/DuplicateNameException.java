@@ -8,6 +8,15 @@ package model;
  *
  */
 
+@SuppressWarnings("serial")
 public class DuplicateNameException extends Exception {
 
+	public DuplicateNameException() {
+		this("Player is already registered.");
+	}
+
+	public DuplicateNameException(String msg) {
+		super(msg);
+	}
+	
 }
