@@ -10,7 +10,7 @@ import model.PlayerNotFoundException;
  * 
  **/
 
-public class Login {
+public class Login extends RegLog {
 	
 	private ArrayList<String> playerList;
 	
@@ -33,9 +33,9 @@ public class Login {
 	 * @author Shaun Davis
 	 */
 	public boolean loginPlayer(String username, String password) throws PlayerNotFoundException {
-		String passHash = LoginUtils.getPlayerHash(username);
+		String passHash = getPlayerHash(username);
 		
-		if (passHash.equals(LoginUtils.stringToSHA256(password))) {
+		if (passHash.equals(stringToSHA256(password))) {
 			// the password hashes match!
 			playerList.add(username);
 			return true;

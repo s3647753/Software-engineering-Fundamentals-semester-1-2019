@@ -12,18 +12,15 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  * a class containing a bunch of utility functions, intended to be used by the Login and Register classes.
- * i wasn't sure declaring a heap of static methods in the Login class was a good idea, so i've put them in this class.
+ * 
  * @author Shaun
  *
  */
 
-public final class LoginUtils {
-	
+public abstract class RegLog {
+
 	private static final String SHA_256 = "SHA-256";
 	private static final String REGISTERED_PLAYERS_FILENAME = "registered_players.txt";
-
-	private LoginUtils() {
-	}
 	
 	/**
 	 * hashes the given String with the SHA256 algorithm, because MD5 is for chumps.
@@ -32,7 +29,7 @@ public final class LoginUtils {
 	 * @return the hexadecimal representation of the hash as a String
 	 * @author Shaun Davis
 	 */
-	public static String stringToSHA256(String inputString) {
+	public String stringToSHA256(String inputString) {
 		String hashString = null;
 		
 		try {
@@ -60,7 +57,7 @@ public final class LoginUtils {
 	 * @throws PlayerNotFoundException if the player isn't registered.
 	 * @author Shaun Davis
 	 */
-	public static String getPlayerHash(String username) throws PlayerNotFoundException {
+	public String getPlayerHash(String username) throws PlayerNotFoundException {
 		String playerHash = null;
 		HashMap<String, String> registeredList = getRegisteredPlayers();
 		
@@ -79,7 +76,7 @@ public final class LoginUtils {
 	 * 
 	 * @return a HashMap of the format "username":"passHash"
 	 */
-	private static HashMap<String, String> getRegisteredPlayers() {
+	private HashMap<String, String> getRegisteredPlayers() {
 		HashMap<String, String> list = new HashMap<String, String>();
 		
 		try {
@@ -99,4 +96,5 @@ public final class LoginUtils {
 		
 		return list;
 	}
+	
 }
