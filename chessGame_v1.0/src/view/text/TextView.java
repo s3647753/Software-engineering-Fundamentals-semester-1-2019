@@ -24,7 +24,7 @@ public class TextView implements ViewType {
 	}
 
 	@Override
-	public void initView(View viewModel) {
+	public void initView(View viewModel) { // TODO I probably dont need this parameter
 		this.viewModel = viewModel;
 		mainMenu();
 	}
