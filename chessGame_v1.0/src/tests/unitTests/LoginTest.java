@@ -7,10 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.Login;
-import model.LoginUtils;
 import model.PlayerNotFoundException;
+import model.RegLog;
 
-public class LoginTest {
+public class LoginTest extends RegLog {
 
 	private static final String TEST_PASS = "password";
 	private static final String TEST_NAME = "testman";
@@ -25,13 +25,13 @@ public class LoginTest {
 
 	@Test
 	public void testSHA() {
-		assertEquals("The hashes didn't match.", EXP_HASH, LoginUtils.stringToSHA256(TEST_PASS));
+		assertEquals("The hashes didn't match.", EXP_HASH, stringToSHA256(TEST_PASS));
 	}
 	
 	@Test
 	public void testGetPlayerHash() throws PlayerNotFoundException {
 		// this test throws an exception. JUtil counts a test as a fail if any exception is thrown.
-		assertEquals("The hash was retrieved incorrectly.", EXP_HASH, LoginUtils.getPlayerHash(TEST_NAME));
+		assertEquals("The hash was retrieved incorrectly.", EXP_HASH, getPlayerHash(TEST_NAME));
 	}
 	
 	@Test
