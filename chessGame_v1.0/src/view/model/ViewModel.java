@@ -3,6 +3,7 @@ package view.model;
 import view_interfaces.ViewType;
 
 import java.util.List;
+import java.util.Observable;
 
 import enums.Colr;
 import model.DuplicateNameException;
@@ -35,29 +36,29 @@ public class ViewModel implements View {
 	}
 
 	@Override
-	public void registerPlayer() {
+	public String registerPlayer() {
 		int nameIdx = 0, passwordIdx = 1;
+		String msg = null;
 		
-		userInterface.setStatus("> Register a new Player");
+//		userInterface.
+		setStatus("> Register a new Player");
 
 		try {
 			String[] namePassword = userInterface.registerPlayer();
 
 			System.out.println(namePassword[nameIdx] + " : " + namePassword[passwordIdx]); // TODO remove before release
 
-			String msg = engine.register(namePassword[nameIdx], namePassword[passwordIdx]);
+			msg = engine.register(namePassword[nameIdx], namePassword[passwordIdx]);
 
 			if (msg != null) {
-				userInterface.setStatus(msg);
+				setStatus(msg);
 			}
 
 		} catch (OperationCancelledException e) {
-			System.out.println("> Registration Cancelled"); // TODO do I keep this for release
-			userInterface.setStatus("> Registration Cancelled");
-		} catch (DuplicateNameException e) {
-			userInterface.setStatus("> Name Already Exists, Registration Failed");
-		}
+			setStatus("> Registration Cancelled");
+		} 
 
+		return msg;
 	}
 
 	// @Override
@@ -70,7 +71,7 @@ public class ViewModel implements View {
 	public void loginPlayer() {
 		int nameIdx = 0, passwordIdx = 1;
 		
-		userInterface.setStatus("> Login a Player");
+		setStatus("> Login a Player");
 
 		try {
 			String[] namePassword = userInterface.loginPlayer();
@@ -80,16 +81,12 @@ public class ViewModel implements View {
 			String msg = engine.login(namePassword[nameIdx], namePassword[passwordIdx]);
 
 			if (msg != null) {
-				userInterface.setStatus(msg);
+				setStatus(msg);
 			}
 
 		} catch (OperationCancelledException e) {
-			System.out.println("> Login Cancelled"); // TODO delete before final release
-			userInterface.setStatus("> Login Cancelled");
-		} catch (PlayerNotFoundException e) {
-			userInterface.setStatus("> Player not Found, Login Failed");
-		}
-
+			setStatus("> Login Cancelled");
+		} 
 	}
 
 	// Log a player out
@@ -97,7 +94,7 @@ public class ViewModel implements View {
 	public void logoutPlayer() {
 		String msg = null;
 		
-		userInterface.setStatus("> Log Out a Player");
+		setStatus("> Log Out a Player");
 
 		try {
 			msg = engine.logout(userInterface.logoutPlayer());
@@ -107,7 +104,7 @@ public class ViewModel implements View {
 		}
 
 		if (msg != null && msg.length() > 0) {
-			userInterface.setStatus(msg);
+			setStatus(msg);
 		}
 	}
 
@@ -118,14 +115,22 @@ public class ViewModel implements View {
 
 	@Override
 	public void update(Board gameBoard) {
-		// TODO Auto-generated method stub
+	   updateBoard(gameBoard);
+	   
+		// TODO must update all view, e.g. score etc
 
 	}
+	
+	@Override
+   public void update(Observable arg0, Object arg1) {
+      // TODO Auto-generated method stub
+	   updateBoard(null);
+      
+   }
 
 	@Override
 	public void setStatus(String message) {
-		// TODO Auto-generated method stub
-
+		userInterface.setStatus(message);
 	}
 
 	@Override
@@ -142,22 +147,16 @@ public class ViewModel implements View {
 
    @Override
    public boolean movePlayer(Point from, Point to) {
-      try {
+
          return engine.movePlayer(from, to);
-      } catch (IllegalMoveException | PieceNotFoundException e) {
-         setStatus(e.getMessage());
-      } catch (Exception e) {
-         System.out.println("> Error: Illegal Move");
-      }
-      
-      return false;
    }
 
    @Override
    public void newGame() {
-      // TODO
-      System.out.println("new game not implemented for milestone 1");
+      // TODO this method needs lots of work to complete
       
+      System.out.println("new game not fully implemented for milestone 1");
+      userInterface.initView(this);
    }
 
    @Override
@@ -201,5 +200,7 @@ public class ViewModel implements View {
       // TODO Auto-generated method stub
       return false;
    }
+
+   
 
 }

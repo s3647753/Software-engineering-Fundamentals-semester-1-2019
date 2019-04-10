@@ -1,6 +1,7 @@
 package view_interfaces;
 
 import java.util.List;
+import java.util.Observer;
 
 import enums.Colr;
 import model.Point;
@@ -13,13 +14,15 @@ import model_Interfaces.Piece;
  *
  */
 
-public interface View {
+public interface View extends Observer {
 	
 	/** 
 	 * Requests the name and password from the user
 	 * and starts the registration process.
+	 * 
+	 * @return 
 	 */
-	public void registerPlayer();
+	public String registerPlayer();
 	
 //	/**
 //	 * De-registers a player specified by the user.
@@ -46,11 +49,15 @@ public interface View {
 	public void updateBoard(Board gameBoard);
 	
 	/**
+	 * Depreciated: Will be removed once the Observer Pattern is finished
+	 * 
 	 * Requests the user interface to update all user views
 	 * to match the fields from the default GameEngine.
 	 * 
 	 * @return true if successful;
+	 * @deprecated As of the integration of the Observer Pattern
 	 */
+	@Deprecated 
 	public void update(Board gameBoard);
 	
 	/**

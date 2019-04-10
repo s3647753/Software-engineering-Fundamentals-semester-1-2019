@@ -14,7 +14,7 @@ import model.Point;
 /**
  * Unit tests for the Point class
  * 
- * @author CS Bernard O'Meara
+ * @author Bernard O'Meara
  *
  */
 public class PointTest {
