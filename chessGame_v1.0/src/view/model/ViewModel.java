@@ -32,7 +32,7 @@ public class ViewModel implements View {
 	public ViewModel(GameEngine engine, ViewType viewType) {
 		this.engine = engine;
 		userInterface = viewType;
-
+		
 	}
 
 	@Override
@@ -108,14 +108,14 @@ public class ViewModel implements View {
 		}
 	}
 
-	@Override
+	@Override // TODO get rid of this method (redundant)
 	public void updateBoard(Board gameBoard) {
 		userInterface.updateBoard(gameBoard);
 	}
 
-	@Override
+	@Override // TODO get rid of this method (redundant)
 	public void update(Board gameBoard) {
-	   updateBoard(gameBoard);
+	   userInterface.updateBoard(gameBoard);
 	   
 		// TODO must update all view, e.g. score etc
 
@@ -124,7 +124,7 @@ public class ViewModel implements View {
 	@Override
    public void update(Observable arg0, Object arg1) {
       // TODO Auto-generated method stub
-	   updateBoard(null);
+	   userInterface.updateBoard(engine.getBoard());
       
    }
 

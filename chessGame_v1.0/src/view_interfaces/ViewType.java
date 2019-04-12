@@ -4,7 +4,12 @@ import model_Interfaces.Board;
 import view.gui.OperationCancelledException;
 
 public interface ViewType {
-
+   
+   /**
+    * TODO docstring
+    * 
+    * @param viewModel
+    */
 	public void initView(View viewModel);
 
 	/**
