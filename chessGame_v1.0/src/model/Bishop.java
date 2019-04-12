@@ -16,7 +16,7 @@ import enums.Type;
  */
 public class Bishop extends AbstractPiece {
 	
-	private static List<Point> moveVectors = null;
+	private List<Point> moveVectors = null;
 
 
 	public Bishop(Colr color) {

@@ -19,7 +19,7 @@ import model_Interfaces.Piece;
  */
 public class Knight extends AbstractPiece {;
 
-	private static List<Point> moveVectors = null;
+	private List<Point> moveVectors = null;
 
 
 	public Knight(Colr color) {
