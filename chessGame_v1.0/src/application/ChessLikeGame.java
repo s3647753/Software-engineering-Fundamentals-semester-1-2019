@@ -36,7 +36,7 @@ public class ChessLikeGame {
 	public static void main(String[] args) {
 		ViewType viewType;
 		
-		// select one viewType
+		// select one viewType for use in the game play
 		viewType = new TextView();
 //		viewType = new GuiView();
 		
@@ -56,6 +56,7 @@ public class ChessLikeGame {
 		GameEngine engine = new GameEngineImpl(board);
 		View viewModel = new ViewModel(engine, viewType);
 		viewType.initView(viewModel);
+		//TODO engine.addObserver(viewModel); // when Matt is ready
 	}
 
 }

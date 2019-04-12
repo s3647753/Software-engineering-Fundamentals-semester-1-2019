@@ -1,5 +1,6 @@
 package view.text;
 
+import java.util.Observable;
 import java.util.Scanner;
 
 import model.BoardImpl;
@@ -57,10 +58,12 @@ public class TextView implements ViewType {
 				break;
 			case "5":
             movePlayer();
+            viewModel.update(new Observable(), null);
             break;
 			case "6":
             System.out.println("6 - temporarily showing default board");
-            System.out.println(new BoardImpl()); // TODO
+//            System.out.println(new BoardImpl()); // TODO
+            viewModel.update(new Observable(), null);
             break;
 			case "Q":
 				System.out.println("Q");
