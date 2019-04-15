@@ -2,6 +2,8 @@ package model_Interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
+import java.util.Observable;
 
 import enums.Colr;
 import model.DuplicateNameException;
