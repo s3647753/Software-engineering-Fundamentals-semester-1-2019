@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
 import enums.Colr;
 import model_Interfaces.Board;
@@ -20,7 +21,7 @@ import view_interfaces.View;
  *
  */
 
-public class GameEngineImpl implements GameEngine {
+public class GameEngineImpl extends Observable implements GameEngine {
 	private Board board;
 	private Map<String, Integer> players = new HashMap<String, Integer>();
 	//TODO CREATE PLAYER CLASS
@@ -29,6 +30,7 @@ public class GameEngineImpl implements GameEngine {
 	private int currentMove;
 	private Login login;
 	private Colr currentTurn;
+	private String statusMsg = "";
 	
 	public GameEngineImpl(Board board) {
 		this.board = board;
@@ -40,12 +42,12 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public void setView(View view) {
 		this.view = view;
+		addObserver(view);
 	}
 
 	@Override
 	public void updateScore(String Username, int score) {
 		players.replace(Username, score);
-		view.update(board);
 	}
 
 	@Override
@@ -60,37 +62,41 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public boolean movePlayer(Point from, Point to) {
-		/*Currently Implemented: 
-		 	Moving piece
-		 	Does not check what the piece is moving onto yet*/
 		List<Piece> pieces = board.getPiecesAt(from);
 		boolean moveSuccessful = false;
 		int piecesTaken = 0;
-		System.out.println(pieces.size());
-		Piece piece = pieces.get(0);
-		System.out.println(piece.getColor());
+		String message = null;
 		try {
 			if(pieces.size()>1) {
 				piecesTaken = board.moveMergedPiece(from, to);
 				moveSuccessful = true;
 				reduceMoves();
 				swapTurn();
-				System.out.println("more than 1");
+				message = "Piece moved";
 			}else if(pieces.size() == 1) {
 				piecesTaken = board.moveSinglePiece(pieces.get(0), from, to);
 				moveSuccessful = true;
 				reduceMoves();
 				swapTurn();
+				message = "Merged Piece moved";
+			}else if(pieces.size() < 1) {
+				moveSuccessful = false;
+				message = "No piece in location";
 			}
 		}catch(IllegalMoveException e){
 			moveSuccessful = false;
+			message = "Move not Legal";
 		}catch(PieceNotFoundException e) {
 			moveSuccessful = false;
+			message = "No piece in location";
 		}
-		increaseScore(piecesTaken);
+		//increaseScore(piecesTaken);
 		if(currentMove == 0) {
 			endGame();
 		}
+		view.setStatus(message);
+		view.updateBoard(board);
+		
 		return moveSuccessful;
 	}
 	
@@ -111,8 +117,9 @@ public class GameEngineImpl implements GameEngine {
 	public String register(String username, String password) {
 		Boolean registerSuccess = null;
 		String message;
+		Register register = new Register();
 		try {
-			registerSuccess = Register.registerPlayer(username, password);
+			registerSuccess = register.registerPlayer(username, password);
 			if(registerSuccess) {
 				message = "Username " + username + " has successfully registered";
 			}else {
@@ -196,9 +203,15 @@ public class GameEngineImpl implements GameEngine {
 			players.put(user, currentScore+10);
 		}
 		//TODO
-		//view.updateScore();
 	}
 
+	//TODO look more into how to implement observer
+	//Method taken from Bernie, not final
+	private void notifyAllObservers(String message) {
+	      statusMsg = message;
+	      setChanged();
+	      notifyObservers();
+	   }
 
 	@Override
 	public void setPlayingUsers(String player1, String player2) {
