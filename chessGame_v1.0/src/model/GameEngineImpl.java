@@ -12,6 +12,7 @@ import enums.Colr;
 import model_Interfaces.Board;
 import model_Interfaces.GameEngine;
 import model_Interfaces.Piece;
+import model_Interfaces.Player;
 import view_interfaces.View;
 
 /**
@@ -24,13 +25,15 @@ import view_interfaces.View;
 public class GameEngineImpl extends Observable implements GameEngine {
 	private Board board;
 	private Map<String, Integer> players = new HashMap<String, Integer>();
+	private Map<Integer, Player> playerList = new HashMap<Integer, Player>();
 	//TODO CREATE PLAYER CLASS
 	private Map<Colr, String> playerColr = new HashMap<Colr, String>();
 	private View view;
 	private int currentMove;
 	private Login login;
 	private Colr currentTurn;
-	private String statusMsg = "";
+	private String statusMessage = "";
+	private int winner; 
 	
 	public GameEngineImpl(Board board) {
 		this.board = board;
@@ -61,7 +64,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	}
 
 	@Override
-	public boolean movePlayer(Point from, Point to) {
+	public boolean movePlayer(Point from, Point to, Boolean split) {
 		List<Piece> pieces = board.getPiecesAt(from);
 		boolean moveSuccessful = false;
 		int piecesTaken = 0;
@@ -94,8 +97,8 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		if(currentMove == 0) {
 			endGame();
 		}
-		view.setStatus(message);
-		view.updateBoard(board);
+		//view.setStatus(message);
+		//view.updateBoard(board);
 		
 		return moveSuccessful;
 	}
@@ -208,7 +211,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	//TODO look more into how to implement observer
 	//Method taken from Bernie, not final
 	private void notifyAllObservers(String message) {
-	      statusMsg = message;
+		statusMessage = message;
 	      setChanged();
 	      notifyObservers();
 	   }
@@ -218,6 +221,18 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		players.put(player1, 0);
 		players.put(player2, 0);
 	}
-
-
+	@Override
+	public Player getWinner() {
+		return null;
+	}
+	
+	@Override
+	public String getStatus() {
+		return statusMessage;
+	}
+	
+	@Override
+	public void newGame() {
+		
+	}
 }
