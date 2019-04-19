@@ -18,7 +18,7 @@ import model_Interfaces.Piece;
 
 public class Rook extends AbstractPiece {
 	
-	private List<Point> moveVectors = null;
+	private static List<Point> moveVectors = null;
 
 
 	public Rook(Colr color) {

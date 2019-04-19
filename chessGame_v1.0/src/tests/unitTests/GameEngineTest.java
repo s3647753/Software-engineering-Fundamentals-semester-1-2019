@@ -24,7 +24,7 @@ public class GameEngineTest {
 	public void setUp() {
 		board = new BoardImpl();
 		engine = new GameEngineImpl(board);
-		engine.setMaxMoves(2, 2);
+		engine.setMaxMoves(1, 1);
 		engine.setPlayingUsers("Steve", "Steve2");
 		engine.setColr("Steve", Colr.WHITE);
 		engine.setColr("Steve2", Colr.BLACK);
@@ -47,6 +47,12 @@ public class GameEngineTest {
 		List<Piece> piece2 = engine.getBoard().getPiecesAt(to);
 		String code2 = piece2.get(0).getCode();
 		assertEquals(code1, code2);
+	}
+	@Test
+	public void testGameWinByPoints() {
+		engine.movePlayer(new Point(0,0), new Point(4,5));
+		engine.movePlayer(new Point(5,5), new Point(4,5));
+		//assertEquals("Steve",engine.getWinner());
 	}
 	//@After
 }

@@ -63,7 +63,7 @@ public interface GameEngine {
 	 * @return true is successful else false
 	 * @throws IllegalMoveException Thrown when the move is illegal
 	 */
-	public boolean movePlayer(Point from, Point to);
+	public boolean movePlayer(Point from, Point to, Boolean split);
 	
 	/**
 	 * Returns the Colr value of the player whose turn it is
@@ -137,7 +137,15 @@ public interface GameEngine {
 	 */
 	public Board getBoard();
 	
+	
+	//TODO create proper comments for these methods
 	public void setColr(String username, Colr colour);
 	
 	public void setPlayingUsers(String player1, String player2);
+
+	public Player getWinner();
+
+	public String getStatus();
+	
+	public void newGame();
 }
