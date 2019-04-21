@@ -1,9 +1,11 @@
 package view.gui;
 
 import java.awt.BorderLayout;
+import java.util.List;
 
 import javax.swing.JFrame;
 
+import model.Point;
 import model_Interfaces.Board;
 import view_interfaces.View;
 import view_interfaces.ViewType;
@@ -12,13 +14,18 @@ import view_interfaces.ViewType;
 public class GuiView extends JFrame implements ViewType {
 	
 	private View viewModel;
+	private ChessBoard guiBoard;
+	private StatusBar upperStatus, lowerStatus;
+	private PlayerPanel player1, player2;
 
 	public GuiView() {
 		super();
 		
-		setTitle("Showing the board");
-		setBounds(300, 50, 600, 600);
+		setTitle("Chess Like Game");
+		setBounds(300, 50, 900, 700);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
+		
 
 //		// TODO move to the init method
 //		setJMenuBar(new ChessMenuBar(viewModel));
@@ -28,11 +35,26 @@ public class GuiView extends JFrame implements ViewType {
 	}
 
 	@Override
-	public void initView(View viewModel) {
+	public void initView(View viewModel, Board board) {
 		this.viewModel = viewModel;
+		guiBoard = new ChessBoard(viewModel, board);
+		upperStatus = new StatusBar();
+		lowerStatus = new StatusBar();
+		player1 = new PlayerPanel(viewModel);
+		player2 = new PlayerPanel(viewModel);
+		
 		
 		setJMenuBar(new ChessMenuBar(viewModel));
-		add(new ChessBoard(viewModel), BorderLayout.CENTER);
+		add(guiBoard, BorderLayout.CENTER);
+		add(upperStatus, BorderLayout.NORTH);
+		add(lowerStatus, BorderLayout.SOUTH);
+		add(player1, BorderLayout.WEST);
+		add(player2, BorderLayout.EAST);
+		
+		// TODO this is temp
+		upperStatus.setMessage("Welcome to the Chess Like Game");
+		
+		setVisible(true);
 	}
 
 	@Override
@@ -61,9 +83,12 @@ public class GuiView extends JFrame implements ViewType {
 		return null;
 	}
 
+	// called by the ViewModel to update the game board
 	@Override
 	public void updateBoard(Board gameBoard) {
-		// TODO
+	   guiBoard.update(gameBoard); // TODO this is init should be set
+	   revalidate();
+	   repaint();
 	}
 
 	@Override
@@ -74,9 +99,33 @@ public class GuiView extends JFrame implements ViewType {
 
 	@Override
 	public void setStatus(String message) {
-		// TODO Auto-generated method stub
-		
+	   lowerStatus.setMessage(message);		
 	}
+
+   @Override
+   public void highlight(Point point, boolean set) {
+      guiBoard.highlight(point, set);
+      
+   }
+
+   @Override
+   public void showLegalMoves(List<Point> legalMoves, boolean set) {
+      guiBoard.showLegalMoves(legalMoves, set);
+      
+   }
+
+   @Override
+   public void setPlayerTurn(String message) {
+      upperStatus.setMessage(message);
+   }
+
+   @Override
+   public void updateSplit(boolean split) {
+      player1.updateSplit(split);
+      player2.updateSplit(split);
+   }
+
+   
 
 	
 

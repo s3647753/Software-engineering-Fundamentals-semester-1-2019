@@ -40,32 +40,32 @@ public interface View extends Observer {
 	 */
 	public void logoutPlayer();
 	
-	/**
-	 * Updates the chess board to match the supplied Board.
-	 * 
-	 * @param gameBoard The Board that shuld be displayed.
-	 * @return true if successful;
-	 */
-	public void updateBoard(Board gameBoard);
+//	/**
+//	 * Updates the chess board to match the supplied Board.
+//	 * 
+//	 * @param gameBoard The Board that shuld be displayed.
+//	 * @return true if successful;
+//	 */
+//	public void updateBoard(Board gameBoard);
 	
-	/**
-	 * Depreciated: Will be removed once the Observer Pattern is finished
-	 * 
-	 * Requests the user interface to update all user views
-	 * to match the fields from the default GameEngine.
-	 * 
-	 * @return true if successful;
-	 * @deprecated As of the integration of the Observer Pattern
-	 */
-	@Deprecated 
-	public void update(Board gameBoard);
-	
-	/**
-	 * Requests that the status message be displayed to the user.
-	 * 
-	 * @param message The message to be displayed
-	 */
-	public void setStatus(String message);
+//	/**
+//	 * Depreciated: Will be removed once the Observer Pattern is finished
+//	 * 
+//	 * Requests the user interface to update all user views
+//	 * to match the fields from the default GameEngine.
+//	 * 
+//	 * @return true if successful;
+//	 * @deprecated As of the integration of the Observer Pattern
+//	 */
+//	@Deprecated 
+//	public void update(Board gameBoard);
+
+//	/**
+//	 * Requests that the status message be displayed to the user.
+//	 * 
+//	 * @param message The message to be displayed
+//	 */
+//	public void setStatus(String message);
 	
 	
 	
@@ -94,9 +94,8 @@ public interface View extends Observer {
 	 * TODO
 	 * @param from
 	 * @param to
-	 * @return
 	 */
-	public boolean movePlayer(Point from, Point to);
+	public void movePlayer(Point from, Point to);
 	
 	/**
 	 * Resets everything for a new game
@@ -110,7 +109,7 @@ public interface View extends Observer {
 	
 	public void setPlayerColor(int playerNum, Colr color);
 	
-	public void setPlayerTurn(int playerNum);
+//	public void setPlayerTurn(int playerNum);
 	
 	public void notifyGameOver(String message);
 	
@@ -120,6 +119,12 @@ public interface View extends Observer {
 	// public void update(Board gameBoard);
 	
 	public boolean askIfPlayerWantsToSplit(String message);
+
+   public void init();
+
+   public void squareClicked(Point point);
+
+   public void toggleSplit();
 	
 	
 	

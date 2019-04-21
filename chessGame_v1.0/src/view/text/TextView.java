@@ -1,5 +1,6 @@
 package view.text;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Scanner;
 
@@ -25,7 +26,7 @@ public class TextView implements ViewType {
 	}
 
 	@Override
-	public void initView(View viewModel) { // TODO I probably dont need this parameter
+	public void initView(View viewModel, Board board) { // TODO I probably dont need this parameter
 		this.viewModel = viewModel;
 		mainMenu();
 	}
@@ -37,9 +38,12 @@ public class TextView implements ViewType {
 		boolean quit = false;
 
 		while (!quit) {
+		   // display the current board
+		   viewModel.update(new Observable(), null);
+		   
 		   displayMainMenu();
 
-			System.out.print("> Selection: ");
+			System.out.print("\n> Selection: ");
 			String selection = sc.nextLine();
 			System.out.println();
 
@@ -58,12 +62,10 @@ public class TextView implements ViewType {
 				break;
 			case "5":
             movePlayer();
-            viewModel.update(new Observable(), null);
+//            viewModel.update(new Observable(), null);
             break;
 			case "6":
-            System.out.println("6 - temporarily showing default board");
-//            System.out.println(new BoardImpl()); // TODO
-            viewModel.update(new Observable(), null);
+//            viewModel.update(new Observable(), null);
             break;
 			case "Q":
 				System.out.println("Q");
@@ -123,7 +125,9 @@ public class TextView implements ViewType {
 
 	@Override
 	public void setStatus(String message) {
+	   System.out.println("text status");
 		System.out.println(message);
+		System.out.println();
 	}
 
 	// gets the user name and password
@@ -171,8 +175,8 @@ public class TextView implements ViewType {
 	   boolean validInput = false;
 	   
 	   while(!validInput) {
-	      row = getInt("\n> enter the row of the piece to move, Top row is 0");
-	      col = getInt("> enter the column of the piece to move, LH column is 0");
+	      row = getInt("\n> enter the row of the piece to move, (Top row is 0)");
+	      col = getInt("> enter the column of the piece to move, (LH column is 0");
 	      from = new Point(row, col);
 	      
 	      row = getInt("\n> enter the row of the target square, Top row is 0");
@@ -209,5 +213,31 @@ public class TextView implements ViewType {
 	   
 	   return value;
 	}
+
+   @Override
+   public void highlight(Point point, boolean set) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void showLegalMoves(List<Point> legalMoves, boolean set) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void setPlayerTurn(String string) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void updateSplit(boolean split) {
+      // TODO Auto-generated method stub
+      
+   }
+	
+
 
 }

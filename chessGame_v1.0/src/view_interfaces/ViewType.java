@@ -1,5 +1,8 @@
 package view_interfaces;
 
+import java.util.List;
+
+import model.Point;
 import model_Interfaces.Board;
 import view.gui.OperationCancelledException;
 
@@ -9,8 +12,9 @@ public interface ViewType {
     * TODO docstring
     * 
     * @param viewModel
+    * @param board 
     */
-	public void initView(View viewModel);
+	public void initView(View viewModel, Board board);
 
 	/**
 	 * Requests the name and password from the user for a new player array[uerName,
@@ -75,5 +79,27 @@ public interface ViewType {
 	 *            The message to be displayed
 	 */
 	public void setStatus(String message);
+
+	/**
+	 * Highlights a board square
+	 * @param point
+	 * @param set
+	 */
+   void highlight(Point point, boolean set);
+
+   public void showLegalMoves(List<Point> legalMoves, boolean set);
+
+   // sets the players turn in the status
+   public void setPlayerTurn(String string);
+
+   public void updateSplit(boolean split);
+
+	
+//	/**
+//	 * TODO
+//	 * @param height
+//	 * @param width
+//	 */
+//   public void setBoardSize(int height, int width);
 
 }
