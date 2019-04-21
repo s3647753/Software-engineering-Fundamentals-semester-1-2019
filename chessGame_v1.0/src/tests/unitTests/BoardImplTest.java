@@ -211,6 +211,25 @@ public class BoardImplTest {
       assertTrue(moves.contains(new Point(0, 4)));
 
    }
+   
+   @Test
+   public void testGetLegalMoves_MergedPiece() throws IllegalMoveException {
+      // add two pieces to a point near the middle of the board
+      Point point = new Point(3, 3);
+      board.setPiece(new Bishop(Colr.WHITE), point);
+      board.setPiece(new Rook(Colr.WHITE), point);
+      
+      List<Point> moves = board.getLegalMoves(point);
+
+      // there should be thirteen legal moves
+      assertEquals("number of legal moves", 13, moves.size());
+
+      // test one each of the Bishops moves an the Roks move
+      assertTrue(moves.contains(new Point(3, 5)));
+      assertTrue(moves.contains(new Point(2, 2)));
+   }
+   
+   
 
    @Test
    public void testMoveSinglePiece_0()
@@ -312,7 +331,7 @@ public class BoardImplTest {
    
    @Test (expected = IllegalMoveException.class)
    public void testMoveMergedPiece_NotLegalMove() throws IllegalMoveException, PieceNotFoundException {
-      // moving a merged piece to empty locations, no obstructions
+      // throwing an exception for an illegal move
       
       from = new Point(0, 2); // a black knight.
       to = new Point(2, 0);
@@ -327,7 +346,7 @@ public class BoardImplTest {
    }
    
 
-   @Test
+   @Test // TODO presentation
    public void testIsObstructed_NoObstructions() throws IllegalMoveException {
       Point knightFrom = new Point(5,2);
       Point knightTo = new Point(3, 1);
@@ -346,7 +365,7 @@ public class BoardImplTest {
    }
    
    
-   @Test
+   @Test // TODO presentation
    public void testIsObstructed_WithObstructions() throws IllegalMoveException {
       Point knightFrom = new Point(5,2);
       Point knightTo = new Point(3, 1);
@@ -371,6 +390,8 @@ public class BoardImplTest {
 
    @Test
    public void testAreSameColor() {
+      // tests the methods that compares for similar colour
+      
       // matching colors
       assertTrue("Matching color", board.areSameColor(new Point(0, 0), new Point(0, 4)));
       assertTrue("Matching color", board.areSameColor(new Point(5, 4), new Point(5, 2)));

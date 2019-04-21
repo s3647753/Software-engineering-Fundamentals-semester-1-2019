@@ -22,12 +22,7 @@ import view.text.TextView;
  *
  */
 
-public class ChessLikeGame {
-	
-//	private GameEngine engine;
-//	private View view;
-//	private Board board;
-	
+public class ChessLikeGame {	
 
 	/**
 	 * Main entry point for Chess-Like_Game
@@ -36,9 +31,9 @@ public class ChessLikeGame {
 	public static void main(String[] args) {
 		ViewType viewType;
 		
-		// select one viewType for use in the game play
-		viewType = new TextView();
-//		viewType = new GuiView();
+		// select one viewType for use in the game play only;
+//		viewType = new TextView();
+		viewType = new GuiView();
 		
 		ChessLikeGame game = new ChessLikeGame();
 		game.startGame(viewType);
@@ -55,8 +50,8 @@ public class ChessLikeGame {
 		Board board = new BoardImpl();
 		GameEngine engine = new GameEngineImpl(board);
 		View viewModel = new ViewModel(engine, viewType);
-		viewType.initView(viewModel);
-		//TODO engine.addObserver(viewModel); // when Matt is ready
+		viewModel.init();
+
 	}
 
 }
