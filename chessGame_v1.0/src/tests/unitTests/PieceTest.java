@@ -16,7 +16,7 @@ import enums.Type;
 /**
  * 
  * @author Ben Hunter
- *
+ * 
  */
 public class PieceTest {
 
