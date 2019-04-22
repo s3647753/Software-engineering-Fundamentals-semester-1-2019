@@ -17,7 +17,7 @@ public class SplitListener implements ActionListener {
 
    @Override
    public void actionPerformed(ActionEvent arg0) {
-      viewModel.toggleSplit();
+      viewModel.split();
    }
 
 }

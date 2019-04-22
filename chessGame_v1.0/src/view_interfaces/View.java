@@ -68,14 +68,18 @@ public interface View extends Observer {
 //	public void setStatus(String message);
 	
 	
-	
-	
-	/** 
-	 * Asks the player if they wish to split the merged pieces
-	 * 
-	 * @return true to split else false to move both pieces
+	/**
+	 * TODO
 	 */
-	public boolean splitPieces();
+	public void split();	
+	
+	
+//	/** 
+//	 * Asks the player if they wish to split the merged pieces
+//	 * 
+//	 * @return true to split else false to move both pieces
+//	 */
+//	public boolean splitPieces();
 
 	/**
 	 * Returns a list of the Pieces at a position on the board
@@ -124,9 +128,6 @@ public interface View extends Observer {
 
    public void squareClicked(Point point);
 
-   public void toggleSplit();
-	
-	
-	
+   	
 
 }

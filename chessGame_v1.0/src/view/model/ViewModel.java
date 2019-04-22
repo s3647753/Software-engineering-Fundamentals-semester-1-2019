@@ -32,12 +32,14 @@ public class ViewModel implements View {
    private Point from = null;
    private Point to = null;
    private List<Point> legalMoves;
-   private boolean split = false;
+   // private boolean split = false; // TODO I probably don't need this
+
 
    public ViewModel(GameEngine engine, ViewType viewType) {
       this.engine = engine;
       ui = viewType;
    }
+
 
    public void init() {
       ui.initView(this, engine.getBoard());
@@ -45,6 +47,7 @@ public class ViewModel implements View {
       legalMoves = new ArrayList<>();
       update(null, null);
    }
+
 
    @Override
    public String registerPlayer() {
@@ -74,6 +77,7 @@ public class ViewModel implements View {
 
       return msg;
    }
+
 
    // @Override
    // public void deRegisterPlayer() {
@@ -105,6 +109,7 @@ public class ViewModel implements View {
          ui.setStatus("> Login Cancelled");
       }
    }
+
 
    // Log a player out
    @Override
@@ -138,12 +143,13 @@ public class ViewModel implements View {
    //
    // }
 
+
    // this is the only method that the GE should call
    @Override
    public void update(Observable arg0, Object arg1) {
       ui.setStatus(engine.getStatus());
       setPlayerTurn();
-      ui.updateBoard(engine.getBoard());
+      ui.updateBoard(board());
       // TODO update the other panels
    }
 
@@ -154,11 +160,24 @@ public class ViewModel implements View {
    // // System.out.println(engine.getBoard()); // TODO
    // }
 
+
+   // @Override
+   // public boolean splitPieces() {
+   // // TODO Auto-generated method stub
+   // return false;
+   // }
+
    @Override
-   public boolean splitPieces() {
-      // TODO Auto-generated method stub
-      return false;
+   public void split() {
+      if (from != null && engine.split(from)) {
+         ui.highlight(from, false);
+         ui.showLegalMoves(board().getLegalMoves(from), false);
+         from = null;
+         to = null;
+         update(null, null); // TODO do I need this
+      }
    }
+
 
    @Override
    public List<Piece> getPieceList(int row, int column) {
@@ -166,17 +185,18 @@ public class ViewModel implements View {
       return null;
    }
 
+
    @Override
    public void movePlayer(Point from, Point to) {
-      
-      if(engine.movePlayer(from, to, split) && split) {
-         toggleSplit();
-      }
-      
+
+//      engine.movePlayer(from, to, !board().isMerged(from)); // TODO get rid of the boolean
+      engine.movePlayer(from, to);
+
       // TODO this should not be here it should be called by the GE
       // But it is here until GE adds the line of code to movePlayer
-      update(null, null);
+//      update(null, null);
    }
+
 
    @Override
    public void newGame() {
@@ -186,11 +206,13 @@ public class ViewModel implements View {
       ui.initView(this, engine.getBoard()); // TODO this is not correct
    }
 
+
    @Override
    public void updateScore(int player1, int player2) {
       // TODO Auto-generated method stub
 
    }
+
 
    @Override
    public void setPlayerName(int playerNum, String name) {
@@ -198,27 +220,29 @@ public class ViewModel implements View {
 
    }
 
+
    @Override
    public void setPlayerColor(int playerNum, Colr color) {
       // TODO
 
    }
 
+
    /**
     * Sets the players turn message in the UI
     */
    private void setPlayerTurn() {
-      
-      if(engine.whoseTurn() == Colr.WHITE) {
-            ui.setPlayerTurn(" Whites Turn ");
-         }
-      
-      else if(engine.whoseTurn() == Colr.BLACK) {
+
+      if (engine.whoseTurn() == Colr.WHITE) {
+         ui.setPlayerTurn(" Whites Turn ");
+      }
+
+      else if (engine.whoseTurn() == Colr.BLACK) {
          ui.setPlayerTurn(" Blacks Turn ");
       }
 
    }
-   
+
 
    @Override
    public void notifyGameOver(String message) {
@@ -226,11 +250,13 @@ public class ViewModel implements View {
 
    }
 
+
    @Override
    public void notifyMoveIsDangerous(String message) {
       // TODO Auto-generated method stub
 
    }
+
 
    @Override
    public boolean askIfPlayerWantsToSplit(String message) {
@@ -238,52 +264,61 @@ public class ViewModel implements View {
       return false;
    }
 
+
    // there are no checks so far
    @Override
    public void squareClicked(Point point) {
 
       // moving from
-      if (from == null && 
+      if (from == null &&
             engine.getBoard().getPiecesAt(point).size() != 0 &&
-            engine.getBoard().getPiecesAt(point).get(0).getColor() == 
-            engine.whoseTurn()) {
-         
+            engine.getBoard().getPiecesAt(point).get(0).getColor() == engine
+                  .whoseTurn()) {
+
          from = point;
          ui.setStatus("Piece Selected"); // TODO temp
-         
+
          // highlight the selected piece
          ui.highlight(point, true);
-         
+
          // mark the legal moves
-         legalMoves = engine.getBoard().getLegalMoves(from);
+         legalMoves = board().getLegalMoves(from);
          ui.showLegalMoves(legalMoves, true);
-      } 
-      
+      }
+
       // moving to
       else if (from != null && engine.getLegalMoves(from).contains(point)) {
          to = point;
          movePlayer(from, to);
-         
+
          // reset for the next move
          ui.highlight(from, false);
          ui.showLegalMoves(legalMoves, false);
          from = null;
          to = null;
       }
-      
+
       // player made illegal selection
       else {
          ui.setStatus("Illegal selection");
       }
-      
-//      update(null, null);
+
+      // update(null, null);
 
    }
 
-   @Override
-   public void toggleSplit() {
-      split = !split;
-      ui.updateSplit(split);
+
+   /*
+    * gets the current game board
+    */
+   private Board board() {
+      return engine.getBoard();
    }
+
+   // @Override
+   // public void split() {
+   // split = !split;
+   // ui.updateSplit(split);
+   // }
 
 }

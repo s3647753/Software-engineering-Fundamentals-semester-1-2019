@@ -29,12 +29,14 @@ import model_Interfaces.Piece;
 public class BoardImplTest {
    private Board board;
    private Piece piece;
-   private Point from, to;
+   private Point from, to, point;
+
 
    @Before
    public void setUp() throws Exception {
       board = new BoardImpl();
    }
+
 
    @Test
    public void testHeightAnsWidth() {
@@ -42,12 +44,14 @@ public class BoardImplTest {
       assertEquals("board.getWidth()", 6, board.getWidth());
    }
 
+
    @Test
    public void testGetCode_EmptyCells() {
       // testing the piece code returned for empty cells
       assertEquals("Empty black cell", "B", board.getCode(new Point(1, 0)));
       assertEquals("Empty white cell", "W", board.getCode(new Point(1, 1)));
    }
+
 
    @Test
    public void testGetCode_SinglePiece() {
@@ -58,6 +62,7 @@ public class BoardImplTest {
       assertEquals("Wite Knight on Black", "WKB", board.getCode(new Point(5, 2)));
       assertEquals("White Knight on White", "WKW", board.getCode(new Point(5, 3)));
    }
+
 
    @Test
    public void testGetCode_MergedPiece() throws IllegalMoveException {
@@ -70,6 +75,7 @@ public class BoardImplTest {
       // test the returned code
       assertEquals("merged ", "BKBRB", board.getCode(point));
    }
+
 
    @Test
    public void testGetCode_MergedPieceSorted() throws IllegalMoveException {
@@ -84,6 +90,7 @@ public class BoardImplTest {
       assertEquals("merged ", "BKBRB", board.getCode(point));
    }
 
+
    @Test
    public void testGetPieceAt_Unmerged() {
       piece = board.getPiecesAt(new Point(5, 2)).get(0);
@@ -92,6 +99,7 @@ public class BoardImplTest {
       piece = board.getPiecesAt(new Point(0, 4)).get(0);
       assertEquals("getBlackBishop", new Bishop(Colr.BLACK), piece);
    }
+
 
    @Test
    public void testGetPieceAt_Merged() throws IllegalMoveException {
@@ -108,6 +116,7 @@ public class BoardImplTest {
       assertTrue("contains White Bisshop",
             board.getPiecesAt(point).contains(new Bishop(Colr.WHITE)));
    }
+
 
    @Test
    public void testSetPieceSingle() throws IllegalMoveException {
@@ -129,6 +138,7 @@ public class BoardImplTest {
 
    }
 
+
    @Test(expected = IllegalMoveException.class)
    public void testSetPieceSingle_ThrowsException() throws IllegalMoveException {
       // attempts to set a piece to a cell containing a like piece
@@ -136,6 +146,7 @@ public class BoardImplTest {
       board.setPiece(new Bishop(Colr.WHITE), new Point(5, 1));
 
    }
+
 
    @Test
    public void testSetPiece_Merge() throws IllegalMoveException {
@@ -160,6 +171,7 @@ public class BoardImplTest {
 
    }
 
+
    @Test
    public void testTakingAPiece() throws IllegalMoveException {
       // taking a black knight with a white rook
@@ -179,6 +191,7 @@ public class BoardImplTest {
 
    }
 
+
    @Test
    public void testGetLegalMoves_KnightDefault() {
       // testing getLegalMoves from a knight on the bottom edge of the default board
@@ -196,6 +209,7 @@ public class BoardImplTest {
 
    }
 
+
    @Test
    public void testGetLegalMoves_RookDefault() {
       // testing getLegalMoves from a Rook on the top RH of the default board
@@ -211,14 +225,15 @@ public class BoardImplTest {
       assertTrue(moves.contains(new Point(0, 4)));
 
    }
-   
+
+
    @Test
    public void testGetLegalMoves_MergedPiece() throws IllegalMoveException {
       // add two pieces to a point near the middle of the board
       Point point = new Point(3, 3);
       board.setPiece(new Bishop(Colr.WHITE), point);
       board.setPiece(new Rook(Colr.WHITE), point);
-      
+
       List<Point> moves = board.getLegalMoves(point);
 
       // there should be thirteen legal moves
@@ -228,8 +243,7 @@ public class BoardImplTest {
       assertTrue(moves.contains(new Point(3, 5)));
       assertTrue(moves.contains(new Point(2, 2)));
    }
-   
-   
+
 
    @Test
    public void testMoveSinglePiece_0()
@@ -243,6 +257,7 @@ public class BoardImplTest {
 
       assertEquals("Moving to an empty cell", 0, returned);
    }
+
 
    @Test
    public void testMoveSinglePiece_1()
@@ -270,6 +285,7 @@ public class BoardImplTest {
 
    }
 
+
    @Test(expected = PieceNotFoundException.class)
    public void testMoveSinglePiece_pnfe()
          throws IllegalMoveException, PieceNotFoundException {
@@ -282,6 +298,7 @@ public class BoardImplTest {
       // the argument piece does not match the piece in the cell
       board.moveSinglePiece(piece, from, to);
    }
+
 
    @Test
    public void testMoveSinglePiece_2()
@@ -299,43 +316,48 @@ public class BoardImplTest {
       assertEquals("Taking a merged piece", 2, returned);
    }
 
+
    @Test
-   public void testMoveMergedPiece_LegalMove() throws IllegalMoveException, PieceNotFoundException {
+   public void testMoveMergedPiece_LegalMove()
+         throws IllegalMoveException, PieceNotFoundException {
       // moving a merged piece to empty locations, no obstructions
-      
+
       from = new Point(0, 2); // a black knight.
-      
+
       // merge a piece and test that it is a merged piece
       board.setPiece(new Rook(Colr.BLACK), from);
       List<Piece> mergedPiece = board.getPiecesAt(from);
       assertTrue(mergedPiece.size() == 2);
 
       List<Point> legalMoves = board.getLegalMoves(from);
-      
+
       // moving the piece to legal places
-      for(Point too: legalMoves) {
+      for (Point too : legalMoves) {
          assertEquals(0, board.moveMergedPiece(from, too));
 
          // check the piece is in the target location
-         assertTrue(too.toString(), board.getPiecesAt(too).contains(new Knight(Colr.BLACK)));
-         assertTrue(too.toString(), board.getPiecesAt(too).contains(new Rook(Colr.BLACK)));
-         
+         assertTrue(too.toString(),
+               board.getPiecesAt(too).contains(new Knight(Colr.BLACK)));
+         assertTrue(too.toString(),
+               board.getPiecesAt(too).contains(new Rook(Colr.BLACK)));
+
          // check the 'from' cell is empty
          assertEquals(new ArrayList<Piece>(), board.getPiecesAt(from));
-         
+
          // put the piece back
          board.moveMergedPiece(too, from);
       }
    }
-   
-   
-   @Test (expected = IllegalMoveException.class)
-   public void testMoveMergedPiece_NotLegalMove() throws IllegalMoveException, PieceNotFoundException {
+
+
+   @Test(expected = IllegalMoveException.class)
+   public void testMoveMergedPiece_NotLegalMove()
+         throws IllegalMoveException, PieceNotFoundException {
       // throwing an exception for an illegal move
-      
+
       from = new Point(0, 2); // a black knight.
       to = new Point(2, 0);
-      
+
       // merge a piece and test that it is a merged piece
       board.setPiece(new Rook(Colr.BLACK), from);
       List<Piece> mergedPiece = board.getPiecesAt(from);
@@ -344,43 +366,43 @@ public class BoardImplTest {
       // move piece to illegal position
       assertEquals(0, board.moveMergedPiece(from, to));
    }
-   
+
 
    @Test // TODO presentation
    public void testIsObstructed_NoObstructions() throws IllegalMoveException {
-      Point knightFrom = new Point(5,2);
+      Point knightFrom = new Point(5, 2);
       Point knightTo = new Point(3, 1);
-      
+
       Point bishopFrom = new Point(5, 1);
       Point bishopTo = new Point(3, 3);
-      
+
       Point rookFrom = new Point(0, 5);
       Point rookTo = new Point(3, 5);
-      
+
       // both can move as there is no obstruction
       assertFalse(board.isObstructed(bishopFrom, bishopTo));
       assertFalse(board.isObstructed(knightFrom, knightTo));
       assertFalse(board.isObstructed(rookFrom, rookTo));
 
    }
-   
-   
+
+
    @Test // TODO presentation
    public void testIsObstructed_WithObstructions() throws IllegalMoveException {
-      Point knightFrom = new Point(5,2);
+      Point knightFrom = new Point(5, 2);
       Point knightTo = new Point(3, 1);
-      
+
       Point bishopFrom = new Point(5, 1);
       Point bishopTo = new Point(3, 3);
-      
+
       Point rookFrom = new Point(0, 5);
       Point rookTo = new Point(3, 5);
-      
+
       // add obstructions
       board.setPiece(new Knight(Colr.BLACK), new Point(4, 2));
       board.setPiece(new Rook(Colr.BLACK), new Point(4, 1));
       board.setPiece(new Rook(Colr.BLACK), new Point(1, 5));
-      
+
       // the bishop and rook should be obstructed and the rook not
       assertTrue(board.isObstructed(bishopFrom, bishopTo));
       assertFalse(board.isObstructed(knightFrom, knightTo));
@@ -388,10 +410,11 @@ public class BoardImplTest {
 
    }
 
+
    @Test
    public void testAreSameColor() {
       // tests the methods that compares for similar colour
-      
+
       // matching colors
       assertTrue("Matching color", board.areSameColor(new Point(0, 0), new Point(0, 4)));
       assertTrue("Matching color", board.areSameColor(new Point(5, 4), new Point(5, 2)));
@@ -412,11 +435,53 @@ public class BoardImplTest {
 
    }
 
+
    // the toString() method is used by the textual interface to display the board
    @Test
    public void testToString() {
       assertEquals(defaultBoardStr(), board.toString());
    }
+
+   // tests for is merged and piece splitting
+   @Test
+   public void testIsMerged_single() {
+      // testing single pieces and empty square
+      assertFalse("isMerged: single piece", board.isMerged(new Point(5, 3)));
+      assertFalse("isMerged: empty square", board.isMerged(new Point(2, 3)));
+   }
+   
+   @Test
+   public void testIsMerged_merged() throws IllegalMoveException {
+      // testing isMerged on a merged square
+      point = new Point(5, 1);
+      board.setPiece(new Rook(Colr.WHITE), point);
+      
+      assertTrue("isMerged: merged piece", board.isMerged(point));
+   }
+   
+   @Test
+   public void testSplit_single() {
+      // testing the return on splitting a single piece of empty square
+      
+      point = new Point(5, 1);
+      assertFalse("split: single piece", board.split(point));
+      
+      point = new Point(4, 5);
+      assertFalse("split: empty square", board.split(point));
+   }
+   
+   @Test
+   public void testSplit_merged() throws IllegalMoveException {
+      // testing a merged splits
+      point = new Point(5, 1);
+      board.setPiece(new Rook(Colr.WHITE), point);
+      assertTrue("isMerged: merged piece", board.isMerged(point));
+      
+      assertTrue("Splitting a merged piece", board.split(point));
+      assertFalse("isMerged: merged piece", board.isMerged(point));
+      
+   }
+
 
    private String defaultBoardStr() {
       String[] pieces = { "BRW", "BBB", "BKW", "BKB", "BBW", "BRB", "B", "W", "B", "W",
