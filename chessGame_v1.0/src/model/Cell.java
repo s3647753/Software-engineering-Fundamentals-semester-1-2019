@@ -20,12 +20,14 @@ import model_Interfaces.Piece;
  */
 public class Cell {
    private Colr background;
+   private boolean merged;
 
    // the pieces in the cell (size 2 if merged)
    private List<Piece> pieces;
 
    public Cell(Colr background) {
       this.background = background;
+      merged = false;
       pieces = new ArrayList<>();
    }
    
@@ -45,7 +47,19 @@ public class Cell {
    public List<Piece> getPieces() {
       return Collections.unmodifiableList(pieces);
    }
+   
+   
+   /**
+    * Returns true if there are two pieces in the cell and their state is merged,
+    * else false.
+    * 
+    * @return True if the cell contains a merged piece
+    */
+   public boolean isMerged() {
+      return merged;
+   }
 
+   
    /**
     * Adds a single piece to the cell. if there is a players piece in the cell and
     * a merge is legal then the pair are merged. If there is an opponents piece in
@@ -70,8 +84,17 @@ public class Cell {
       }
 
       pieces.add(piece);
+      
+      // merged piece logic
+      if(pieces.size() == 2) {
+         merged = true;
+      }
+      else {
+         merged = false;
+      }
    }
 
+   
    /**
     * Removes the nominated piece from the cell and returns a reference to the
     * removed piece. If the piece is not merged the cell will be empty after this
@@ -87,9 +110,12 @@ public class Cell {
       if (!pieces.contains(piece)) {
          throw new PieceNotFoundException();
       }
+      
+      merged = false;
 
       return pieces.remove(pieces.indexOf(piece));
    }
+   
 
    /**
     * Returns the potential moves the piece/s in this cell could make if
@@ -108,6 +134,7 @@ public class Cell {
       return moves;
    }
 
+   
    /**
     * Determines if the supplied piece can be legally put into this Cell. This
     * method does not move, delete or change any properties. <br>
@@ -139,6 +166,23 @@ public class Cell {
       }
 
       return isLegal;
+   }
+   
+   
+   /**
+    * Splits a piece if it was a merged piece.
+    * If not a merged piece then nill effect.
+    * Returns true if the piece was merged and is now split.
+    * All other cases returns false.
+    * 
+    * @return True if a merged piece was split.
+    */
+   public boolean split() {
+      if(!merged) {
+         return false;
+      }
+      
+      return !(merged = false);
    }
    
    
