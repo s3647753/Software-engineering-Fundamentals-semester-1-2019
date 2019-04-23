@@ -198,9 +198,11 @@ public class ViewModel implements View {
    }
 
 
+   // TODO these are just temp values
    @Override
    public void newGame() {
-      engine.newGame();
+      // TODO get player information for this functionality
+      engine.newGame("Matt", "Shaun", 13, 16);
       gameStarted = false;
    }
 

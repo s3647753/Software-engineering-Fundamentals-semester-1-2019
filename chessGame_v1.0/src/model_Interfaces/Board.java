@@ -70,14 +70,13 @@ public interface Board {
 
 
    /**
-    * Moves a single piece from one point to another point. If it is a merged pair
-    * only the nominated piece will be moved. If there is an opponents piece in the
+    * Moves a piece from one point to another point. If it is a merged pair
+    * both pieces will be moved. If there is a pair of pieces on the square
+    * that have been split, the piece that can move will move and the remaining
+    * piece will not be moved. If there is an opponents piece in the
     * cell, the opponents piece will be removed. If there is a players piece on the
-    * to-point and a merge is legal they will be merged. Does not guarantee to
-    * check for all illegal moves due to the added movement of a merged piece.
+    * to-point and a merge is legal they will be merged.
     * 
-    * @param piece
-    *           The piece to be moved
     * @param from
     *           The point the piece is moved from
     * @param to
@@ -86,24 +85,24 @@ public interface Board {
     * @throws PieceNotFoundException
     * @throws IllegalMoveException
     */
-   public int moveSinglePiece(Piece piece, Point from, Point to)
+   int movePiece(Point from, Point to)
          throws PieceNotFoundException, IllegalMoveException;
 
-
+   
    /**
-    * Moves a pair of merged pieces from one point to another point. If there is an
-    * opponents piece in the cell, the opponents piece will be removed. If the move
-    * is illegal an IllegalMoveException is thrown If the piece is not a merged
-    * piece a PieceNotFoundException will be thrown
-    * 
-    * @param from
-    *           The point the merged pair are moved from
-    * @param to
-    *           The point the merged pair are moved to
-    * @return The number of enemy pieces taken
-    * @throws IllegalMoveException
-    * @throws PieceNotFoundException
+    * Soon to be removed
+    * Use movePiece(Point from, Point to)
     */
+   @Deprecated
+   public int moveSinglePiece(Piece piece, Point from, Point to)
+         throws PieceNotFoundException, IllegalMoveException;
+   
+   
+   /**
+    * Soon to be removed
+    * Use movePiece(Point from, Point to)
+    */
+   @Deprecated
    public int moveMergedPiece(Point from, Point to)
          throws IllegalMoveException, PieceNotFoundException;
 
@@ -192,10 +191,6 @@ public interface Board {
     * @return True if both cells contain pieces of the same color.
     */
    boolean areSameColor(Point point1, Point point2);
-
-
-   int movePiece(Point from, Point to)
-         throws PieceNotFoundException, IllegalMoveException;
 
 
    Cell getCell(Point cell);
