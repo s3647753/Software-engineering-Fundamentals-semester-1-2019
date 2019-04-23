@@ -92,7 +92,9 @@ public interface ViewType {
    // sets the players turn in the status
    public void setPlayerTurn(String string);
 
-   public void updateSplit(boolean split);
+   public void setMerged(boolean merged);
+
+   void setMovesRemaining(int i);
 
 	
 //	/**

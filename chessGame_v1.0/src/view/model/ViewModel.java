@@ -32,7 +32,7 @@ public class ViewModel implements View {
    private Point from = null;
    private Point to = null;
    private List<Point> legalMoves;
-   // private boolean split = false; // TODO I probably don't need this
+   private boolean gameStarted = false; // TODO should come from GE
 
 
    public ViewModel(GameEngine engine, ViewType viewType) {
@@ -147,9 +147,12 @@ public class ViewModel implements View {
    // this is the only method that the GE should call
    @Override
    public void update(Observable arg0, Object arg1) {
+      
       ui.setStatus(engine.getStatus());
       setPlayerTurn();
+      ui.setMovesRemaining(42); // TODO get this value from the GE
       ui.updateBoard(board());
+
       // TODO update the other panels
    }
 
@@ -172,6 +175,7 @@ public class ViewModel implements View {
       if (from != null && engine.split(from)) {
          ui.highlight(from, false);
          ui.showLegalMoves(board().getLegalMoves(from), false);
+         ui.setMerged(board().getCell(from).isMerged());
          from = null;
          to = null;
          update(null, null); // TODO do I need this
@@ -188,22 +192,16 @@ public class ViewModel implements View {
 
    @Override
    public void movePlayer(Point from, Point to) {
-
-//      engine.movePlayer(from, to, !board().isMerged(from)); // TODO get rid of the boolean
-      engine.movePlayer(from, to);
-
-      // TODO this should not be here it should be called by the GE
-      // But it is here until GE adds the line of code to movePlayer
-//      update(null, null);
+      if(engine.movePlayer(from, to) && !gameStarted) {
+         gameStarted = true;
+      }
    }
 
 
    @Override
    public void newGame() {
-      // TODO this method needs lots of work to complete
-
-      System.out.println("new game not fully implemented for milestone 1");
-      ui.initView(this, engine.getBoard()); // TODO this is not correct
+      engine.newGame();
+      gameStarted = false;
    }
 
 
@@ -284,6 +282,10 @@ public class ViewModel implements View {
          // mark the legal moves
          legalMoves = board().getLegalMoves(from);
          ui.showLegalMoves(legalMoves, true);
+         
+         // setting the split button logic
+         ui.setMerged(board().getCell(from).isMerged());
+         
       }
 
       // moving to

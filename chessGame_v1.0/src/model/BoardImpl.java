@@ -74,14 +74,12 @@ public class BoardImpl implements Board {
 
    @Override
    public int getHeight() {
-
       return HEIGHT;
    }
 
 
    @Override
    public int getWidth() {
-
       return WIDTH;
    }
 
@@ -207,6 +205,7 @@ public class BoardImpl implements Board {
       return numPiecesTaken;
    }
    
+   // helper to move a piece
    private void moveAPiece(Piece piece, Point from, Point to) 
          throws IllegalMoveException, PieceNotFoundException {
       
@@ -216,7 +215,7 @@ public class BoardImpl implements Board {
    
 
 
-   @Override
+   @Override // TODO remove this method
    public int moveSinglePiece(Piece piece, Point from, Point to)
          throws PieceNotFoundException, IllegalMoveException {
       
@@ -242,7 +241,7 @@ public class BoardImpl implements Board {
    }
 
 
-   @Override
+   @Override // TODO remove this method
    public int moveMergedPiece(Point from, Point to)
          throws IllegalMoveException, PieceNotFoundException {
       
@@ -362,8 +361,8 @@ public class BoardImpl implements Board {
       return false;
    }
 
-
-   private Cell getCell(Point cell) {
+   @Override
+   public Cell getCell(Point cell) {
 
       return cells[cell.getRow()][cell.getCol()];
    }
