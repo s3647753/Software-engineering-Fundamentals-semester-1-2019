@@ -5,6 +5,7 @@ import java.util.List;
 
 import enums.Colr;
 import enums.Type;
+import model.Cell;
 import model.IllegalMoveException;
 import model.PieceNotFoundException;
 import model.Point;
@@ -195,5 +196,8 @@ public interface Board {
 
    int movePiece(Point from, Point to)
          throws PieceNotFoundException, IllegalMoveException;
+
+
+   Cell getCell(Point cell);
 
 }

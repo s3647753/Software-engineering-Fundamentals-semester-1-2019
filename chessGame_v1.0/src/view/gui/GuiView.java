@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import enums.Colr;
 import model.Point;
 import model_Interfaces.Board;
 import view_interfaces.View;
@@ -15,8 +16,9 @@ public class GuiView extends JFrame implements ViewType {
 	
 	private View viewModel;
 	private ChessBoard guiBoard;
-	private StatusBar upperStatus, lowerStatus;
-	private PlayerPanel player1, player2;
+	private ToolBar toolbar;
+	private StatusBar statusBar;
+	private PlayerPanel playerWhite, playerBlack;
 
 	public GuiView() {
 		super();
@@ -38,21 +40,21 @@ public class GuiView extends JFrame implements ViewType {
 	public void initView(View viewModel, Board board) {
 		this.viewModel = viewModel;
 		guiBoard = new ChessBoard(viewModel, board);
-		upperStatus = new StatusBar();
-		lowerStatus = new StatusBar();
-		player1 = new PlayerPanel(viewModel);
-		player2 = new PlayerPanel(viewModel);
+		toolbar = new ToolBar();
+		statusBar = new StatusBar();
+		playerWhite = new PlayerPanel(viewModel, Colr.WHITE);
+		playerBlack = new PlayerPanel(viewModel, Colr.BLACK);
 		
 		
 		setJMenuBar(new ChessMenuBar(viewModel));
 		add(guiBoard, BorderLayout.CENTER);
-		add(upperStatus, BorderLayout.NORTH);
-		add(lowerStatus, BorderLayout.SOUTH);
-		add(player1, BorderLayout.WEST);
-		add(player2, BorderLayout.EAST);
+		add(toolbar, BorderLayout.NORTH);
+		add(statusBar, BorderLayout.SOUTH);
+		add(playerWhite, BorderLayout.WEST);
+		add(playerBlack, BorderLayout.EAST);
 		
 		// TODO this is temp
-		upperStatus.setMessage("Welcome to the Chess Like Game");
+		toolbar.setTurnColor("Welcome to the Chess Like Game");
 		
 		setVisible(true);
 	}
@@ -99,7 +101,7 @@ public class GuiView extends JFrame implements ViewType {
 
 	@Override
 	public void setStatus(String message) {
-	   lowerStatus.setMessage(message);		
+	   statusBar.setMessage(message);		
 	}
 
    @Override
@@ -116,13 +118,19 @@ public class GuiView extends JFrame implements ViewType {
 
    @Override
    public void setPlayerTurn(String message) {
-      upperStatus.setMessage(message);
+      toolbar.setTurnColor(message);
+   }
+   
+   @Override
+   public void setMovesRemaining(int remaining) {
+      statusBar.setMovesRemaining(remaining);
    }
 
    @Override
-   public void updateSplit(boolean split) {
-      player1.updateSplit(split);
-      player2.updateSplit(split);
+   public void setMerged(boolean merged) {
+      // TODO only set the applicable player to true
+      playerWhite.setMerged(merged);
+      playerBlack.setMerged(merged);
    }
 
    

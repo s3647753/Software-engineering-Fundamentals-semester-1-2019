@@ -25,19 +25,23 @@ public class Cell {
    // the pieces in the cell (size 2 if merged)
    private List<Piece> pieces;
 
+
    public Cell(Colr background) {
       this.background = background;
       merged = false;
       pieces = new ArrayList<>();
    }
-   
+
+
    /**
     * Returns the enum Colr value of the background of this cell
+    * 
     * @return
     */
    public Colr getBackground() {
       return background;
    }
+
 
    /**
     * Returns an unmodifiableList of the pieces in the cell
@@ -47,8 +51,8 @@ public class Cell {
    public List<Piece> getPieces() {
       return Collections.unmodifiableList(pieces);
    }
-   
-   
+
+
    /**
     * Returns true if there are two pieces in the cell and their state is merged,
     * else false.
@@ -59,7 +63,7 @@ public class Cell {
       return merged;
    }
 
-   
+
    /**
     * Adds a single piece to the cell. if there is a players piece in the cell and
     * a merge is legal then the pair are merged. If there is an opponents piece in
@@ -74,27 +78,26 @@ public class Cell {
     */
    public void addPiece(Piece piece) throws IllegalMoveException {
       // the move is illegal
-      if(!isLegal(piece)) {
+      if (!isLegal(piece)) {
          throw new IllegalMoveException("Illegal Move");
       }
-      
+
       // there is an opposite color piece in the cell
-      if(pieces.size() > 0 && !piece.getColor().equals(pieces.get(0).getColor())) {
+      if (pieces.size() > 0 && !piece.getColor().equals(pieces.get(0).getColor())) {
          pieces.clear();
       }
 
       pieces.add(piece);
-      
+
       // merged piece logic
-      if(pieces.size() == 2) {
+      if (pieces.size() == 2) {
          merged = true;
-      }
-      else {
+      } else {
          merged = false;
       }
    }
 
-   
+
    /**
     * Removes the nominated piece from the cell and returns a reference to the
     * removed piece. If the piece is not merged the cell will be empty after this
@@ -110,12 +113,12 @@ public class Cell {
       if (!pieces.contains(piece)) {
          throw new PieceNotFoundException();
       }
-      
+
       merged = false;
 
       return pieces.remove(pieces.indexOf(piece));
    }
-   
+
 
    /**
     * Returns the potential moves the piece/s in this cell could make if
@@ -134,12 +137,11 @@ public class Cell {
       return moves;
    }
 
-   
+
    /**
     * Determines if the supplied piece can be legally put into this Cell. This
     * method does not move, delete or change any properties. <br>
-    * Returns false if: 
-    * There is a piece, same color and same type in the cell or 
+    * Returns false if: There is a piece, same color and same type in the cell or
     * there is a merged piece of same color in the cell
     * 
     * @param piece
@@ -167,28 +169,27 @@ public class Cell {
 
       return isLegal;
    }
-   
-   
+
+
    /**
-    * Splits a piece if it was a merged piece.
-    * If not a merged piece then nill effect.
-    * Returns true if the piece was merged and is now split.
-    * All other cases returns false.
+    * Splits a piece if it was a merged piece. If not a merged piece then nill
+    * effect. Returns true if the piece was merged and is now split. All other
+    * cases returns false.
     * 
     * @return True if a merged piece was split.
     */
-   public boolean split() {
-      if(!merged) {
-         return false;
+   public boolean split() {      
+      if (!merged) {
+         return merged;
       }
-      
+
       return !(merged = false);
    }
-   
-   
+
+
    /**
-    * Returns the code for the pieces in the cell.
-    * Pieces are sorted in lexicological order.<br>
+    * Returns the code for the pieces in the cell sorted in
+    * lexicological order.<br>
     * Code is xxyyc, for a merged piece.<br>
     * Code is yyc, for a single piece.<br>
     * Code is c, for an empty cell.<br>
@@ -202,20 +203,21 @@ public class Cell {
     */
    public String getCode() {
       StringJoiner code = new StringJoiner("");
-      
+
       // always return merged pieces in the same order
       Collections.sort(pieces);
-      
+
       // add the piece codes
-      for(Piece piece: pieces) {
+      for (Piece piece : pieces) {
          code.add(piece.getCode());
       }
-      
+
       // add the background
       code.add(background.toString().substring(0, 1));
-      
+
       return code.toString();
    }
+
 
    // Overrides the Object.toString() method.
    @Override
@@ -228,6 +230,7 @@ public class Cell {
       return sj.toString();
    }
 
+
    // Overrides the Object.equals method
    @Override
    public boolean equals(Object that) {
@@ -237,6 +240,7 @@ public class Cell {
 
       return this.toString().equals(((Cell) that).toString());
    }
+
 
    // Overrides the Object.hashCode method
    @Override

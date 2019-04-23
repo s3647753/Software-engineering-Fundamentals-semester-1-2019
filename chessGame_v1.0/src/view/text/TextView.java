@@ -232,11 +232,24 @@ public class TextView implements ViewType {
       
    }
 
+//   @Override
+//   public void updateSplit(boolean split) {
+//      // TODO Auto-generated method stub
+//      
+//   }
+
    @Override
-   public void updateSplit(boolean split) {
+   public void setMovesRemaining(int remaining) {
       // TODO Auto-generated method stub
       
    }
+
+
+@Override
+public void setMerged(boolean merged) {
+   // TODO Auto-generated method stub
+   
+}
 	
 
 
