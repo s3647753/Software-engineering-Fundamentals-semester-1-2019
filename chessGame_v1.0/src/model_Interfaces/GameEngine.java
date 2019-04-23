@@ -2,14 +2,9 @@ package model_Interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
-import java.util.Observable;
 
 import enums.Colr;
-import model.DuplicateNameException;
 import model.IllegalMoveException;
-import model.PlayerNotFoundException;
-import model.Players;
 import model.Point;
 import view_interfaces.View;
 
@@ -22,6 +17,14 @@ import view_interfaces.View;
 
 public interface GameEngine {
 
+	/**
+	 * Initialises the parameters for a new game to begin
+	 * @param The White Player's username
+	 * @param The Black Player's username
+	 * @param One of the players turn limits
+	 * @param One of the players turn limits
+	 */
+	public void newGame(String playerWhite, String playerBlack, int player1TurnLimit, int player2TurnLimit);
 	/**
 	 * Set the views that will be used by the game engine
 	 * In current design this may not end up being used to remove if so
@@ -63,7 +66,7 @@ public interface GameEngine {
 	 * @return true is successful else false
 	 * @throws IllegalMoveException Thrown when the move is illegal
 	 */
-	public boolean movePlayer(Point from, Point to, Boolean split);
+	public boolean movePlayer(Point from, Point to);
 	
 	/**
 	 * Returns the Colr value of the player whose turn it is
@@ -147,5 +150,6 @@ public interface GameEngine {
 
 	public String getStatus();
 	
-	public void newGame();
+	public boolean split(Point point);
+	
 }
