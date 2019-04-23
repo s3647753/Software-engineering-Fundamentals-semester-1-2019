@@ -4,6 +4,8 @@ import enums.Colr;
 
 public interface Player {
 	
+	
+	public void setColour(Colr colour);
 	/**
 	 * Returns the name of the player
 	 * @return player name as string
