@@ -24,12 +24,15 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	private Board board;
 
 	private Map<Colr, Player> playerList = new HashMap<Colr, Player>();
-
+	
+	//current placeholder, may not be final
+	private Map<Colr, Integer> turns = new HashMap<Colr, Integer>();
+	private int currentMove;
+	
 	//TODO Depreciated, remove once playerList is implemented
 	//private Map<String, Integer> players = new HashMap<String, Integer>();
 	//private Map<Colr, String> playerColr = new HashMap<Colr, String>();
 
-	private int currentMove;
 	private int maxMove;
 
 	private Login login;
@@ -47,6 +50,8 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		currentTurn = Colr.WHITE;
 		playerList.put(Colr.WHITE, null);
 		playerList.put(Colr.BLACK, null);
+		turns.put(Colr.WHITE, 0);
+		turns.put(Colr.BLACK, 0);
 		gameRunning = false;
 		maxMove = 0;
 		currentMove = 0;
@@ -63,8 +68,12 @@ public class GameEngineImpl extends Observable implements GameEngine {
 				playerList.replace(Colr.BLACK, new PlayerImpl(playerBlack));
 
 				currentTurn = Colr.WHITE;
-
+				
 				maxMove = (player1TurnLimit+player2TurnLimit/2);
+				
+				turns.replace(Colr.WHITE, maxMove);
+				turns.replace(Colr.BLACK, maxMove);
+				
 				currentMove = maxMove*2;
 
 
@@ -79,12 +88,6 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	@Override
 	public void setView(View view) {
 		addObserver(view);
-	}
-
-
-	@Override
-	public void updateScore(String Username, int score) {
-		//TODO remove
 	}
 
 
@@ -107,29 +110,22 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		int piecesTaken = 0;
 		String message = null;
 
-		//TODO implement split
 		if(pieces.size()!=0) {
 			if(pieces.get(0).getColor() == currentTurn) {
-				try {
-					if(pieces.size()>1) {
-						piecesTaken = board.moveMergedPiece(from, to);
+				if(!turnLimitReached()) {
+					try {
+						piecesTaken = board.movePiece(from, to);
 						moveSuccessful = true;
 						reduceMoves();
 						swapTurn();
 						message = "Piece moved";
-					}else if(pieces.size() == 1) {
-						piecesTaken = board.moveSinglePiece(pieces.get(0), from, to);
-						moveSuccessful = true;
-						reduceMoves();
-						swapTurn();
-						message = "Merged Piece moved";
+					}catch(IllegalMoveException e){
+						moveSuccessful = false;
+						message = "Move not Legal";
+					}catch(PieceNotFoundException e) {
+						moveSuccessful = false;
+						message = "No piece in location";
 					}
-				}catch(IllegalMoveException e){
-					moveSuccessful = false;
-					message = "Move not Legal";
-				}catch(PieceNotFoundException e) {
-					moveSuccessful = false;
-					message = "No piece in location";
 				}
 			}else {
 				moveSuccessful = false;
@@ -141,10 +137,10 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		}
 
 		increaseScore(piecesTaken);
-		if(currentMove == 0) {
+		notifyAllObservers(message);
+		if(turnLimitReached()) {
 			endGame();
 		}
-		notifyObservers(message);
 		return moveSuccessful;
 	}
 
@@ -246,13 +242,30 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	
 	private void reduceMoves() {
 		currentMove--;
+		int playerTurn = turns.get(currentTurn);
+		playerTurn--;
+		turns.replace(Colr.WHITE, playerTurn);
 	}
 
 	
 	private void endGame() {
 		gameRunning = false;
 		currentMove = 0;
-		notifyAllObservers("Game complete, " + playerList.get(winner).getName() + "Wins");
+		maxMove = 0;
+		if(playerList.get(Colr.WHITE).getPoints() > playerList.get(Colr.BLACK).getPoints()) {
+			winner = Colr.WHITE;
+		}else if(playerList.get(Colr.WHITE).getPoints() < playerList.get(Colr.BLACK).getPoints()) {
+			winner = Colr.BLACK;
+		}else {
+			winner = null;
+		}
+		if(winner != null) {
+			notifyAllObservers("Game complete, " + playerList.get(winner).getName() + "Wins");
+		}else {
+			notifyAllObservers("Game complete, tied game");
+		}
+		playerList.get(Colr.WHITE).resetScore();
+		playerList.get(Colr.BLACK).resetScore();
 	}
 
 	private void increaseScore(int piecesTaken) {
@@ -261,6 +274,25 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		}else if(piecesTaken==2) {
 			playerList.get(currentTurn).increaseScore(10);
 		}
+	}
+	
+	
+	private boolean turnLimitReached() {
+		boolean gameOver;
+		
+		/*if(currentMove == 0) {
+			gameOver = true;
+		}else {
+			gameOver = false;
+		}*/
+		
+		if(turns.get(Colr.WHITE) == 0 && turns.get(Colr.BLACK) == 0) {
+			gameOver = true;
+		}else {
+			gameOver = false;
+		}
+		
+		return gameOver;
 	}
 
 	
@@ -274,18 +306,8 @@ public class GameEngineImpl extends Observable implements GameEngine {
 
 	
 	@Override
-	//TODO remove
-	public void setPlayingUsers(String player1, String player2) {
-		if(login.getPlayerList().contains(player1) && login.getPlayerList().contains(player2)) {
-			playerList.replace(Colr.WHITE, new PlayerImpl(player1));
-			playerList.replace(Colr.BLACK, new PlayerImpl(player2));
-		}
-	}
-
-	
-	@Override
 	public Player getWinner() {
-		return null;
+		return playerList.get(winner);
 	}
 
 	
@@ -297,8 +319,40 @@ public class GameEngineImpl extends Observable implements GameEngine {
 
 	@Override
 	public boolean split(Point point) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean splitSuccess;
+		String message;
+		//TODO clean up, maybe make a piece colour checking method
+		if(board.getPiecesAt(point).get(0).getColor() == currentTurn) {
+			if(board.isMerged(point)) {
+				board.split(point);
+				swapTurn();
+		        reduceMoves();
+				splitSuccess = true;
+				message = "Merged piece split";
+			}else {
+				splitSuccess = false;
+				message = "Piece cannot be split";
+			}
+		}else {
+			splitSuccess = false;
+			message = "It is " + currentTurn + "'s move";
+		}
+		notifyAllObservers(message);
+		return splitSuccess;
+	}
+
+
+	@Override
+	public int turnsRemaining() {
+		//return (int) Math.ceil(currentMove);
+		int turnsRemaining;
+		if(turns.get(Colr.WHITE) >= turns.get(Colr.BLACK)) {
+			turnsRemaining = turns.get(Colr.WHITE);
+		}else {
+			turnsRemaining = turns.get(Colr.BLACK);
+		}
+		
+		return turnsRemaining;
 	}
 
 
