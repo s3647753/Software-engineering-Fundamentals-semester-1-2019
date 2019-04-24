@@ -28,8 +28,6 @@ public class ChessMenuBar extends JMenuBar {
 		setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 		
 		add(gameMenu());
-		add(registerMenu());
-		add(loginMenu());
 		add(helpMenu());
 	}
 
@@ -43,20 +41,26 @@ public class ChessMenuBar extends JMenuBar {
       newGame.setFont(FONT20);
       newGame.addActionListener(new NewGameListener(viewModel));
       
-      // select color
-      JMenuItem selectColor = new JMenuItem("Select Colour");
-      selectColor.setFont(FONT20);
-      selectColor.addActionListener(new GameLengthListener(viewModel));
+      // register
+      JMenuItem register = new JMenuItem("Register");
+      register.setFont(FONT20);
+      register.addActionListener(new RegisterListener(viewModel));
       
-      // set preferred game length
-      JMenuItem preferedMoves = new JMenuItem("Game Length");
-      preferedMoves.setFont(FONT20);
-      preferedMoves.addActionListener(new GameLengthListener(viewModel));
+      // login
+      JMenuItem login = new JMenuItem("Log In");
+      login.setFont(FONT20);
+      login.addActionListener(new LoginListener(viewModel));
+      
+      //Logout
+      JMenuItem logout = new JMenuItem("Log Out");
+      logout.setFont(FONT20);
+      logout.addActionListener(new LogoutListener(viewModel));
       
 
       gameMenu.add(newGame);
-      gameMenu.add(selectColor);
-      gameMenu.add(preferedMoves);
+      gameMenu.add(register);
+      gameMenu.add(login);
+      gameMenu.add(logout);
       
       return gameMenu;
    }
