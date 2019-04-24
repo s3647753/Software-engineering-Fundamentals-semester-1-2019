@@ -38,7 +38,7 @@ public interface GameEngine {
 	 * @param The username of the player
 	 * @param how much the player's score has increased
 	 */
-	public void updateScore(String Username, int scoreIncrease);
+	//public void updateScore(String Username, int scoreIncrease);
 	
 	/**
 	 * Adds a game board for the game engine to use
@@ -143,8 +143,6 @@ public interface GameEngine {
 	
 	//TODO create proper comments for these methods
 	public void setColr(String username, Colr colour);
-	
-	public void setPlayingUsers(String player1, String player2);
 
 	public Player getWinner();
 
@@ -152,4 +150,5 @@ public interface GameEngine {
 	
 	public boolean split(Point point);
 	
+	public int turnsRemaining();
 }
