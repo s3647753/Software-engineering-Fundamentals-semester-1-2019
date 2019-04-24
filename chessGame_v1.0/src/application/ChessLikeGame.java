@@ -47,8 +47,10 @@ public class ChessLikeGame {
 	 * @param viewType Type of user interface, text for development, GUI for release.
 	 */
 	private void startGame(ViewType viewType) {
+	   
 		Board board = new BoardImpl();
 		GameEngine engine = new GameEngineImpl(board);
+		
 		View viewModel = new ViewModel(engine, viewType);
 		viewModel.init();
 

@@ -16,6 +16,7 @@ import model_Interfaces.Board;
 import model_Interfaces.GameEngine;
 import model_Interfaces.Piece;
 import view.gui.NameAndPasswordDialog;
+import view.gui.NewGameDialog;
 import view.gui.OperationCancelledException;
 import view_interfaces.View;
 
@@ -33,6 +34,7 @@ public class ViewModel implements View {
    private Point to = null;
    private List<Point> legalMoves;
    private boolean gameStarted = false; // TODO should come from GE
+   private String[] previousPreferences = new String[4];
 
 
    public ViewModel(GameEngine engine, ViewType viewType) {
@@ -147,7 +149,7 @@ public class ViewModel implements View {
    // this is the only method that the GE should call
    @Override
    public void update(Observable arg0, Object arg1) {
-      
+
       ui.setStatus(engine.getStatus());
       setPlayerTurn();
       ui.setMovesRemaining(42); // TODO get this value from the GE
@@ -192,18 +194,43 @@ public class ViewModel implements View {
 
    @Override
    public void movePlayer(Point from, Point to) {
-      if(engine.movePlayer(from, to) && !gameStarted) {
+      if (engine.movePlayer(from, to) && !gameStarted) {
          gameStarted = true;
       }
    }
 
 
-   // TODO these are just temp values
    @Override
    public void newGame() {
-      // TODO get player information for this functionality
-      engine.newGame("Matt", "Shaun", 13, 16);
-      gameStarted = false;
+
+      List<String> names = engine.getLoggedInPlayerNames();
+      
+      //TODO temp until the register and login works
+      names.add("Ben");
+      names.add("Bernie");
+      names.add("Matt");
+      names.add("Shaun");
+      // TODO end of temp
+
+      String[] preferences;
+      try {
+         preferences = new NewGameDialog().
+               getGamePreferences(names, previousPreferences);
+
+         // TODO matt will change ge.newGame to return a boolean
+         engine.newGame(preferences[0],
+               preferences[1],
+               Integer.valueOf(preferences[2]),
+               Integer.valueOf(preferences[3]));
+         
+         previousPreferences = preferences;
+
+         gameStarted = true;
+
+      } catch (OperationCancelledException e) {
+         ui.setStatus("Player preferences rejected");
+         gameStarted = false;
+      }
    }
 
 
@@ -284,10 +311,10 @@ public class ViewModel implements View {
          // mark the legal moves
          legalMoves = board().getLegalMoves(from);
          ui.showLegalMoves(legalMoves, true);
-         
+
          // setting the split button logic
          ui.setMerged(board().getCell(from).isMerged());
-         
+
       }
 
       // moving to
