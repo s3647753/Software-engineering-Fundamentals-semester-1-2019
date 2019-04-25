@@ -57,6 +57,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 
 	@Override
 	public boolean newGame(String playerWhite, String playerBlack, int player1TurnLimit, int player2TurnLimit) {
+		boolean newGameMade;
 		if(!gameRunning) {
 			//temp until login in complete
 			//login.getPlayerList().contains(playerWhite) && login.getPlayerList().contains(playerBlack)
@@ -73,11 +74,14 @@ public class GameEngineImpl extends Observable implements GameEngine {
 				turns.replace(Colr.BLACK, maxMove);
 
 				gameRunning = true;
+				newGameMade = true;
 			}else {
 				notifyAllObservers("Player Does not exist");
 			}
+		}else {
+			newGameMade = false;
 		}
-		return gameRunning;
+		return newGameMade;
 	}
 
 
