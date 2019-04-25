@@ -225,6 +225,9 @@ public class ViewModel implements View {
          
          previousPreferences = preferences;
 
+         ui.setPlayerNames(preferences[0], preferences[1]);
+         ui.setPlayerScores(0,  0);
+         
          gameStarted = true;
 
       } catch (OperationCancelledException e) {
@@ -285,11 +288,11 @@ public class ViewModel implements View {
    }
 
 
-   @Override
-   public boolean askIfPlayerWantsToSplit(String message) {
-      // TODO Auto-generated method stub
-      return false;
-   }
+//   @Override
+//   public boolean askIfPlayerWantsToSplit(String message) {
+//      // TODO Auto-generated method stub
+//      return false;
+//   }
 
 
    // there are no checks so far

@@ -46,6 +46,7 @@ public interface Board {
     */
    public int getWidth();
 
+
    /**
     * Returns true if there are two pieces in the cell and their state is merged,
     * else false.
@@ -53,6 +54,7 @@ public interface Board {
     * @return True if the cell contains a merged piece
     */
    public boolean isMerged(Point point);
+
 
    /**
     * Sets a piece to the required position. If there is an opponents piece in the
@@ -70,12 +72,12 @@ public interface Board {
 
 
    /**
-    * Moves a piece from one point to another point. If it is a merged pair
-    * both pieces will be moved. If there is a pair of pieces on the square
-    * that have been split, the piece that can move will move and the remaining
-    * piece will not be moved. If there is an opponents piece in the
-    * cell, the opponents piece will be removed. If there is a players piece on the
-    * to-point and a merge is legal they will be merged.
+    * Moves a piece from one point to another point. If it is a merged pair both
+    * pieces will be moved. If there is a pair of pieces on the square that have
+    * been split, the piece that can move will move and the remaining piece will
+    * not be moved. If there is an opponents piece in the cell, the opponents piece
+    * will be removed. If there is a players piece on the to-point and a merge is
+    * legal they will be merged.
     * 
     * @param from
     *           The point the piece is moved from
@@ -88,19 +90,17 @@ public interface Board {
    int movePiece(Point from, Point to)
          throws PieceNotFoundException, IllegalMoveException;
 
-   
+
    /**
-    * Soon to be removed
-    * Use movePiece(Point from, Point to)
+    * Soon to be removed Use movePiece(Point from, Point to)
     */
    @Deprecated
    public int moveSinglePiece(Piece piece, Point from, Point to)
          throws PieceNotFoundException, IllegalMoveException;
-   
-   
+
+
    /**
-    * Soon to be removed
-    * Use movePiece(Point from, Point to)
+    * Soon to be removed Use movePiece(Point from, Point to)
     */
    @Deprecated
    public int moveMergedPiece(Point from, Point to)
@@ -138,16 +138,16 @@ public interface Board {
     */
    public List<Piece> getPiecesAt(Point point);
 
-   
+
    /**
-    * Splits a piece if it was a merged piece.
-    * If not a merged piece then nill effect.
-    * Returns true if the piece was merged and is now split.
-    * All other cases returns false.
+    * Splits a piece if it was a merged piece. If not a merged piece then nill
+    * effect. Returns true if the piece was merged and is now split. All other
+    * cases returns false.
     * 
     * @return True if a merged piece was split.
     */
    public boolean split(Point cell);
+
 
    /**
     * Returns the code for the pieces in the cell. Pieces are sorted in
@@ -193,6 +193,22 @@ public interface Board {
    boolean areSameColor(Point point1, Point point2);
 
 
+   /**
+    * Returns true if there are no more pieces of the designated color left on the
+    * game board.
+    * 
+    * @param colour
+    *           The color of the pieces in question
+    * @return True if there are no pieces left of the color, else false
+    */
+   boolean allPiecesGone(Colr colour);
+
+
+   /**
+    * 
+    * @param cell
+    * @return
+    */
    Cell getCell(Point cell);
 
 }

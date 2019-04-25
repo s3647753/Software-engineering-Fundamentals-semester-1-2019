@@ -124,10 +124,7 @@ public interface View extends Observer {
 	
 	public void notifyMoveIsDangerous(String message);
 	
-	// I already have an updateBoard
-	// public void update(Board gameBoard);
-	
-	public boolean askIfPlayerWantsToSplit(String message);
+//	public boolean askIfPlayerWantsToSplit(String message);
 
    public void init();
 

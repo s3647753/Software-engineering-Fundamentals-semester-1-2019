@@ -372,11 +372,27 @@ public class BoardImpl implements Board {
     * helper to move
     */
    private List<Point> scalarAddition(List<Point> list, Point scalar) {
-      List<Point> newList = new ArrayList();
+      List<Point> newList = new ArrayList<>();
       for(Point point: list) {
          newList.add(point.add(scalar));
       }
       return newList;
+   }
+
+
+   @Override
+   public boolean allPiecesGone(Colr color) {
+      List<Piece> pieces;
+      
+      for(int row = 0; row < HEIGHT; row++) {
+         for(int col = 0; col < WIDTH; col++) {
+            pieces = cells[row][col].getPieces();
+            if(pieces.size() > 0 && pieces.get(0).getColor().equals(color)) {
+               return false;
+            }
+         }
+      }
+      return true;
    }
 
 }

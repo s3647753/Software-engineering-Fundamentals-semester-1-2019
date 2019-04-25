@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import enums.Colr;
+import javafx.scene.paint.Color;
 import model.Bishop;
 import model.BoardImpl;
 import model.IllegalMoveException;
@@ -286,18 +287,18 @@ public class BoardImplTest {
    }
 
 
-   @Test(expected = PieceNotFoundException.class)
-   public void testMoveSinglePiece_pnfe()
-         throws IllegalMoveException, PieceNotFoundException {
-
-      // moving to cell containing a single enemy piece
-      from = new Point(5, 0);
-      to = new Point(4, 0);
-      piece = new Bishop(Colr.WHITE);
-
-      // the argument piece does not match the piece in the cell
-      board.moveSinglePiece(piece, from, to);
-   }
+//   @Test(expected = PieceNotFoundException.class)
+//   public void testMoveSinglePiece_pnfe()
+//         throws IllegalMoveException, PieceNotFoundException {
+//
+//      // moving to cell containing a single enemy piece
+//      from = new Point(5, 0);
+//      to = new Point(4, 0);
+//      piece = new Bishop(Colr.WHITE);
+//
+//      // the argument piece does not match the piece in the cell
+//      board.moveSinglePiece(piece, from, to);
+//   }
 
 
    @Test
@@ -480,6 +481,15 @@ public class BoardImplTest {
       assertTrue("Splitting a merged piece", board.split(point));
       assertFalse("isMerged: merged piece", board.isMerged(point));
       
+   }
+   
+   
+   @Test // TODO
+   public void testAllPiecesGone() {
+//      board.allPiecesGone(Colr.BLACK); // TODO
+//      fail("test not implemented");
+      assertFalse(board.allPiecesGone(Colr.BLACK));
+      assertFalse(board.allPiecesGone(Colr.WHITE));
    }
 
 

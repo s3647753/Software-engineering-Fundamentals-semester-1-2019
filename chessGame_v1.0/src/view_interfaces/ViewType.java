@@ -96,6 +96,10 @@ public interface ViewType {
 
    void setMovesRemaining(int i);
 
+   void setPlayerNames(String whiteName, String blackName);
+
+   void setPlayerScores(int whiteScore, int blackScore);
+
 	
 //	/**
 //	 * TODO
