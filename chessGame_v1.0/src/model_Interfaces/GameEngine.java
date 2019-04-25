@@ -23,8 +23,9 @@ public interface GameEngine {
 	 * @param The Black Player's username
 	 * @param One of the players turn limits
 	 * @param One of the players turn limits
+	 * @return whether a new game can begin or not
 	 */
-	public void newGame(String playerWhite, String playerBlack, int player1TurnLimit, int player2TurnLimit);
+	public boolean newGame(String playerWhite, String playerBlack, int player1TurnLimit, int player2TurnLimit);
 	/**
 	 * Set the views that will be used by the game engine
 	 * In current design this may not end up being used to remove if so
@@ -151,4 +152,6 @@ public interface GameEngine {
 	public boolean split(Point point);
 	
 	public int turnsRemaining();
+	
+	public int getPlayerScore(Colr colour);
 }
