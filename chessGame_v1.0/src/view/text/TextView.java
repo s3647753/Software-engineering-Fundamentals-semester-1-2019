@@ -250,6 +250,18 @@ public void setMerged(boolean merged) {
    // TODO Auto-generated method stub
    
 }
+
+@Override
+public void setPlayerNames(String whiteName, String blackName) {
+   // TODO Auto-generated method stub
+   
+}
+
+@Override
+public void setPlayerScores(int whiteScore, int blackScore) {
+   // TODO Auto-generated method stub
+   
+}
 	
 
 

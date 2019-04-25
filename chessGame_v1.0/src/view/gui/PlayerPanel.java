@@ -24,11 +24,7 @@ public class PlayerPanel extends JPanel {
    
    private View viewModel;
    private Colr color;
-   private JLabel nameFld, colorFld, scorefld, splitFld;
-   
-   
-   // TODO temp for development
-   private String[] names = {"Ben", "Bernie", "Matt", "Shaun"};
+   private JLabel nameFld, colorFld, scoreFld, splitFld;
    
 
    public PlayerPanel(View viewModel, Colr color) {
@@ -65,8 +61,8 @@ public class PlayerPanel extends JPanel {
       colorFld.setFont(FONT25);
 
       
-      scorefld = new JLabel("20", JLabel.CENTER);
-      scorefld.setFont(FONT25);
+      scoreFld = new JLabel("0", JLabel.CENTER);
+      scoreFld.setFont(FONT25);
 //      score.setForeground(Color.BLUE);
       
       // the split button and label
@@ -87,7 +83,7 @@ public class PlayerPanel extends JPanel {
       add(nameFld);
       add(new JLabel());
       add(scoreLbl);
-      add(scorefld);
+      add(scoreFld);
       add(new JLabel(""));
       add(new JLabel(""));
       add(splitBtn);
@@ -103,5 +99,13 @@ public class PlayerPanel extends JPanel {
          splitFld.setText("");
       }
 
+   }
+   
+   public void setName(String name) {
+      nameFld.setText(name);
+   }
+   
+   public void setScore(String score) {
+      scoreFld.setText(score);
    }
 }

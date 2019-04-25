@@ -133,8 +133,16 @@ public class GuiView extends JFrame implements ViewType {
       playerBlack.setMerged(merged);
    }
 
-   
-
+   @Override
+   public void setPlayerNames(String whiteName, String blackName) {
+      playerWhite.setName(whiteName);
+      playerBlack.setName(blackName);
+   }
 	
+   @Override
+   public void setPlayerScores(int whiteScore, int blackScore) {
+      playerWhite.setScore(String.valueOf(whiteScore));
+      playerBlack.setScore(String.valueOf(blackScore));
+   }
 
 }
