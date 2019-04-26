@@ -11,11 +11,11 @@ package model;
 public class PlayerNotFoundException extends Exception {
 
 	public PlayerNotFoundException() {
-		this("Player isn't present in the list of registered players.");
+		this("Player isn't registered");
 	}
 
 	public PlayerNotFoundException(String msg) {
 		super(msg);
 	}
-	
+
 }
