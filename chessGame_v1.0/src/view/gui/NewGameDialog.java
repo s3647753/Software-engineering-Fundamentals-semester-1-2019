@@ -201,18 +201,4 @@ public class NewGameDialog {
             + "2) Game length must be a positive Integer";
    }
 
-   // TODO delete before release
-   // public static void main(String[] args) throws OperationCancelledException {
-   //
-   // String[] namesArray = { "Ben", "Bernie", "Matt", "Shaun" };
-   // List<String> names = Arrays.asList(namesArray);
-   // String[] previous = { "Matt", "Shaun", "13", "16" };
-   // String[] gameInformation;
-   //
-   // gameInformation = new NewGameDialog().getGamePreferences(names, previous);
-   //
-   // for (String s : gameInformation)
-   // System.out.println(s);
-   // }
-
 }

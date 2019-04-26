@@ -61,9 +61,6 @@ public class ViewModel implements View {
       try {
          String[] namePassword = ui.registerPlayer();
 
-         // TODO remove before release
-         System.out.println(namePassword[0] + " : " + namePassword[1]);
-
          ui.setStatus(engine.register(namePassword[0], namePassword[1]));
 
       } catch (OperationCancelledException e) {
@@ -75,21 +72,13 @@ public class ViewModel implements View {
 
    @Override
    public void loginPlayer() {
-      int nameIdx = 0, passwordIdx = 1;
 
       ui.setStatus("Login a Player");
 
       try {
          String[] namePassword = ui.loginPlayer();
 
-         // TODO remove before release
-         System.out.println(namePassword[nameIdx] + " : " + namePassword[passwordIdx]);
-
-         String msg = engine.login(namePassword[nameIdx], namePassword[passwordIdx]);
-
-         if (msg != null) {
-            ui.setStatus(msg);
-         }
+         ui.setStatus(engine.login(namePassword[0], namePassword[1]));
 
       } catch (OperationCancelledException e) {
          ui.setStatus("> Login Cancelled");
@@ -103,12 +92,10 @@ public class ViewModel implements View {
 
       try {
          ui.setStatus(engine.logout(ui.logoutPlayer(engine.getLoggedInPlayerNames())));
-
+         
       } catch (OperationCancelledException e) {
          ui.setStatus(e.getMessage());
-
       }
-
    }
 
 
@@ -155,14 +142,14 @@ public class ViewModel implements View {
 
       List<String> names = engine.getLoggedInPlayerNames();
 
-      // TODO temp until the register and login works
-      if (names.size() < 4) {
-         names.add("Ben");
-         names.add("Bernie");
-         names.add("Matt");
-         names.add("Shaun");
-      }
-      // TODO end of temp
+//      // TODO temp until the register and login works
+//      if (names.size() < 4) {
+//         names.add("Ben");
+//         names.add("Bernie");
+//         names.add("Matt");
+//         names.add("Shaun");
+//      }
+//      // TODO end of temp
 
       String[] preferences;
       try {

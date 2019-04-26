@@ -85,7 +85,7 @@ public class ChessMenuBar extends JMenuBar {
       JMenuItem about = new JMenuItem("About");
       about.setFont(FONT20);
       
-      about.addActionListener(new NewGameListener(viewModel));
+//      about.addActionListener(new NewGameListener(viewModel));
 
       helpMenu.add(help);
       helpMenu.add(about);

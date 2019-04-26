@@ -16,9 +16,7 @@ import view_interfaces.FontsAndColors;
 import view_interfaces.View;
 
 @SuppressWarnings("serial")
-public class PlayerPanel extends JPanel implements FontsAndColors {
-   private static final Color bgColor = new Color(220, 250, 255);
-   
+public class PlayerPanel extends JPanel implements FontsAndColors {  
    private JLabel nameFld, colorFld, scoreFld, splitFld;
    private JButton splitBtn;
    
