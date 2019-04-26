@@ -1,7 +1,8 @@
 package model;
 
 /**
- * when a mismatch between password hashes is found, this exception is thrown.
+ * when a mismatch between password hashes is found, this exception
+ * is thrown.
  * 
  * @author Shaun Davis
  *
@@ -17,5 +18,5 @@ public class WrongPassException extends Exception {
 	public WrongPassException(String msg) {
 		super(msg);
 	}
-
+	
 }
