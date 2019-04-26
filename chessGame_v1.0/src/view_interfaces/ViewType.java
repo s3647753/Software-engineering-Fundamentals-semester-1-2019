@@ -64,13 +64,6 @@ public interface ViewType {
 	 */
 	public void updateBoard(Board gameBoard);
 
-	/**
-	 * Requests the user interface to update all user views to match the fields from
-	 * the default GameEngine.
-	 * 
-	 * @return true if successful;
-	 */
-	public boolean update();
 
 	/**
 	 * Requests that the status message be displayed to the user.
@@ -100,12 +93,7 @@ public interface ViewType {
 
    void setPlayerScores(int whiteScore, int blackScore);
 
-	
-//	/**
-//	 * TODO
-//	 * @param height
-//	 * @param width
-//	 */
-//   public void setBoardSize(int height, int width);
+   String[] newGame(List<String> names) throws OperationCancelledException;
+
 
 }

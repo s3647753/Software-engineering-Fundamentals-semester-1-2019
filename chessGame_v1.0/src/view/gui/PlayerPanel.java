@@ -7,47 +7,42 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controllers.SplitListener;
 import enums.Colr;
+import view_interfaces.FontsAndColors;
 import view_interfaces.View;
 
 @SuppressWarnings("serial")
-public class PlayerPanel extends JPanel {
-   private static final Font FONT20 = new Font(Font.SERIF, Font.BOLD, 20);
-   private static final Font FONT25 = new Font(Font.SERIF, Font.BOLD, 25);
-   private static final Font FONT30 = new Font(Font.SERIF, Font.BOLD, 30);
+public class PlayerPanel extends JPanel implements FontsAndColors {
    private static final Color bgColor = new Color(220, 250, 255);
    
-   private View viewModel;
-   private Colr color;
    private JLabel nameFld, colorFld, scoreFld, splitFld;
+   private JButton splitBtn;
    
 
+   // TODO decompose some of this
    public PlayerPanel(View viewModel, Colr color) {
-      this.viewModel = viewModel;
-      this.color = color;
       
       setLayout(new GridLayout(14, 1));
       setPreferredSize(new Dimension(150, 0));
       setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-      setBackground(bgColor);
+      setBackground(bgLight);
       
       // labels for player fields
       JLabel nameLbl = new JLabel("Name", JLabel.CENTER);
       nameLbl.setFont(FONT30);
-      nameLbl.setForeground(Color.BLUE);
+      nameLbl.setForeground(fgHLite);
       
       JLabel colorLbl = new JLabel("Colour", JLabel.CENTER);
       colorLbl.setFont(FONT30);
-      colorLbl.setForeground(Color.BLUE);
+      colorLbl.setForeground(fgHLite);
       
       JLabel scoreLbl = new JLabel("Score", JLabel.CENTER);
       scoreLbl.setFont(FONT30);
-      scoreLbl.setForeground(Color.BLUE);
+      scoreLbl.setForeground(fgHLite);
       
       // data fields
       nameFld = new JLabel("Testman", JLabel.CENTER); 
@@ -59,15 +54,14 @@ public class PlayerPanel extends JPanel {
       }
       colorFld = new JLabel(colorStr, JLabel.CENTER);
       colorFld.setFont(FONT25);
-
       
       scoreFld = new JLabel("0", JLabel.CENTER);
       scoreFld.setFont(FONT25);
-//      score.setForeground(Color.BLUE);
       
       // the split button and label
-      JButton splitBtn = new JButton("Split");
+      splitBtn = new JButton("Split");
       splitBtn.setFont(FONT20);
+      splitBtn.setEnabled(false);
       splitBtn.addActionListener(new SplitListener(viewModel));
       splitFld = new JLabel("", JLabel.CENTER);
       splitFld.setFont(FONT20);
@@ -92,13 +86,10 @@ public class PlayerPanel extends JPanel {
 
 
    public void setMerged(Boolean merged) {
-      if(merged) {
-         splitFld.setText("Merged");
-      }
-      else {
-         splitFld.setText("");
-      }
-
+      String msg = merged ? "Merged" : "";
+      
+      splitFld.setText(msg);
+      splitBtn.setEnabled(merged);
    }
    
    public void setName(String name) {

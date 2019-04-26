@@ -33,28 +33,27 @@ public class ViewModel implements View {
    private Point from = null;
    private Point to = null;
    private List<Point> legalMoves;
-   private boolean gameStarted = false; // TODO should come from GE
-   private String[] previousPreferences = new String[4];
+   private boolean gameStarted = false;
 
 
-   public ViewModel(GameEngine engine, ViewType viewType) {
+   public ViewModel(GameEngine engine, ViewType userInterface) {
       this.engine = engine;
-      ui = viewType;
+      ui = userInterface;
+
+      legalMoves = new ArrayList<>();
    }
 
 
    public void init() {
       ui.initView(this, engine.getBoard());
       engine.setView(this);
-      legalMoves = new ArrayList<>();
+
       update(null, null);
    }
 
 
    @Override
-   public String registerPlayer() {
-      int nameIdx = 0, passwordIdx = 1;
-      String msg = null;
+   public void registerPlayer() {
 
       // userInterface.
       ui.setStatus("> Register a new Player");
@@ -62,30 +61,17 @@ public class ViewModel implements View {
       try {
          String[] namePassword = ui.registerPlayer();
 
-         System.out.println(namePassword[nameIdx] + " : " + namePassword[passwordIdx]); // TODO
-                                                                                        // remove
-                                                                                        // before
-                                                                                        // release
+         // TODO remove before release
+         System.out.println(namePassword[0] + " : " + namePassword[1]);
 
-         msg = engine.register(namePassword[nameIdx], namePassword[passwordIdx]);
-
-         if (msg != null) {
-            ui.setStatus(msg);
-         }
+         ui.setStatus(engine.register(namePassword[0], namePassword[1]));
 
       } catch (OperationCancelledException e) {
          ui.setStatus("> Registration Cancelled");
       }
 
-      return msg;
    }
 
-
-   // @Override
-   // public void deRegisterPlayer() {
-   // // TODO Auto-generated method stub
-   //
-   // }
 
    @Override
    public void loginPlayer() {
@@ -96,10 +82,8 @@ public class ViewModel implements View {
       try {
          String[] namePassword = ui.loginPlayer();
 
-         System.out.println(namePassword[nameIdx] + " : " + namePassword[passwordIdx]); // TODO
-                                                                                        // remove
-                                                                                        // before
-                                                                                        // release
+         // TODO remove before release
+         System.out.println(namePassword[nameIdx] + " : " + namePassword[passwordIdx]);
 
          String msg = engine.login(namePassword[nameIdx], namePassword[passwordIdx]);
 
@@ -116,79 +100,45 @@ public class ViewModel implements View {
    // Log a player out
    @Override
    public void logoutPlayer() {
-      String msg = null;
-
-      ui.setStatus("> Log Out a Player");
 
       try {
-         msg = engine.logout(ui.logoutPlayer());
+         ui.setStatus(engine.logout(ui.logoutPlayer()));
 
       } catch (OperationCancelledException e) {
-         msg = ("> LogOut Cancelled");
+         ui.setStatus("LogOut Cancelled");
+
       }
 
-      if (msg != null && msg.length() > 0) {
-         ui.setStatus(msg);
-      }
    }
 
-   // @Override // TODO get rid of this method (redundant)
-   // public void updateBoard(Board gameBoard) {
-   // userInterface.updateBoard(gameBoard);
-   // }
 
-   // @Override // TODO get rid of this method (redundant)
-   // public void update(Board gameBoard) {
-   // userInterface.updateBoard(gameBoard);
-   //
-   // // TODO must update all view, e.g. score etc
-   //
-   // }
-
-
-   // this is the only method that the GE should call
    @Override
    public void update(Observable arg0, Object arg1) {
 
-      ui.setStatus(engine.getStatus());
       setPlayerTurn();
-      ui.setMovesRemaining(42); // TODO get this value from the GE
+      
+      ui.setStatus(engine.getStatus());
       ui.updateBoard(board());
+      ui.setMovesRemaining(engine.turnsRemaining());
+      ui.setPlayerScores(
+            engine.getPlayerScore(Colr.WHITE),
+            engine.getPlayerScore(Colr.BLACK));
 
       // TODO update the other panels
    }
 
-   // @Override
-   // public void setStatus(String message) {
-   // // System.out.println("setStatus-viewModel");
-   // userInterface.setStatus(message);
-   // // System.out.println(engine.getBoard()); // TODO
-   // }
-
-
-   // @Override
-   // public boolean splitPieces() {
-   // // TODO Auto-generated method stub
-   // return false;
-   // }
 
    @Override
    public void split() {
       if (from != null && engine.split(from)) {
+         
          ui.highlight(from, false);
          ui.showLegalMoves(board().getLegalMoves(from), false);
          ui.setMerged(board().getCell(from).isMerged());
+         
          from = null;
          to = null;
-         update(null, null); // TODO do I need this
       }
-   }
-
-
-   @Override
-   public List<Piece> getPieceList(int row, int column) {
-      // TODO Auto-generated method stub
-      return null;
    }
 
 
@@ -204,57 +154,38 @@ public class ViewModel implements View {
    public void newGame() {
 
       List<String> names = engine.getLoggedInPlayerNames();
-      
-      //TODO temp until the register and login works
-      names.add("Ben");
-      names.add("Bernie");
-      names.add("Matt");
-      names.add("Shaun");
+
+      // TODO temp until the register and login works
+      if (names.size() < 4) {
+         names.add("Ben");
+         names.add("Bernie");
+         names.add("Matt");
+         names.add("Shaun");
+      }
       // TODO end of temp
 
       String[] preferences;
       try {
-         preferences = new NewGameDialog().
-               getGamePreferences(names, previousPreferences);
+         preferences = ui.newGame(names);
 
-         // TODO matt will change ge.newGame to return a boolean
-         engine.newGame(preferences[0],
+         if (gameStarted = engine.newGame(preferences[0],
                preferences[1],
                Integer.valueOf(preferences[2]),
-               Integer.valueOf(preferences[3]));
-         
-         previousPreferences = preferences;
+               Integer.valueOf(preferences[3]))) {
 
-         ui.setPlayerNames(preferences[0], preferences[1]);
-         ui.setPlayerScores(0,  0);
-         
-         gameStarted = true;
+            ui.setPlayerNames(preferences[0], preferences[1]);
+
+            ui.setPlayerScores(
+                  engine.getPlayerScore(Colr.WHITE),
+                  engine.getPlayerScore(Colr.BLACK));
+
+            ui.setStatus("New Game started");
+         }
 
       } catch (OperationCancelledException e) {
-         ui.setStatus("Player preferences rejected");
+         ui.setStatus("New Game cancelled");
          gameStarted = false;
       }
-   }
-
-
-   @Override
-   public void updateScore(int player1, int player2) {
-      // TODO Auto-generated method stub
-
-   }
-
-
-   @Override
-   public void setPlayerName(int playerNum, String name) {
-      // TODO Auto-generated method stub
-
-   }
-
-
-   @Override
-   public void setPlayerColor(int playerNum, Colr color) {
-      // TODO
-
    }
 
 
@@ -262,14 +193,9 @@ public class ViewModel implements View {
     * Sets the players turn message in the UI
     */
    private void setPlayerTurn() {
+      String turnMsg = (engine.whoseTurn() == Colr.WHITE) ? "Whites Turn" : "Blacks Turn";
 
-      if (engine.whoseTurn() == Colr.WHITE) {
-         ui.setPlayerTurn(" Whites Turn ");
-      }
-
-      else if (engine.whoseTurn() == Colr.BLACK) {
-         ui.setPlayerTurn(" Blacks Turn ");
-      }
+      ui.setPlayerTurn(turnMsg);
 
    }
 
@@ -288,16 +214,14 @@ public class ViewModel implements View {
    }
 
 
-//   @Override
-//   public boolean askIfPlayerWantsToSplit(String message) {
-//      // TODO Auto-generated method stub
-//      return false;
-//   }
-
-
    // there are no checks so far
    @Override
    public void squareClicked(Point point) {
+
+      if (!gameStarted) {
+         ui.setStatus("Setup New Game before playing");
+         return;
+      }
 
       // moving from
       if (from == null &&
@@ -306,7 +230,7 @@ public class ViewModel implements View {
                   .whoseTurn()) {
 
          from = point;
-         ui.setStatus("Piece Selected"); // TODO temp
+         ui.setStatus("Piece Selected");
 
          // highlight the selected piece
          ui.highlight(point, true);
@@ -337,8 +261,6 @@ public class ViewModel implements View {
          ui.setStatus("Illegal selection");
       }
 
-      // update(null, null);
-
    }
 
 
@@ -348,11 +270,5 @@ public class ViewModel implements View {
    private Board board() {
       return engine.getBoard();
    }
-
-   // @Override
-   // public void split() {
-   // split = !split;
-   // ui.updateSplit(split);
-   // }
 
 }

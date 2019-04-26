@@ -8,31 +8,34 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import controllers.DeRegesterListener;
 import controllers.LoginListener;
 import controllers.LogoutListener;
 import controllers.NewGameListener;
-import controllers.GameLengthListener;
 import controllers.RegisterListener;
-import view.model.ViewModel;
 import view_interfaces.View;
 
 @SuppressWarnings("serial")
 public class ChessMenuBar extends JMenuBar {
    private static final Font FONT20 = new Font(Font.SERIF, Font.PLAIN, 20);
-	private View viewModel;
+
 	
 	public ChessMenuBar(View viewModel) {
-		this.viewModel = viewModel;
 		
 		setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 		
-		add(gameMenu());
-		add(helpMenu());
+		add(gameMenu(viewModel));
+		add(helpMenu(viewModel));
 	}
 
 
-   private JMenu gameMenu() {
+	/**
+	 * A menu bar item for game setup. Includes, New Game, Register,
+	 * Login and Logout.
+	 * 
+	 * @param viewModel The class handling user interface logic
+	 * @return The menu item for game settings
+	 */
+   private JMenu gameMenu(View viewModel) {
 	   JMenu gameMenu = new JMenu("Game");
 	   gameMenu.setFont(FONT20);
       
@@ -66,52 +69,13 @@ public class ChessMenuBar extends JMenuBar {
    }
    
 
-   /**
-	 * TODO
-	 * @return
-	 */
-	private JMenu registerMenu() {
-		JMenu registration = new JMenu("Registration");
-		registration.setFont(FONT20);
-		
-		JMenuItem register = new JMenuItem("Register");
-		register.setFont(FONT20);
-//		JMenuItem deRegister = new JMenuItem("De-Register");
-		
-		register.addActionListener(new RegisterListener(viewModel));
-//		deRegister.addActionListener(new DeRegesterListener(viewModel));
-
-		
-		registration.add(register);
-//		registration.add(deRegister);
-		
-		return registration;
-	}
-	
 	/**
-	 * TODO
-	 * @return
+	 * A menu bar item that provides help and information
+	 * 
+	 * @param viewModel The class handling user interface logic
+	 * @return The menu item for help and instructions
 	 */
-	private JMenu loginMenu() {
-		JMenu logging = new JMenu("Login/out");
-		logging.setFont(FONT20);
-		
-		JMenuItem login = new JMenuItem("Log In");
-		JMenuItem logout = new JMenuItem("Log Out");
-		
-		login.setFont(FONT20);
-		logout.setFont(FONT20);
-
-		login.addActionListener(new LoginListener(viewModel));
-		logout.addActionListener(new LogoutListener(viewModel));
-
-		logging.add(login);
-		logging.add(logout);
-		
-		return logging;
-	}
-	
-	private JMenu helpMenu() {
+	private JMenu helpMenu(View viewModel) {
 	   JMenu helpMenu = new JMenu("Help");
       helpMenu.setFont(FONT20);
       
