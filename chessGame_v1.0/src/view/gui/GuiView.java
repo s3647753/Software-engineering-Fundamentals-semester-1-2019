@@ -81,11 +81,12 @@ public class GuiView extends JFrame implements ViewType {
    public String logoutPlayer(List<String> names) throws OperationCancelledException {
       String[] namesArray = {};
 
+      System.out.println(names);
       // TODO temp commented out until ge and login are ready
-//      namesArray = (String[]) names.toArray(namesArray);
+      namesArray = (String[]) names.toArray(namesArray);
 
-      // TODO temp until ge is ready
-      namesArray = new String[] { "Ben", "Bernie", "Matt", "Shaun" };
+//      // TODO temp until ge is ready
+//      namesArray = new String[] { "Ben", "Bernie", "Matt", "Shaun" };
 
       // get the name of the player to log out
       String name = (String) JOptionPane.showInputDialog(
@@ -116,7 +117,7 @@ public class GuiView extends JFrame implements ViewType {
    // called by the ViewModel to update the game board
    @Override
    public void updateBoard(Board gameBoard) {
-      guiBoard.update(gameBoard); // TODO this is init should be set
+      guiBoard.update(gameBoard);
       revalidate();
       repaint();
    }
