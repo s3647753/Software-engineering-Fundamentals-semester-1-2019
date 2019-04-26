@@ -118,12 +118,6 @@ public class TextView implements ViewType {
 	}
 
 	@Override
-	public boolean update() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void setStatus(String message) {
 	   System.out.println("text status");
 		System.out.println(message);
@@ -261,6 +255,12 @@ public void setPlayerNames(String whiteName, String blackName) {
 public void setPlayerScores(int whiteScore, int blackScore) {
    // TODO Auto-generated method stub
    
+}
+
+@Override
+public String[] newGame(List<String> names) throws OperationCancelledException {
+   // TODO Auto-generated method stub
+   return null;
 }
 	
 

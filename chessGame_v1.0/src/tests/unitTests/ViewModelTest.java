@@ -30,27 +30,27 @@ public class ViewModelTest {
       
    }
 
-   // TODO this is work in progress
-   @Test
-   public void testRegisterPlayer() throws OperationCancelledException {
-      String name = "John";
-      String pw = "1234";
-      String message = "Success";
-      
-      expect(engine.register(name, pw)).andReturn(message);
-      replay(engine);
-      
-//      expect(viewType.registerPlayer()).andReturn(new String[]{name, pw}); 
-//      replay(viewType);
-      
-      assertEquals(message, viewModel.registerPlayer());
-      
-//      System.out.println(engine.register(name, pw));
-//      System.out.println(viewType.registerPlayer()[0]);
-
-
-      System.out.println(viewModel.registerPlayer());
-      
-   }
+//   // TODO this is work in progress
+//   @Test
+//   public void testRegisterPlayer() throws OperationCancelledException {
+//      String name = "John";
+//      String pw = "1234";
+//      String message = "Success";
+//      
+//      expect(engine.register(name, pw)).andReturn(message);
+//      replay(engine);
+//      
+////      expect(viewType.registerPlayer()).andReturn(new String[]{name, pw}); 
+////      replay(viewType);
+//      
+//      assertEquals(message, viewModel.registerPlayer());
+//      
+////      System.out.println(engine.register(name, pw));
+////      System.out.println(viewType.registerPlayer()[0]);
+//
+//
+//      System.out.println(viewModel.registerPlayer());
+//      
+//   }
 
 }
