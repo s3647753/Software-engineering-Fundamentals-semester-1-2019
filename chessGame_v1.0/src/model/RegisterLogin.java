@@ -27,6 +27,8 @@ public class RegisterLogin {
 	private static final String SHA_256 = "SHA-256";
 	private static final String REGISTERED_PLAYERS_FILENAME = "registered_players.txt";
 	private static final String FILE_DELIMITER = ":";
+	
+	// this list stores all logged in players.
 	private ArrayList<String> playerList;
 
 	/**
@@ -96,8 +98,6 @@ public class RegisterLogin {
 	 * @param username the propositioned username
 	 * @param password the password to use, in plaintext. it's converted to a hash
 	 *                 before being saved to the registered players file.
-	 * @return true if the player was successfully registered, false if not (for
-	 *         reasons other than a DuplicateNameException)
 	 * @throws DuplicateNameException when the propositioned username is already
 	 *                                present in the registered players file
 	 * @author Shaun Davis
