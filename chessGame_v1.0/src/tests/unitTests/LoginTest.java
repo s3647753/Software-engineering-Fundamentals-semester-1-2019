@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import model.PlayerNotFoundException;
 import model.RegisterLogin;
+import model.WrongPassException;
 
 public class LoginTest {
 
@@ -32,24 +33,20 @@ public class LoginTest {
 		assertEquals("The hash was retrieved incorrectly.", EXP_HASH, testLogin.getPlayerHash(TEST_NAME));
 	}
 	
+	@Test(expected = PlayerNotFoundException.class)
+	public void testPlayerNotFound() throws PlayerNotFoundException, WrongPassException {
+		testLogin.loginPlayer("me", "not a password");
+	}
+	
+	@Test(expected = WrongPassException.class)
+	public void testWrongPass() throws PlayerNotFoundException, WrongPassException {
+		testLogin.loginPlayer(TEST_NAME, "the wrong password!");
+	}
+	
 	@Test
-	public void testLogin() throws PlayerNotFoundException {
-		// first assert the login method returns the correct value
-		assertEquals("Failed to log player in.", true, testLogin.loginPlayer(TEST_NAME, TEST_PASS));
-		// then check the player's actually present in the list.
-		assertEquals("Player wasn't logged in correctly.", true, testLogin.getPlayerList().contains(TEST_NAME));
+	public void testLogin() throws PlayerNotFoundException, WrongPassException {
+		testLogin.loginPlayer(TEST_NAME, TEST_PASS);
+		assertEquals("The player wasn't logged in correctly.", true, testLogin.getPlayerList().contains(TEST_NAME));
 	}
-	
-	/*
-	 * TODO: why does this test fail?
-	 * the exact same line is run in the testLogin test, and it passes there. but in this test, it fails.
-	 * i want to say JUtil is doing weird stuff causing the testLogin's playerList to be empty or something.
-	
-	@AfterClass
-	public static void testPlayerIsLoggedIn() {
-		// then check the player's actually present in the list.
-		assertEquals("Player wasn't logged in correctly.", true, testLogin.getPlayerList().contains(TEST_NAME));
-	}
-	*/
 
 }
