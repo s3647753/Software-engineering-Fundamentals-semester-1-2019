@@ -1,5 +1,6 @@
 package view_interfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Point;
@@ -48,12 +49,13 @@ public interface ViewType {
 
 	/**
 	 * Returns the name of the player wishing to log out.
+	 * @param names 
 	 * 
 	 * @return The players name to log out
 	 * @throws OperationCancelledException
 	 *             If operation fails or is cancelled
 	 */
-	public String logoutPlayer() throws OperationCancelledException;
+	public String logoutPlayer(List<String> names) throws OperationCancelledException;
 
 	/**
 	 * Updates the chess board to match the supplied Board.
