@@ -2,36 +2,34 @@ package tests.unitTests;
 
 import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Login;
 import model.PlayerNotFoundException;
-import model.RegLog;
+import model.RegisterLogin;
 
-public class LoginTest extends RegLog {
+public class LoginTest {
 
 	private static final String TEST_PASS = "password";
 	private static final String TEST_NAME = "testman";
 	private static final String EXP_HASH = "5E884898DA28047151D0E56F8DC6292773603D0D6AABBDD62A11EF721D1542D8";
 	
-	private static Login testLogin;
+	private static RegisterLogin testLogin;
 	
 	@Before
 	public void setUp() throws Exception {
-		testLogin = new Login();
+		testLogin = new RegisterLogin();
 	}
 
 	@Test
 	public void testSHA() {
-		assertEquals("The hashes didn't match.", EXP_HASH, stringToSHA256(TEST_PASS));
+		assertEquals("The hashes didn't match.", EXP_HASH, testLogin.stringToSHA256(TEST_PASS));
 	}
 	
 	@Test
 	public void testGetPlayerHash() throws PlayerNotFoundException {
 		// this test throws an exception. JUtil counts a test as a fail if any exception is thrown.
-		assertEquals("The hash was retrieved incorrectly.", EXP_HASH, getPlayerHash(TEST_NAME));
+		assertEquals("The hash was retrieved incorrectly.", EXP_HASH, testLogin.getPlayerHash(TEST_NAME));
 	}
 	
 	@Test

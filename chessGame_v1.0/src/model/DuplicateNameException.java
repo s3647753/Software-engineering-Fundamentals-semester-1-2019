@@ -12,7 +12,7 @@ package model;
 public class DuplicateNameException extends Exception {
 
 	public DuplicateNameException() {
-		this("Player is already registered.");
+		this("Player already registered");
 	}
 
 	public DuplicateNameException(String msg) {
