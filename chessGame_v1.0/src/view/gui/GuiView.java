@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import enums.Colr;
 import model.Point;
@@ -77,9 +78,30 @@ public class GuiView extends JFrame implements ViewType {
 
 
    @Override
-   public String logoutPlayer() throws OperationCancelledException {
-      // TODO Auto-generated method stub
-      return null;
+   public String logoutPlayer(List<String> names) throws OperationCancelledException {
+      String[] namesArray = {};
+
+      // TODO temp commented out until ge and login are ready
+//      namesArray = (String[]) names.toArray(namesArray);
+
+      // TODO temp until ge is ready
+      namesArray = new String[] { "Ben", "Bernie", "Matt", "Shaun" };
+
+      // get the name of the player to log out
+      String name = (String) JOptionPane.showInputDialog(
+            null,
+            "Select Player to Log Out",
+            "Logout Player",
+            JOptionPane.PLAIN_MESSAGE,
+            null, namesArray, "");
+
+      // logout cancelled
+      if (name == null || name.length() == 0) {
+         throw new OperationCancelledException("Logout cancelled");
+      }
+
+      return name;
+
    }
 
 

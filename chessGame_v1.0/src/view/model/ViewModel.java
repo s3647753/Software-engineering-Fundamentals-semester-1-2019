@@ -77,7 +77,7 @@ public class ViewModel implements View {
    public void loginPlayer() {
       int nameIdx = 0, passwordIdx = 1;
 
-      ui.setStatus("> Login a Player");
+      ui.setStatus("Login a Player");
 
       try {
          String[] namePassword = ui.loginPlayer();
@@ -97,15 +97,15 @@ public class ViewModel implements View {
    }
 
 
-   // Log a player out
+   // Logout a player out
    @Override
    public void logoutPlayer() {
 
       try {
-         ui.setStatus(engine.logout(ui.logoutPlayer()));
+         ui.setStatus(engine.logout(ui.logoutPlayer(engine.getLoggedInPlayerNames())));
 
       } catch (OperationCancelledException e) {
-         ui.setStatus("LogOut Cancelled");
+         ui.setStatus(e.getMessage());
 
       }
 
@@ -116,7 +116,7 @@ public class ViewModel implements View {
    public void update(Observable arg0, Object arg1) {
 
       setPlayerTurn();
-      
+
       ui.setStatus(engine.getStatus());
       ui.updateBoard(board());
       ui.setMovesRemaining(engine.turnsRemaining());
@@ -131,11 +131,11 @@ public class ViewModel implements View {
    @Override
    public void split() {
       if (from != null && engine.split(from)) {
-         
+
          ui.highlight(from, false);
          ui.showLegalMoves(board().getLegalMoves(from), false);
          ui.setMerged(board().getCell(from).isMerged());
-         
+
          from = null;
          to = null;
       }
