@@ -2,6 +2,8 @@ package model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,10 +26,11 @@ public class RegisterLogin {
 
 	private static final String SHA_256 = "SHA-256";
 	private static final String REGISTERED_PLAYERS_FILENAME = "registered_players.txt";
+	private static final String FILE_DELIMITER = ":";
 	private ArrayList<String> playerList;
 
 	/**
-	 * the constructor for the RegLog class simply initalizes the playerList.
+	 * the constructor for the RegLog class simply initializes the playerList.
 	 * 
 	 * @author Shaun Davis
 	 */
@@ -41,25 +44,25 @@ public class RegisterLogin {
 	 * 
 	 * @param username the player's username
 	 * @param password the player's password in plaintext
-	 * @return true if the login was successful, false if the password was incorrect
 	 * @throws PlayerNotFoundException if the player isn't registered i.e. the
 	 *                                 username wasn't found in the registered
 	 *                                 players file
+	 * @throws WrongPassException      if the entered password didn't match the one
+	 *                                 in the registered players file
 	 * @author Shaun Davis
 	 */
-	public boolean loginPlayer(String username, String password) throws PlayerNotFoundException {
+	public void loginPlayer(String username, String password) throws PlayerNotFoundException, WrongPassException {
 		String passHash = getPlayerHash(username);
 
 		if (passHash.equals(stringToSHA256(password))) {
 			// the password hashes match!
 			playerList.add(username);
-			return true;
 		} else {
-			// the password's wrong.
+			throw new WrongPassException();
 
-			// TODO: what happens if the player is already logged in?
+			// TODO: what happens if the player is already logged in? throw another
+			// exception maybe?
 
-			return false;
 		}
 	}
 
@@ -122,7 +125,19 @@ public class RegisterLogin {
 	 * @author Shaun Davis
 	 */
 	private static void saveToFile(String username, String passHash) {
-		// TODO: make this one do thing
+		try {
+			FileWriter out = new FileWriter(new File(REGISTERED_PLAYERS_FILENAME), true);
+
+			out.write(username + FILE_DELIMITER + passHash);
+			out.write('\n');
+
+			out.close();
+
+		} catch (IOException e) {
+			// the File is instantiated (created) in the FileWriter, this should never be
+			// thrown.
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -147,6 +162,7 @@ public class RegisterLogin {
 		} catch (NoSuchAlgorithmException e) {
 			// this should never happen, but i made the getInstance parameter a constant
 			// anyway just to make sure.
+			e.printStackTrace();
 		}
 
 		return hashString;
@@ -190,17 +206,17 @@ public class RegisterLogin {
 		try {
 			Scanner in = new Scanner(new File(REGISTERED_PLAYERS_FILENAME));
 
-			// entries in the file are in the format
-			// username:HASH\n
-			in.useDelimiter(":");
-
-			while (in.hasNext()) {
-				list.put(in.next(), in.next().trim());
+			while (in.hasNextLine()) {
+				// entries in the file are in the format
+				// username:HASH\n
+				String[] player = in.nextLine().split(FILE_DELIMITER);
+				list.put(player[0], player[1].trim());
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
 			// the File is instantiated (created) in the Scanner, this should never be
 			// thrown.
+			e.printStackTrace();
 		}
 
 		return list;
