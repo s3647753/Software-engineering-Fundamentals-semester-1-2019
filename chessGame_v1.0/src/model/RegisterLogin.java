@@ -102,7 +102,7 @@ public class RegisterLogin {
 	 *                                present in the registered players file
 	 * @author Shaun Davis
 	 */
-	protected boolean registerPlayer(String username, String password) throws DuplicateNameException {
+	protected void registerPlayer(String username, String password) throws DuplicateNameException {
 		try {
 			// this first line will immediately throw a PlayerNotFoundException if there's a
 			// matching username.
@@ -113,7 +113,6 @@ public class RegisterLogin {
 			String passHash = stringToSHA256(password);
 			saveToFile(username, passHash);
 		}
-		return false;
 	}
 
 	/**
@@ -124,7 +123,7 @@ public class RegisterLogin {
 	 * @param passHash the corresponding hash of the password
 	 * @author Shaun Davis
 	 */
-	private static void saveToFile(String username, String passHash) {
+	private void saveToFile(String username, String passHash) {
 		try {
 			FileWriter out = new FileWriter(new File(REGISTERED_PLAYERS_FILENAME), true);
 
