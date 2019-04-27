@@ -34,28 +34,11 @@ public interface GameEngine {
 	void setView(View view);
 	
 	/**
-	 * Updates a player's scores in the engine
-	 *  
-	 * @param The username of the player
-	 * @param how much the player's score has increased
-	 */
-	//public void updateScore(String Username, int scoreIncrease);
-	
-	/**
 	 * Adds a game board for the game engine to use
 	 *  
 	 * @param The gameboard to be used by the engine
 	 */
 	public void addBoard(Board board);
-	
-	/**
-	 * Passes both the users chosen turn amounts into the engine to average out and decide max moves.
-	 * The max moves is stored as double the average value as it is reduced each time a players does a turn
-	 * not once each player has completed a pair of turns
-	 * @param The first players preferred moves
-	 * @param The Second players preferred moves
-	 */
-	public void setMaxMoves(int player1Moves, int player2Moves);
 	
 	/**
 	 * Moves a player from point A to point B
@@ -109,12 +92,6 @@ public interface GameEngine {
 	 */
 	public String logout(String username);
 	
-	/**
-	 * Returns a list of the registered players names
-	 * 
-	 * @return The registered players names
-	 */
-	public ArrayList<String> getRegisteredPlayerNames();
 	
 	/**
 	 * Returns a list of the logged in players names
@@ -143,8 +120,6 @@ public interface GameEngine {
 	
 	
 	//TODO create proper comments for these methods
-	public void setColr(String username, Colr colour);
-
 	public Player getWinner();
 
 	public String getStatus();
