@@ -102,7 +102,6 @@ public class GuiView extends JFrame implements ViewType {
       }
 
       return name;
-
    }
 
 

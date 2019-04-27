@@ -48,7 +48,7 @@ public class ViewModel implements View {
       ui.initView(this, engine.getBoard());
       engine.setView(this);
 
-      update(null, null);
+//      update(null, gameStarted);
    }
 
 
@@ -100,7 +100,8 @@ public class ViewModel implements View {
 
 
    @Override
-   public void update(Observable arg0, Object arg1) {
+   public void update(Observable observable, Object gameStarted) {
+      this.gameStarted = (boolean) gameStarted;
 
       setPlayerTurn();
 
@@ -132,7 +133,8 @@ public class ViewModel implements View {
    @Override
    public void movePlayer(Point from, Point to) {
       if (engine.movePlayer(from, to) && !gameStarted) {
-         gameStarted = true;
+//         gameStarted = true; // TODO is this buggy
+         // TODO can controller call GE direct
       }
    }
 
