@@ -56,7 +56,7 @@ public class RegisterLogin {
 	public void loginPlayer(String username, String password) throws PlayerNotFoundException, WrongPassException {
 		String passHash = getPlayerHash(username);
 
-		if (passHash.equals(stringToSHA256(password))) {
+		if (passHash.equals(stringToSHA256(password, username))) {
 			// the password hashes match!
 			playerList.add(username);
 		} else {
@@ -110,7 +110,7 @@ public class RegisterLogin {
 			// so if it ever passes that first line, the username already exists.
 			throw new DuplicateNameException();
 		} catch (PlayerNotFoundException e) {
-			String passHash = stringToSHA256(password);
+			String passHash = stringToSHA256(password, username);
 			saveToFile(username, passHash);
 		}
 	}
@@ -147,13 +147,14 @@ public class RegisterLogin {
 	 * @author Shaun Davis
 	 */
 
-	public String stringToSHA256(String inputString) {
+	public String stringToSHA256(String inputString, String salt) {
 		String hashString = null;
 
 		try {
 			MessageDigest md = MessageDigest.getInstance(SHA_256);
 			// update/populate the digest with the bytes of the inputString
 			// we specify UTF-8, just in case it tries to use the "platform default".
+			md.update(salt.getBytes(StandardCharsets.UTF_8));
 			md.update(inputString.getBytes(StandardCharsets.UTF_8));
 			byte[] hash = md.digest();
 			// convert the bytes of the hash to hex because hex is cool
