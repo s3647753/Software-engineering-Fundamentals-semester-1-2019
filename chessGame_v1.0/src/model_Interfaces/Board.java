@@ -92,22 +92,6 @@ public interface Board {
 
 
    /**
-    * Soon to be removed Use movePiece(Point from, Point to)
-    */
-   @Deprecated
-   public int moveSinglePiece(Piece piece, Point from, Point to)
-         throws PieceNotFoundException, IllegalMoveException;
-
-
-   /**
-    * Soon to be removed Use movePiece(Point from, Point to)
-    */
-   @Deprecated
-   public int moveMergedPiece(Point from, Point to)
-         throws IllegalMoveException, PieceNotFoundException;
-
-
-   /**
     * Determines if a merged piece can legally move from one point to another.
     * 
     * @param from

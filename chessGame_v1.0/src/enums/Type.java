@@ -7,5 +7,5 @@ package enums;
  *
  */
 public enum Type {
-	BISHOP, KNIGHT, ROOK, NONE;
+	BISHOP, KNIGHT, ROOK;
 }

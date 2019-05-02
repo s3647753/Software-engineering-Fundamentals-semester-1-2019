@@ -12,14 +12,13 @@ import controllers.LoginListener;
 import controllers.LogoutListener;
 import controllers.NewGameListener;
 import controllers.RegisterListener;
+import view_interfaces.FontsAndColors;
 import view_interfaces.View;
 
 @SuppressWarnings("serial")
-public class ChessMenuBar extends JMenuBar {
-   private static final Font FONT20 = new Font(Font.SERIF, Font.PLAIN, 20);
-
+public class MenuBarChess extends JMenuBar implements FontsAndColors {
 	
-	public ChessMenuBar(View viewModel) {
+	public MenuBarChess(View viewModel) {
 		
 		setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 		

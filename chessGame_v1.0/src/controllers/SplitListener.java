@@ -5,6 +5,12 @@ import java.awt.event.ActionListener;
 
 import view_interfaces.View;
 
+/**
+ * Listens for the user to select to split a merged piece.
+ * 
+ * @author Bernard O'Meara
+ *
+ */
 public class SplitListener implements ActionListener {
    private View viewModel;
 
@@ -12,7 +18,6 @@ public class SplitListener implements ActionListener {
       super();
       this.viewModel = viewModel;
    }
-
 
 
    @Override

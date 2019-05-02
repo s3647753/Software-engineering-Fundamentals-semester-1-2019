@@ -130,13 +130,13 @@ public class ViewModel implements View {
    }
 
 
-   @Override
-   public void movePlayer(Point from, Point to) {
-      if (engine.movePlayer(from, to) && !gameStarted) {
-//         gameStarted = true; // TODO is this buggy
-         // TODO can controller call GE direct
-      }
-   }
+//   @Override
+//   public void movePlayer(Point from, Point to) {
+//      if (engine.movePlayer(from, to) && !gameStarted) {
+////         gameStarted = true; // TODO is this buggy
+//         // TODO can controller call GE direct
+//      }
+//   }
 
 
    @Override
@@ -144,20 +144,12 @@ public class ViewModel implements View {
 
       List<String> names = engine.getLoggedInPlayerNames();
 
-//      // TODO temp until the register and login works
-//      if (names.size() < 4) {
-//         names.add("Ben");
-//         names.add("Bernie");
-//         names.add("Matt");
-//         names.add("Shaun");
-//      }
-//      // TODO end of temp
-
       String[] preferences;
       try {
          preferences = ui.newGame(names);
 
-         if (gameStarted = engine.newGame(preferences[0],
+         if (gameStarted = engine.newGame(
+               preferences[0],
                preferences[1],
                Integer.valueOf(preferences[2]),
                Integer.valueOf(preferences[3]))) {
@@ -205,7 +197,7 @@ public class ViewModel implements View {
 
    // there are no checks so far
    @Override
-   public void squareClicked(Point point) {
+   public void squareSelected(Point point) {
 
       if (!gameStarted) {
          ui.setStatus("Setup New Game before playing");
@@ -236,7 +228,8 @@ public class ViewModel implements View {
       // moving to
       else if (from != null && engine.getLegalMoves(from).contains(point)) {
          to = point;
-         movePlayer(from, to);
+         engine.movePlayer(from, to);
+//         movePlayer(from, to);
 
          // reset for the next move
          ui.highlight(from, false);

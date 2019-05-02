@@ -12,7 +12,6 @@ import model.GameEngineImpl;
 import model_Interfaces.GameEngine;
 import view.gui.OperationCancelledException;
 import view.model.ViewModel;
-import view.text.TextView;
 import view_interfaces.View;
 import view_interfaces.ViewType;
 
@@ -24,7 +23,6 @@ public class ViewModelTest {
    @Before
    public void setUp() throws Exception {
       engine = createMock(GameEngineImpl.class);
-      viewType = createMock(TextView.class);
       
       viewModel = new ViewModel(engine, viewType);
       

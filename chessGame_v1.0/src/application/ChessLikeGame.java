@@ -9,14 +9,9 @@ import model_Interfaces.Board;
 import model_Interfaces.GameEngine;
 import view.gui.GuiView;
 import view.model.ViewModel;
-import view.text.TextView;
 
 /**
- * launches the Chess-Like-Game.
- * 
- * For now I an not running the view in a separate thread as
- * I would prefer no user inputs while the gameEngine is thinking.
- * 
+ * launches the Chess-Like-Game, DeskTop GUI version.
  * 
  * @author Bernard O'Meara
  *
@@ -29,25 +24,16 @@ public class ChessLikeGame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ViewType viewType;
-		
-		// select one viewType for use in the game play only;
-//		viewType = new TextView();
-		viewType = new GuiView();
-		
-		ChessLikeGame game = new ChessLikeGame();
-		game.startGame(viewType);
+		new ChessLikeGame().startGame();
 
-		
 	}
 	
 	/**
-	 * Starts the ChessLikeGame
+	 * Initializes the major components and Starts the ChessLikeGame
 	 * 
-	 * @param viewType Type of user interface, text for development, GUI for release.
 	 */
-	private void startGame(ViewType viewType) {
-	   
+	private void startGame() {
+	   ViewType viewType = new GuiView();
 		Board board = new BoardImpl();
 		GameEngine engine = new GameEngineImpl(board);
 		

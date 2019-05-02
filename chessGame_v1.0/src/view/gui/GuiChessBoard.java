@@ -25,14 +25,14 @@ import view_interfaces.View;
  */
 
 @SuppressWarnings("serial")
-public class ChessBoard extends JPanel {
+public class GuiChessBoard extends JPanel {
    // TODO get rid of magic numbers when GE is ready
    private int width = 6;
    private int height = 6;
    private View viewModel;
    private BoardSquare squares[][] = new BoardSquare[height][width];
 
-   public ChessBoard(View viewModel, Board board) {
+   public GuiChessBoard(View viewModel, Board board) {
       this.viewModel = viewModel;
 
       setLayout(new GridLayout(width, height));

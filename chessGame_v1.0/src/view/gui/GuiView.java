@@ -22,7 +22,7 @@ import view_interfaces.ViewType;
 public class GuiView extends JFrame implements ViewType {
 
    private View viewModel;
-   private ChessBoard guiBoard;
+   private GuiChessBoard guiBoard;
    private ToolBar toolbar;
    private StatusBar statusBar;
    private PlayerPanel playerWhite, playerBlack;
@@ -44,13 +44,13 @@ public class GuiView extends JFrame implements ViewType {
    @Override
    public void initView(View viewModel, Board board) {
       this.viewModel = viewModel;
-      guiBoard = new ChessBoard(viewModel, board);
+      guiBoard = new GuiChessBoard(viewModel, board);
       toolbar = new ToolBar();
       statusBar = new StatusBar();
       playerWhite = new PlayerPanel(viewModel, Colr.WHITE);
       playerBlack = new PlayerPanel(viewModel, Colr.BLACK);
 
-      setJMenuBar(new ChessMenuBar(viewModel));
+      setJMenuBar(new MenuBarChess(viewModel));
       add(guiBoard, BorderLayout.CENTER);
       add(toolbar, BorderLayout.NORTH);
       add(statusBar, BorderLayout.SOUTH);

@@ -43,13 +43,13 @@ public interface View extends Observer {
    public void split();
 
 
-   /**
-    * Moves a piece from one point to another TODO
-    * 
-    * @param from
-    * @param to
-    */
-   public void movePlayer(Point from, Point to);
+//   /**
+//    * Moves a piece from one point to another TODO
+//    * 
+//    * @param from
+//    * @param to
+//    */
+//   public void movePlayer(Point from, Point to);
 
 
    /**
@@ -71,6 +71,6 @@ public interface View extends Observer {
    public void init();
 
 
-   public void squareClicked(Point point);
+   public void squareSelected(Point point);
 
 }
