@@ -10,7 +10,7 @@ import model_Interfaces.Board;
 import model_Interfaces.Piece;
 
 /**
- * Object representation of the game board
+ * Representation of the game board
  * 
  * @author Bernard O'Meara
  * 
@@ -150,15 +150,15 @@ public class BoardImpl implements Board {
 
    @Override
    public void setPiece(Piece piece, Point point) throws IllegalMoveException {
+      getCell(point).addPiece(piece);
 
-      cells[point.getRow()][point.getCol()].addPiece(piece);
    }
 
 
    @Override
    public List<Piece> getPiecesAt(Point point) {
+      return getCell(point).getPieces();
 
-      return cells[point.getRow()][point.getCol()].getPieces();
    }
 
 
@@ -169,7 +169,7 @@ public class BoardImpl implements Board {
       int numPiecesTaken = 0;
       boolean mergedPiece = getCell(from).isMerged();
       List<Piece> pieces = getPiecesAt(from);
-      
+
       // only move to legal places
       if (!getLegalMoves(from).contains(to)) {
          throw new IllegalMoveException("Illegal Move");
@@ -179,23 +179,23 @@ public class BoardImpl implements Board {
       if (!areSameColor(from, to)) {
          numPiecesTaken = getPiecesAt(to).size();
       }
-      
+
       // single piece
-      if(pieces.size() == 1) {
+      if (pieces.size() == 1) {
          moveAPiece(pieces.get(0), from, to);
       }
-      
+
       // merged pieces
-      else if(mergedPiece) {
+      else if (mergedPiece) {
          moveAPiece(pieces.get(1), from, to);
          moveAPiece(pieces.get(0), from, to);
       }
-      
+
       // split pieces
       else {
          Piece pieceToMove = null;
-         for(Piece piece: pieces) {
-            if(scalarAddition(piece.getPotentialMoves(), from).contains(to)) {
+         for (Piece piece : pieces) {
+            if (scalarAddition(piece.getPotentialMoves(), from).contains(to)) {
                pieceToMove = piece;
             }
          }
@@ -204,78 +204,14 @@ public class BoardImpl implements Board {
 
       return numPiecesTaken;
    }
-   
+
+
    // helper to move a piece
-   private void moveAPiece(Piece piece, Point from, Point to) 
+   private void moveAPiece(Piece piece, Point from, Point to)
          throws IllegalMoveException, PieceNotFoundException {
-      
+
       getCell(from).removePiece(piece);
       getCell(to).addPiece(piece);
-   }
-   
-
-
-   @Override // TODO remove this method
-   public int moveSinglePiece(Piece piece, Point from, Point to)
-         throws PieceNotFoundException, IllegalMoveException {
-      
-      return movePiece(from, to);
-
-//      // The number of enemy pieces taken this move
-//      int numTaken = 0;
-//
-//      if (!areSameColor(from, to)) {
-//         numTaken = getPiecesAt(to).size();
-//      }
-//
-//      // ensure from point contains the piece
-//      if (!getPiecesAt(from).contains(piece)) {
-//         throw new PieceNotFoundException("Could not find the piece in the from cell");
-//      }
-//
-//      // carry out the move
-//      getCell(from).removePiece(piece);
-//      getCell(to).addPiece(piece);
-//
-//      return numTaken;
-   }
-
-
-   @Override // TODO remove this method
-   public int moveMergedPiece(Point from, Point to)
-         throws IllegalMoveException, PieceNotFoundException {
-      
-      return movePiece(from, to);
-
-//      List<Piece> pieces = getPiecesAt(from);
-//
-//      // the piece must be a merged piece
-//      if (pieces.size() != 2) {
-//         throw new PieceNotFoundException("Piece is not a merged piece");
-//      }
-//
-//      // only move to legal places
-//      if (!getLegalMoves(from).contains(to)) {
-//         throw new IllegalMoveException();
-//      }
-//
-//      // The number of enemy pieces taken this move
-//      int numTaken = 0;
-//
-//      if (!areSameColor(from, to)) {
-//         numTaken = getPiecesAt(to).size();
-//      }
-//
-//      // the move is illegal
-//      if (!canMoveMergedPiece(from, to)) {
-//         throw new IllegalMoveException();
-//      }
-//
-//      // move the pieces starting from the tail of the list
-//      moveSinglePiece(pieces.get(1), from, to);
-//      moveSinglePiece(pieces.get(0), from, to);
-//
-//      return numTaken;
    }
 
 
@@ -361,19 +297,20 @@ public class BoardImpl implements Board {
       return false;
    }
 
+
    @Override
    public Cell getCell(Point cell) {
 
       return cells[cell.getRow()][cell.getCol()];
    }
-   
-   
+
+
    /*
     * helper to move
     */
    private List<Point> scalarAddition(List<Point> list, Point scalar) {
       List<Point> newList = new ArrayList<>();
-      for(Point point: list) {
+      for (Point point : list) {
          newList.add(point.add(scalar));
       }
       return newList;
@@ -383,11 +320,11 @@ public class BoardImpl implements Board {
    @Override
    public boolean allPiecesGone(Colr color) {
       List<Piece> pieces;
-      
-      for(int row = 0; row < HEIGHT; row++) {
-         for(int col = 0; col < WIDTH; col++) {
+
+      for (int row = 0; row < HEIGHT; row++) {
+         for (int col = 0; col < WIDTH; col++) {
             pieces = cells[row][col].getPieces();
-            if(pieces.size() > 0 && pieces.get(0).getColor().equals(color)) {
+            if (pieces.size() > 0 && pieces.get(0).getColor().equals(color)) {
                return false;
             }
          }

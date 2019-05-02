@@ -6,6 +6,11 @@ import java.awt.event.MouseEvent;
 import model.Point;
 import view_interfaces.View;
 
+/**
+ * Event Listener, player selects a square on the chess board.
+ * 
+ * @author Bernard O'Meara
+ */
 public class PieceClickedListener extends MouseAdapter {
    private Point point;
    private View viewModel;
@@ -16,6 +21,6 @@ public class PieceClickedListener extends MouseAdapter {
    }
 
    public void mouseClicked(MouseEvent e) {
-      viewModel.squareClicked(point);
+      viewModel.squareSelected(point);
    }
 }

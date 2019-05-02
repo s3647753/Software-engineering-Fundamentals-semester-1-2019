@@ -1,5 +1,11 @@
 package controllers;
 
+/**
+ * Event Listener, player selects to login.
+ * 
+ * @author Bernard O'Meara
+ */
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

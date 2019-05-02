@@ -5,6 +5,11 @@ import java.awt.event.ActionListener;
 
 import view_interfaces.View;
 
+/**
+ * Event Listener, player selects to start a new game.
+ * 
+ * @author Bernard O'Meara
+ */
 public class NewGameListener implements ActionListener {
    private View viewModel;
 

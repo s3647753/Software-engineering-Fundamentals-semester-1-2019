@@ -246,45 +246,45 @@ public class BoardImplTest {
    }
 
 
-   @Test
-   public void testMoveSinglePiece_0()
-         throws IllegalMoveException, PieceNotFoundException {
-      // moving to an empty cell
-      from = new Point(5, 0);
-      to = new Point(4, 0);
-      piece = board.getPiecesAt(from).get(0);
-
-      int returned = board.moveSinglePiece(piece, from, to);
-
-      assertEquals("Moving to an empty cell", 0, returned);
-   }
-
-
-   @Test
-   public void testMoveSinglePiece_1()
-         throws IllegalMoveException, PieceNotFoundException {
-      // moving to cell containing a single enemy piece
-      from = new Point(5, 0);
-      to = new Point(4, 0);
-
-      piece = board.getPiecesAt(from).get(0);
-
-      board.setPiece(new Bishop(Colr.BLACK), to);
-
-      int returned = board.moveSinglePiece(piece, from, to);
-
-      assertEquals("Taking a single piece", 1, returned);
-
-      assertEquals("Test the 'to' cell contains one piece)", 1,
-            board.getPiecesAt(to).size());
-
-      assertTrue("test the correct piece is in the 'to' cell",
-            board.getPiecesAt(to).get(0).equals(piece));
-
-      assertFalse("test the from cell no longer contains the piece",
-            board.getPiecesAt(from).contains(piece));
-
-   }
+//   @Test
+//   public void testMoveSinglePiece_0()
+//         throws IllegalMoveException, PieceNotFoundException {
+//      // moving to an empty cell
+//      from = new Point(5, 0);
+//      to = new Point(4, 0);
+//      piece = board.getPiecesAt(from).get(0);
+//
+//      int returned = board.moveSinglePiece(piece, from, to);
+//
+//      assertEquals("Moving to an empty cell", 0, returned);
+//   }
+//
+//
+//   @Test
+//   public void testMoveSinglePiece_1()
+//         throws IllegalMoveException, PieceNotFoundException {
+//      // moving to cell containing a single enemy piece
+//      from = new Point(5, 0);
+//      to = new Point(4, 0);
+//
+//      piece = board.getPiecesAt(from).get(0);
+//
+//      board.setPiece(new Bishop(Colr.BLACK), to);
+//
+//      int returned = board.moveSinglePiece(piece, from, to);
+//
+//      assertEquals("Taking a single piece", 1, returned);
+//
+//      assertEquals("Test the 'to' cell contains one piece)", 1,
+//            board.getPiecesAt(to).size());
+//
+//      assertTrue("test the correct piece is in the 'to' cell",
+//            board.getPiecesAt(to).get(0).equals(piece));
+//
+//      assertFalse("test the from cell no longer contains the piece",
+//            board.getPiecesAt(from).contains(piece));
+//
+//   }
 
 
 //   @Test(expected = PieceNotFoundException.class)
@@ -301,72 +301,72 @@ public class BoardImplTest {
 //   }
 
 
-   @Test
-   public void testMoveSinglePiece_2()
-         throws IllegalMoveException, PieceNotFoundException {
-      // moving to cell containing a merged enemy piece
-      from = new Point(5, 0);
-      to = new Point(4, 0);
-      piece = board.getPiecesAt(from).get(0);
+//   @Test
+//   public void testMoveSinglePiece_2()
+//         throws IllegalMoveException, PieceNotFoundException {
+//      // moving to cell containing a merged enemy piece
+//      from = new Point(5, 0);
+//      to = new Point(4, 0);
+//      piece = board.getPiecesAt(from).get(0);
+//
+//      board.setPiece(new Bishop(Colr.BLACK), to);
+//      board.setPiece(new Knight(Colr.BLACK), to);
+//
+//      int returned = board.moveSinglePiece(piece, from, to);
+//
+//      assertEquals("Taking a merged piece", 2, returned);
+//   }
+//
+//
+//   @Test
+//   public void testMoveMergedPiece_LegalMove()
+//         throws IllegalMoveException, PieceNotFoundException {
+//      // moving a merged piece to empty locations, no obstructions
+//
+//      from = new Point(0, 2); // a black knight.
+//
+//      // merge a piece and test that it is a merged piece
+//      board.setPiece(new Rook(Colr.BLACK), from);
+//      List<Piece> mergedPiece = board.getPiecesAt(from);
+//      assertTrue(mergedPiece.size() == 2);
+//
+//      List<Point> legalMoves = board.getLegalMoves(from);
+//
+//      // moving the piece to legal places
+//      for (Point too : legalMoves) {
+//         assertEquals(0, board.moveMergedPiece(from, too));
+//
+//         // check the piece is in the target location
+//         assertTrue(too.toString(),
+//               board.getPiecesAt(too).contains(new Knight(Colr.BLACK)));
+//         assertTrue(too.toString(),
+//               board.getPiecesAt(too).contains(new Rook(Colr.BLACK)));
+//
+//         // check the 'from' cell is empty
+//         assertEquals(new ArrayList<Piece>(), board.getPiecesAt(from));
+//
+//         // put the piece back
+//         board.moveMergedPiece(too, from);
+//      }
+//   }
 
-      board.setPiece(new Bishop(Colr.BLACK), to);
-      board.setPiece(new Knight(Colr.BLACK), to);
 
-      int returned = board.moveSinglePiece(piece, from, to);
-
-      assertEquals("Taking a merged piece", 2, returned);
-   }
-
-
-   @Test
-   public void testMoveMergedPiece_LegalMove()
-         throws IllegalMoveException, PieceNotFoundException {
-      // moving a merged piece to empty locations, no obstructions
-
-      from = new Point(0, 2); // a black knight.
-
-      // merge a piece and test that it is a merged piece
-      board.setPiece(new Rook(Colr.BLACK), from);
-      List<Piece> mergedPiece = board.getPiecesAt(from);
-      assertTrue(mergedPiece.size() == 2);
-
-      List<Point> legalMoves = board.getLegalMoves(from);
-
-      // moving the piece to legal places
-      for (Point too : legalMoves) {
-         assertEquals(0, board.moveMergedPiece(from, too));
-
-         // check the piece is in the target location
-         assertTrue(too.toString(),
-               board.getPiecesAt(too).contains(new Knight(Colr.BLACK)));
-         assertTrue(too.toString(),
-               board.getPiecesAt(too).contains(new Rook(Colr.BLACK)));
-
-         // check the 'from' cell is empty
-         assertEquals(new ArrayList<Piece>(), board.getPiecesAt(from));
-
-         // put the piece back
-         board.moveMergedPiece(too, from);
-      }
-   }
-
-
-   @Test(expected = IllegalMoveException.class)
-   public void testMoveMergedPiece_NotLegalMove()
-         throws IllegalMoveException, PieceNotFoundException {
-      // throwing an exception for an illegal move
-
-      from = new Point(0, 2); // a black knight.
-      to = new Point(2, 0);
-
-      // merge a piece and test that it is a merged piece
-      board.setPiece(new Rook(Colr.BLACK), from);
-      List<Piece> mergedPiece = board.getPiecesAt(from);
-      assertTrue(mergedPiece.size() == 2);
-
-      // move piece to illegal position
-      assertEquals(0, board.moveMergedPiece(from, to));
-   }
+//   @Test(expected = IllegalMoveException.class)
+//   public void testMoveMergedPiece_NotLegalMove()
+//         throws IllegalMoveException, PieceNotFoundException {
+//      // throwing an exception for an illegal move
+//
+//      from = new Point(0, 2); // a black knight.
+//      to = new Point(2, 0);
+//
+//      // merge a piece and test that it is a merged piece
+//      board.setPiece(new Rook(Colr.BLACK), from);
+//      List<Piece> mergedPiece = board.getPiecesAt(from);
+//      assertTrue(mergedPiece.size() == 2);
+//
+//      // move piece to illegal position
+//      assertEquals(0, board.moveMergedPiece(from, to));
+//   }
 
 
    @Test // TODO presentation
