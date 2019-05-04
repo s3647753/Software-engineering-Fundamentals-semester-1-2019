@@ -55,7 +55,9 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	public boolean newGame(String playerWhite, String playerBlack, int player1TurnLimit, int player2TurnLimit) {
 		boolean newGameMade;
 		if(login.getPlayerList().contains(playerWhite) && login.getPlayerList().contains(playerBlack)) {
-
+			board.resetBoard();
+			
+			
 			playerList.replace(Colr.WHITE, new PlayerImpl(playerWhite));
 			playerList.replace(Colr.BLACK, new PlayerImpl(playerBlack));
 
@@ -70,6 +72,8 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			newGameMade = true;
 			
 			board.resetBoard();
+			
+			notifyAllObservers("New Game");
 		}else {
 			notifyAllObservers("Player Does not exist");
 			newGameMade = false;
@@ -186,7 +190,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		try{
 			login.loginPlayer(username, password);
 		}catch(PlayerNotFoundException e) {
-			message = "Player with username " + username + "does not exist";
+			message = "Player with username " + username + " does not exist";
 		}catch(WrongPassException e) {
 			message = "Password incorrect";
 		}
@@ -239,7 +243,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		turns.replace(Colr.WHITE, 0);
 		turns.replace(Colr.BLACK, 0);
 		
-		board.resetBoard();
+		//board.resetBoard();
 		
 		if(playerList.get(Colr.WHITE).getPoints() > playerList.get(Colr.BLACK).getPoints()) {
 			winner = Colr.WHITE;
@@ -248,8 +252,8 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		}else {
 			winner = null;
 		}
-		playerList.get(Colr.WHITE).resetScore();
-		playerList.get(Colr.BLACK).resetScore();
+		//playerList.get(Colr.WHITE).resetScore();
+		//playerList.get(Colr.BLACK).resetScore();
 
 		if(winner != null) {
 			notifyAllObservers("Game complete, " + playerList.get(winner).getName() + " Wins");
@@ -298,18 +302,17 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	public String getStatus() {
 		return statusMessage;
 	}
-
-
+	
+	
 	@Override
 	public boolean split(Point point) {
 		boolean splitSuccess;
 		String message;
-		//TODO clean up, maybe make a piece colour checking method
 		if(board.getPiecesAt(point).get(0).getColor() == currentTurn) {
 			if(board.isMerged(point)) {
 				board.split(point);
+				reduceMoves();
 				swapTurn();
-		        reduceMoves();
 				splitSuccess = true;
 				message = "Merged piece split";
 			}else {
