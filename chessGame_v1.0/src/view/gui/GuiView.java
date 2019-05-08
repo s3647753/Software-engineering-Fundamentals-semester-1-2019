@@ -1,10 +1,9 @@
 package view.gui;
 
 import java.awt.BorderLayout;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.util.List;
 
 import enums.Colr;
 import model.Point;
@@ -21,7 +20,6 @@ import view_interfaces.ViewType;
 @SuppressWarnings("serial")
 public class GuiView extends JFrame implements ViewType {
 
-   private View viewModel;
    private GuiChessBoard guiBoard;
    private ToolBar toolbar;
    private StatusBar statusBar;
@@ -41,9 +39,14 @@ public class GuiView extends JFrame implements ViewType {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#initView(view_interfaces.View,
+    * model_Interfaces.Board)
+    */
    @Override
    public void initView(View viewModel, Board board) {
-      this.viewModel = viewModel;
       guiBoard = new GuiChessBoard(viewModel, board);
       toolbar = new ToolBar();
       statusBar = new StatusBar();
@@ -61,6 +64,11 @@ public class GuiView extends JFrame implements ViewType {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#registerPlayer()
+    */
    @Override
    public String[] registerPlayer() throws OperationCancelledException {
       String title = "Player Registration";
@@ -69,6 +77,11 @@ public class GuiView extends JFrame implements ViewType {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#loginPlayer()
+    */
    @Override
    public String[] loginPlayer() throws OperationCancelledException {
       String title = "Player Login";
@@ -77,16 +90,17 @@ public class GuiView extends JFrame implements ViewType {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#logoutPlayer(java.util.List)
+    */
    @Override
-   public String logoutPlayer(List<String> names) throws OperationCancelledException {
+   public String logoutPlayer(List<String> names)
+         throws OperationCancelledException {
+
       String[] namesArray = {};
-
-      System.out.println(names);
-      // TODO temp commented out until ge and login are ready
       namesArray = (String[]) names.toArray(namesArray);
-
-//      // TODO temp until ge is ready
-//      namesArray = new String[] { "Ben", "Bernie", "Matt", "Shaun" };
 
       // get the name of the player to log out
       String name = (String) JOptionPane.showInputDialog(
@@ -105,15 +119,25 @@ public class GuiView extends JFrame implements ViewType {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#newGame(java.util.List)
+    */
    @Override
    public String[] newGame(List<String> names)
-         throws OperationCancelledException {
+         throws OperationCancelledException, PlayersNotLoggedInException {
 
-      return (preferences = new NewGameDialog().getGamePreferences(names, preferences));
+      return (preferences = new NewGameDialog().getGamePreferences(names,
+            preferences));
    }
 
 
-   // called by the ViewModel to update the game board
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#updateBoard(model_Interfaces.Board)
+    */
    @Override
    public void updateBoard(Board gameBoard) {
       guiBoard.update(gameBoard);
@@ -122,12 +146,22 @@ public class GuiView extends JFrame implements ViewType {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#setStatus(java.lang.String)
+    */
    @Override
    public void setStatus(String message) {
       statusBar.setMessage(message);
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#highlight(model.Point, boolean)
+    */
    @Override
    public void highlight(Point point, boolean set) {
       guiBoard.highlight(point, set);
@@ -135,32 +169,58 @@ public class GuiView extends JFrame implements ViewType {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#showLegalMoves(java.util.List, boolean)
+    */
    @Override
    public void showLegalMoves(List<Point> legalMoves, boolean set) {
       guiBoard.showLegalMoves(legalMoves, set);
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#setPlayerTurn(enums.Colr)
+    */
    @Override
-   public void setPlayerTurn(String message) {
-      toolbar.setTurnColor(message);
+   public void setPlayerTurn(Colr color) {
+      toolbar.setTurnColor(color == Colr.WHITE ? "Whites Turn" : "Blacks Turn");
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#setMovesRemaining(int)
+    */
    @Override
    public void setMovesRemaining(int remaining) {
       statusBar.setMovesRemaining(remaining);
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#setMerged(boolean)
+    */
    @Override
    public void setMerged(boolean merged) {
-      // TODO only set the applicable player to true
+      // Both the split buttons perform the same function for both players
       playerWhite.setMerged(merged);
       playerBlack.setMerged(merged);
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#setPlayerNames(java.lang.String,
+    * java.lang.String)
+    */
    @Override
    public void setPlayerNames(String whiteName, String blackName) {
       playerWhite.setName(whiteName);
@@ -168,6 +228,11 @@ public class GuiView extends JFrame implements ViewType {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.ViewType#setPlayerScores(int, int)
+    */
    @Override
    public void setPlayerScores(int whiteScore, int blackScore) {
       playerWhite.setScore(String.valueOf(whiteScore));

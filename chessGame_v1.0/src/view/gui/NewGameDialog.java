@@ -1,11 +1,8 @@
 package view.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -16,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import view_interfaces.FontsAndColors;
 
 /**
  * Dialog for getting the player preferences for a new game.
@@ -23,11 +21,7 @@ import javax.swing.JTextField;
  * @author Bernard O'Meara
  *
  */
-public class NewGameDialog {
-   private static final Font FONT20 = new Font(Font.SERIF, Font.PLAIN, 20);
-   private static final Font FONT25 = new Font(Font.SERIF, Font.PLAIN, 25);
-   private static final Font FONT35 = new Font(Font.SERIF, Font.PLAIN, 35);
-   private static final Color FG_Color = Color.BLUE;
+public class NewGameDialog implements FontsAndColors {
 
    private String[] userInput = new String[4];
 
@@ -50,9 +44,10 @@ public class NewGameDialog {
     *           The field values from the previous game, may be null.
     * @return The player preferences.
     * @throws OperationCancelledException
+    * @throws PlayersNotLoggedInException 
     */
    public String[] getGamePreferences(List<String> names, String[] previous)
-         throws OperationCancelledException {
+         throws OperationCancelledException, PlayersNotLoggedInException {
 
       boolean validInput = false;
       int result;
@@ -66,6 +61,10 @@ public class NewGameDialog {
       panel.add(instructions, BorderLayout.NORTH);
       panel.add(inputPanel("White", names, previous), BorderLayout.WEST);
       panel.add(inputPanel("Black", names, previous), BorderLayout.EAST);
+      
+      if(names.size() < 2) {
+         throw new PlayersNotLoggedInException();
+      }
 
       // continue until the players get it right or gives up
       while (!validInput) {
@@ -80,13 +79,11 @@ public class NewGameDialog {
             throw new OperationCancelledException("> Operation Cancelled");
          }
 
-         // assign values
          userInput[0] = whiteName.getSelectedItem().toString();
          userInput[1] = blackName.getSelectedItem().toString();
          userInput[2] = whiteGameLen.getText();
          userInput[3] = blackGameLen.getText();
 
-         // validate user input
          validInput = validateInput();
       }
 
@@ -124,7 +121,8 @@ public class NewGameDialog {
     *           The previous values from the previous game
     * @return The player preferences.
     */
-   private JPanel inputPanel(String color, List<String> names, String[] previous) {
+   private JPanel inputPanel(String color, List<String> names,
+         String[] previous) {
       JPanel panel = new JPanel();
       panel.setLayout(new GridLayout(6, 1));
       panel.setPreferredSize(new Dimension(200, 300));
@@ -142,7 +140,7 @@ public class NewGameDialog {
       colorLbl.setFont(FONT35);
       nameLbl.setFont(FONT25);
       lengthLbl.setFont(FONT25);
-      colorLbl.setForeground(FG_Color);
+      colorLbl.setForeground(fgHLite);
 
       // fields
       String[] namesArray = new String[names.size()];
@@ -189,6 +187,7 @@ public class NewGameDialog {
 
       return panel;
    }
+
 
    /**
     * Instructions for the players entering preferences.

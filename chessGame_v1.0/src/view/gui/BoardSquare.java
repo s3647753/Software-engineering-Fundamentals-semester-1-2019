@@ -5,81 +5,85 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Point;
 
-
+/**
+ * A panel that represents a single square of the chess board.
+ * 
+ * @author Bernard O'Meara
+ *
+ */
 @SuppressWarnings("serial")
 public class BoardSquare extends JPanel {
-	private Image img;
-	private int borderWidth = 4;
-	private JLabel mark = new JLabel();
-	private static final Font FONT = new Font("Verdana", Font.PLAIN, 56);
-
-	public BoardSquare() {
-	   
-	}
-	
-	public BoardSquare(String imagePath) {
-	   setImage(imagePath);		
-		
-		setLayout(new GridLayout(1,1));
-		
-		mark = new JLabel("", JLabel.CENTER);
-		mark.setFont(FONT);
-		mark.setForeground(Color.red);
-		add(mark);
-		
-		// TODO this code sets a label on top of the image (keep for now)
-//		JLabel label = new JLabel("X", JLabel.CENTER);
-//		Font font = new Font("Verdana", Font.PLAIN, 56);
-//		label.setFont(font);
-//		label.setForeground(Color.red);
-//		add(label);
-		
-//		add(new JLabel(new ImageIcon(imagePath)));
+   private Image img;
+   private int borderWidth = 4;
+   private JLabel mark = new JLabel();
+   private static final Font FONT = new Font("Verdana", Font.PLAIN, 56);
 
 
-	}
-	
-	public void setImage(String imagePath) {
-	   img = new ImageIcon(imagePath).getImage();
-	   repaint();
-	}
-	
-	public void setBorder(Color color, boolean set) {
-	   if(set)
-	      setBorder(BorderFactory.createLineBorder(color, borderWidth));
-	   else
-	      setBorder(null);
-	}
-	
+   public BoardSquare(String imagePath) {
+      setImage(imagePath);
 
+      setLayout(new GridLayout(1, 1));
 
-   @Override
-	public void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      
-		g.drawImage(img, 0, 0, null);		
-	}
+      mark = new JLabel("", JLabel.CENTER);
+      mark.setFont(FONT);
+      mark.setForeground(Color.red);
+      add(mark);
 
-   public void showLegalMoves(List<Point> legalMoves, boolean set) {
-      if(set) {
-         mark.setText("x");
-      }
-      
-      else {
-         mark.setText("");
-      }
-      
    }
-	
-	
+
+
+   /**
+    * Takes an image filename with path and sets if as a background image
+    * 
+    * @param The
+    *           imagePath and filename
+    */
+   public void setImage(String imagePath) {
+      img = new ImageIcon(imagePath).getImage();
+      repaint();
+   }
+
+
+   /**
+    * Sets border color and visibility
+    * 
+    * @param color
+    *           The border color
+    * @param set
+    *           Boolean to show/hide the border
+    */
+   public void setBorder(Color color, boolean set) {
+      setBorder(BorderFactory.createLineBorder(color, set ? borderWidth : 0));
+   }
+
+
+   /**
+    * Overrides the default method allowing images to be used as backgrounds.
+    * 
+    */
+   @Override
+   public void paintComponent(Graphics g) {
+      super.paintComponent(g);
+
+      g.drawImage(img, 0, 0, null);
+   }
+
+
+   /**
+    * Sets an indication that a move is legal on or off.
+    * 
+    * @param set
+    *           True to show the move is legal.
+    */
+   public void showLegalMoves(boolean set) {
+      mark.setText(set ? "x" : "");
+   }
 
 }

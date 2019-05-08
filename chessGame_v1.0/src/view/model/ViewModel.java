@@ -1,33 +1,26 @@
 package view.model;
 
-import view_interfaces.ViewType;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
 import enums.Colr;
-import model.DuplicateNameException;
-import model.IllegalMoveException;
-import model.PieceNotFoundException;
-import model.PlayerNotFoundException;
 import model.Point;
 import model_Interfaces.Board;
 import model_Interfaces.GameEngine;
-import model_Interfaces.Piece;
-import view.gui.NameAndPasswordDialog;
-import view.gui.NewGameDialog;
+import view_interfaces.ViewType;
 import view.gui.OperationCancelledException;
+import view.gui.PlayersNotLoggedInException;
 import view_interfaces.View;
 
 /**
+ * Handles view logic for all types of user interfaces. Can drive any single
+ * complying user interface, e.g., text or GUI.
  * 
  * @author Bernard O'Meara
  *
  */
-
 public class ViewModel implements View {
-   // can use either text or GUI
    private ViewType ui;
    private GameEngine engine;
    private Point from = null;
@@ -44,19 +37,24 @@ public class ViewModel implements View {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * @see view_interfaces.View#init()
+    */
+   @Override
    public void init() {
       ui.initView(this, engine.getBoard());
       engine.setView(this);
-
-//      update(null, gameStarted);
    }
 
 
+   /*
+    * (non-Javadoc)
+    * @see view_interfaces.View#registerPlayer()
+    */
    @Override
    public void registerPlayer() {
-
-      // userInterface.
-      ui.setStatus("> Register a new Player");
+      ui.setStatus("Register a new Player");
 
       try {
          String[] namePassword = ui.registerPlayer();
@@ -70,9 +68,12 @@ public class ViewModel implements View {
    }
 
 
+   /*
+    * (non-Javadoc)
+    * @see view_interfaces.View#loginPlayer()
+    */
    @Override
    public void loginPlayer() {
-
       ui.setStatus("Login a Player");
 
       try {
@@ -86,25 +87,32 @@ public class ViewModel implements View {
    }
 
 
-   // Logout a player out
+   /*
+    * (non-Javadoc)
+    * @see view_interfaces.View#logoutPlayer()
+    */
    @Override
    public void logoutPlayer() {
 
       try {
-         ui.setStatus(engine.logout(ui.logoutPlayer(engine.getLoggedInPlayerNames())));
-         
+         ui.setStatus(
+               engine.logout(ui.logoutPlayer(engine.getLoggedInPlayerNames())));
+
       } catch (OperationCancelledException e) {
          ui.setStatus(e.getMessage());
       }
    }
 
 
+   /*
+    * (non-Javadoc)
+    * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+    */
    @Override
    public void update(Observable observable, Object gameStarted) {
       this.gameStarted = (boolean) gameStarted;
 
-      setPlayerTurn();
-
+      ui.setPlayerTurn(engine.whoseTurn());
       ui.setStatus(engine.getStatus());
       ui.updateBoard(board());
       ui.setMovesRemaining(engine.turnsRemaining());
@@ -112,17 +120,20 @@ public class ViewModel implements View {
             engine.getPlayerScore(Colr.WHITE),
             engine.getPlayerScore(Colr.BLACK));
 
-      // TODO update the other panels
    }
 
 
+   /*
+    * (non-Javadoc)
+    * @see view_interfaces.View#split()
+    */
    @Override
    public void split() {
       if (from != null && engine.split(from)) {
 
          ui.highlight(from, false);
          ui.showLegalMoves(board().getLegalMoves(from), false);
-         ui.setMerged(board().getCell(from).isMerged());
+         ui.setMerged(board().isMergedPiece(from));
 
          from = null;
          to = null;
@@ -130,21 +141,15 @@ public class ViewModel implements View {
    }
 
 
-//   @Override
-//   public void movePlayer(Point from, Point to) {
-//      if (engine.movePlayer(from, to) && !gameStarted) {
-////         gameStarted = true; // TODO is this buggy
-//         // TODO can controller call GE direct
-//      }
-//   }
-
-
+   /*
+    * (non-Javadoc)
+    * @see view_interfaces.View#newGame()
+    */
    @Override
    public void newGame() {
-
       List<String> names = engine.getLoggedInPlayerNames();
-
       String[] preferences;
+
       try {
          preferences = ui.newGame(names);
 
@@ -166,36 +171,18 @@ public class ViewModel implements View {
       } catch (OperationCancelledException e) {
          ui.setStatus("New Game cancelled");
          gameStarted = false;
-      }
+      } catch (PlayersNotLoggedInException e) {
+         ui.setStatus(e.getMessage());
+         gameStarted = false;
+      } 
    }
 
 
-   /**
-    * Sets the players turn message in the UI
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.View#squareSelected(model.Point)
     */
-   private void setPlayerTurn() {
-      String turnMsg = (engine.whoseTurn() == Colr.WHITE) ? "Whites Turn" : "Blacks Turn";
-
-      ui.setPlayerTurn(turnMsg);
-
-   }
-
-
-   @Override
-   public void notifyGameOver(String message) {
-      // TODO Auto-generated method stub
-
-   }
-
-
-   @Override
-   public void notifyMoveIsDangerous(String message) {
-      // TODO Auto-generated method stub
-
-   }
-
-
-   // there are no checks so far
    @Override
    public void squareSelected(Point point) {
 
@@ -221,7 +208,7 @@ public class ViewModel implements View {
          ui.showLegalMoves(legalMoves, true);
 
          // setting the split button logic
-         ui.setMerged(board().getCell(from).isMerged());
+         ui.setMerged(board().isMergedPiece(from));
 
       }
 
@@ -229,7 +216,7 @@ public class ViewModel implements View {
       else if (from != null && engine.getLegalMoves(from).contains(point)) {
          to = point;
          engine.movePlayer(from, to);
-//         movePlayer(from, to);
+         // movePlayer(from, to);
 
          // reset for the next move
          ui.highlight(from, false);
@@ -246,8 +233,10 @@ public class ViewModel implements View {
    }
 
 
-   /*
-    * gets the current game board
+   /**
+    * Gets the current game board from the game engine.
+    * 
+    * @return The current game board.
     */
    private Board board() {
       return engine.getBoard();

@@ -10,27 +10,39 @@ import javax.swing.JPanel;
 
 import view_interfaces.FontsAndColors;
 
+/**
+ * A panel that notifies the players whose turn it is.
+ * 
+ * @author Bernard O'Meara
+ *
+ */
 @SuppressWarnings("serial")
-public class ToolBar extends JPanel implements FontsAndColors {   
-   private JLabel statusMsg;
-   
+public class ToolBar extends JPanel implements FontsAndColors {
+   private JLabel turnColorMsg;
+
+
    public ToolBar() {
       setLayout(new GridLayout(1, 1));
       setPreferredSize(new Dimension(0, 50));
       setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
       setBackground(bgDark);
 
-      statusMsg = new JLabel("", JLabel.CENTER);
-      statusMsg.setForeground(fgHLite);
-      statusMsg.setFont(FONT35);
+      turnColorMsg = new JLabel("", JLabel.CENTER);
+      turnColorMsg.setForeground(fgHLite);
+      turnColorMsg.setFont(FONT35);
 
-      add(statusMsg, BorderLayout.CENTER);
+      add(turnColorMsg, BorderLayout.CENTER);
 
    }
 
 
-   
+   /**
+    * Sets a message telling the players whose turn it is.
+    * 
+    * @param message
+    *           The message tp display.
+    */
    public void setTurnColor(String message) {
-      statusMsg.setText(message);
+      turnColorMsg.setText(message);
    }
 }
