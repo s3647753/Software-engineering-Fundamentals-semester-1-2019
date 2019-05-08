@@ -1,19 +1,16 @@
 package view.gui;
 
 import java.awt.Color;
-
 import java.awt.GridLayout;
-import java.util.List;
-import java.util.StringJoiner;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import controllers.PieceClickedListener;
 import model.Point;
 import model_Interfaces.Board;
-import model_Interfaces.Piece;
 import view_interfaces.View;
 
 /**
@@ -21,79 +18,91 @@ import view_interfaces.View;
  * human friendly manner.
  * 
  * @author Bernard O'Meara
- *
+ * 
  */
-
 @SuppressWarnings("serial")
 public class GuiChessBoard extends JPanel {
-   // TODO get rid of magic numbers when GE is ready
-   private int width = 6;
-   private int height = 6;
    private View viewModel;
-   private BoardSquare squares[][] = new BoardSquare[height][width];
+   Map<Point, BoardSquare> squares;
+
 
    public GuiChessBoard(View viewModel, Board board) {
       this.viewModel = viewModel;
+      squares = new HashMap<>();
 
-      setLayout(new GridLayout(width, height));
+      setLayout(new GridLayout(board.WIDTH, board.HEIGHT));
       init(board);
 
    }
 
+
    /**
-    * TODO is this required ? adds the background to the chess board The images of
-    * the pieces are the background when there is no piece an image of just the
-    * background is given
+    * Initializes the GUI board with squares containing images of either the
+    * background color or the piece occupying the square.
     * 
+    * @param board
+    *           The collection of squares that make up the board.
     */
    public void init(Board board) {
       Point point;
 
-      for (int row = 0; row < height; row++) {
-         for (int col = 0; col < width; col++) {
+      for (int row = 0; row < board.HEIGHT; row++) {
+         for (int col = 0; col < board.WIDTH; col++) {
             point = new Point(row, col);
 
-            squares[point.getRow()][point.getCol()] = new BoardSquare(
-                  String.format("images/%s.png",
-                        board.getCode(point)));
-            
-            squares[row][col]
+            squares.put(point, new BoardSquare(
+                  String.format("images/%s.png", board.getCode(point))));
+
+            squares.get(point)
                   .addMouseListener(new PieceClickedListener(viewModel, point));
-            
-            add(squares[row][col]);
+
+            add(squares.get(point));
          }
       }
    }
 
-   
+
+   /**
+    * Updates the users view of the chess board to match the game board passed in.
+    * 
+    * @param board
+    *           The current game board to display to the user.
+    */
    public void update(Board board) {
-      Point point;
-      
-      for (int row = 0; row < height; row++) {
-         for (int col = 0; col < width; col++) {
-            point = new Point(row, col);
-            squares[row][col].setImage(String.format("images/%s.png",
-                  board.getCode(point)));
 
-         }
+      for (Point point : squares.keySet()) {
+         squares.get(point).setImage(String.format("images/%s.png",
+               board.getCode(point)));
       }
    }
 
+
+   /**
+    * Turns the highlight for square on or off.
+    * 
+    * @param point
+    *           The location of the square to highlight.
+    * @param set
+    *           If true the square is highlighted else no highlight.
+    */
    public void highlight(Point point, Boolean set) {
-      square(point).setBorder(Color.BLUE, set);
+      squares.get(point).setBorder(Color.BLUE, set);
    }
 
 
-   private BoardSquare square(Point point) {
-      return squares[point.getRow()][point.getCol()];
-   }
-
+   /**
+    * Turns on the legal move indication for the required squares.
+    * 
+    * @param legalMoves
+    *           The squares that need to be indicated a legal moves.
+    * @param set
+    *           True to turn on square indication, false to turn off.
+    */
    public void showLegalMoves(List<Point> legalMoves, boolean set) {
-      for(Point point: legalMoves) {
-         square(point).showLegalMoves(legalMoves, set);
+      for (Point point : legalMoves) {
+         squares.get(point).showLegalMoves(set);
       }
-      
+
    }
 
- 
 }

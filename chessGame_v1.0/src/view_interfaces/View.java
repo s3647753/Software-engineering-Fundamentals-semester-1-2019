@@ -1,20 +1,22 @@
 package view_interfaces;
 
-import java.util.List;
 import java.util.Observer;
-
-import enums.Colr;
 import model.Point;
-import model_Interfaces.Board;
-import model_Interfaces.Piece;
 
 /**
+ * Interface for the view model. Is an observer of the game engine.
  * 
  * @author Bernard O'Meara
  *
  */
-
 public interface View extends Observer {
+
+   /**
+    * Adds a reference to this as the view model to the game engine and the user
+    * interface.
+    */
+   public void init();
+
 
    /**
     * Requests the name and password from the user and starts the registration
@@ -38,18 +40,9 @@ public interface View extends Observer {
 
 
    /**
-    * TODO
+    * Splits a merged piece and resets the user interface.
     */
    public void split();
-
-
-//   /**
-//    * Moves a piece from one point to another TODO
-//    * 
-//    * @param from
-//    * @param to
-//    */
-//   public void movePlayer(Point from, Point to);
 
 
    /**
@@ -62,15 +55,13 @@ public interface View extends Observer {
    public void newGame();
 
 
-   public void notifyGameOver(String message);
-
-
-   public void notifyMoveIsDangerous(String message);
-
-
-   public void init();
-
-
+   /**
+    * Handles the logic when a player selects a board square. Handles cases where
+    * the move is from, to or an invalid square is selected.
+    * 
+    * @param point
+    *           The location of the selected board square.
+    */
    public void squareSelected(Point point);
 
 }

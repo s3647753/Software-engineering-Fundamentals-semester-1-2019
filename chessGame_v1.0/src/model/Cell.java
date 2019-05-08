@@ -22,7 +22,7 @@ public class Cell {
    private Colr background;
    private boolean merged;
 
-   // the pieces in the cell (size 2 if merged)
+   // the pieces in the cell (size == 2 if merged)
    private List<Piece> pieces;
 
 
@@ -36,7 +36,7 @@ public class Cell {
    /**
     * Returns the enum Colr value of the background of this cell
     * 
-    * @return
+    * @return The cells background color.
     */
    public Colr getBackground() {
       return background;
@@ -83,25 +83,22 @@ public class Cell {
       }
 
       // there is an opposite color piece in the cell
-      if (pieces.size() > 0 && !piece.getColor().equals(pieces.get(0).getColor())) {
+      if (pieces.size() > 0
+            && !piece.getColor().equals(pieces.get(0).getColor())) {
          pieces.clear();
       }
 
       pieces.add(piece);
 
-      // merged piece logic
-      if (pieces.size() == 2) {
-         merged = true;
-      } else {
-         merged = false;
-      }
+      merged = (pieces.size() == 2);
+
    }
 
 
    /**
     * Removes the nominated piece from the cell and returns a reference to the
-    * removed piece. If the piece is not merged the cell will be empty after this
-    * operation. If the cell is merged the other piece will remain in the cell.
+    * removed piece. If the cell is merged the other piece will remain in the
+    * cell, regardless of the merged state of the cell.
     * 
     * @param piece
     *           The piece to be removed.
@@ -121,8 +118,8 @@ public class Cell {
 
 
    /**
-    * Returns the potential moves the piece/s in this cell could make if
-    * unobstructed. If the cell is empty an empty list will be returned. Else the
+    * Returns the potential moves the piece/s in this cell could make if not
+    * obstructed. If the cell is empty an empty list will be returned. Else the
     * combined moves of any pieces in the cell will be returned.
     * 
     * @return A new list of potential moves.
@@ -151,20 +148,14 @@ public class Cell {
    public boolean isLegal(Piece piece) {
       boolean isLegal = true;
 
-      // illegal if there is already a piece of same type and color in the cell
-      // or if there is a merged piece of the same color in the cell
-      switch (pieces.size()) {
-         // same type and color
-         case 1:
-            if (piece.equals(pieces.get(0))) {
-               isLegal = false;
-            }
-            break;
-         case 2:
-            // merged Piece of same color
-            if (piece.getColor().equals(pieces.get(0).getColor())) {
-               isLegal = false;
-            }
+      if (pieces.size() == 1
+            && piece.equals(pieces.get(0))) {
+         isLegal = false;
+      }
+
+      else if (pieces.size() == 2
+            && piece.getColor().equals(pieces.get(0).getColor())) {
+         isLegal = false;
       }
 
       return isLegal;
@@ -178,18 +169,14 @@ public class Cell {
     * 
     * @return True if a merged piece was split.
     */
-   public boolean split() {      
-      if (!merged) {
-         return merged;
-      }
-
-      return !(merged = false);
+   public boolean split() {
+      return merged ? !(merged = false) : merged;
    }
 
 
    /**
-    * Returns the code for the pieces in the cell sorted in
-    * lexicological order.<br>
+    * Returns the code for the pieces in the cell sorted in lexicological
+    * order.<br>
     * Code is xxyyc, for a merged piece.<br>
     * Code is yyc, for a single piece.<br>
     * Code is c, for an empty cell.<br>
@@ -219,7 +206,11 @@ public class Cell {
    }
 
 
-   // Overrides the Object.toString() method.
+   /*
+    * (non-Javadoc)
+    * 
+    * @see java.lang.Object#toString()
+    */
    @Override
    public String toString() {
       StringJoiner sj = new StringJoiner(", ", "Cell[", "]");
@@ -230,19 +221,27 @@ public class Cell {
       return sj.toString();
    }
 
+//
+//   /*
+//    * (non-Javadoc)
+//    * 
+//    * @see java.lang.Object#equals(java.lang.Object)
+//    */
+//   @Override
+//   public boolean equals(Object that) {
+//      if (this.getClass() != that.getClass()) {
+//         return false;
+//      }
+//
+//      return this.toString().equals(((Cell) that).toString());
+//   }
 
-   // Overrides the Object.equals method
-   @Override
-   public boolean equals(Object that) {
-      if (this.getClass() != that.getClass()) {
-         return false;
-      }
 
-      return this.toString().equals(((Cell) that).toString());
-   }
-
-
-   // Overrides the Object.hashCode method
+   /*
+    * (non-Javadoc)
+    * 
+    * @see java.lang.Object#hashCode()
+    */
    @Override
    public int hashCode() {
       return toString().hashCode();

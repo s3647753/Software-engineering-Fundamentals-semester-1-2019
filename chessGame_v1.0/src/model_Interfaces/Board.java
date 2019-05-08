@@ -1,11 +1,8 @@
 package model_Interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import enums.Colr;
-import enums.Type;
-import model.Cell;
 import model.IllegalMoveException;
 import model.PieceNotFoundException;
 import model.Point;
@@ -13,8 +10,7 @@ import model.Point;
 /**
  * Interface for the Chess Board
  * 
- * @author Bernard O'Meaa + TBA
- *
+ * @author Bernard O'Meara
  */
 
 public interface Board {
@@ -32,22 +28,6 @@ public interface Board {
 
 
    /**
-    * Returns the height of the board.
-    * 
-    * @return The number of cells in each column.
-    */
-   public int getHeight();
-
-
-   /**
-    * Returns the width of the board.
-    * 
-    * @return The number of cells in each row.
-    */
-   public int getWidth();
-
-
-   /**
     * Returns true if there are two pieces in the cell and their state is merged,
     * else false.
     * 
@@ -57,27 +37,12 @@ public interface Board {
 
 
    /**
-    * Sets a piece to the required position. If there is an opponents piece in the
-    * cell, the opponents piece will be removed. If there is a players piece in the
-    * cell and a merge is legal the pieces will be merged. If the piece cannot be
-    * set to the position an exception is thrown.
-    * 
-    * @param piece
-    *           TODO
-    * @param position
-    *           TODO
-    * @throws IllegalMoveException
-    */
-   public void setPiece(Piece piece, Point point) throws IllegalMoveException;
-
-
-   /**
     * Moves a piece from one point to another point. If it is a merged pair both
     * pieces will be moved. If there is a pair of pieces on the square that have
     * been split, the piece that can move will move and the remaining piece will
-    * not be moved. If there is an opponents piece in the cell, the opponents piece
-    * will be removed. If there is a players piece on the to-point and a merge is
-    * legal they will be merged.
+    * not be moved. If there is an opponents piece in the cell, the opponents
+    * piece will be removed. If there is a players piece on the to-point and a
+    * merge is legal they will be merged.
     * 
     * @param from
     *           The point the piece is moved from
@@ -89,18 +54,6 @@ public interface Board {
     */
    int movePiece(Point from, Point to)
          throws PieceNotFoundException, IllegalMoveException;
-
-
-   /**
-    * Determines if a merged piece can legally move from one point to another.
-    * 
-    * @param from
-    *           The point the piece is moving from
-    * @param to
-    *           The point the point is moving to
-    * @return True if the move is legal, else false
-    */
-   public boolean canMoveMergedPiece(Point from, Point to);
 
 
    /**
@@ -136,13 +89,13 @@ public interface Board {
    /**
     * Returns the code for the pieces in the cell. Pieces are sorted in
     * lexicological order.<br>
-    * Code is xxyyc, for a merged piece.<br>
-    * Code is yyc, for a single piece.<br>
-    * Code is c, for an empty cell.<br>
-    * Where pieces xx and yy are Piece.type Piece.color.<br>
-    * Chars xx only exist if it is a merged piece.<br>
-    * Chars yy only exist if there is at least one piece in the cell.<br>
-    * Char c is the board color.<br>
+    * Code is XXYYC, for a merged piece.<br>
+    * Code is YYC, for a single piece.<br>
+    * Code is C, for an empty cell.<br>
+    * Where pieces XX and YY are Piece.type Piece.color.<br>
+    * Chars XX only exist if it is a merged piece.<br>
+    * Chars YY only exist if there is at least one piece in the cell.<br>
+    * Char C is the board color.<br>
     * e.g., Black Rook on White = BRW
     * 
     * @param cell
@@ -150,31 +103,6 @@ public interface Board {
     * @return The code for the cell
     */
    public String getCode(Point cell);
-
-
-   /**
-    * Determines if a move by a piece is obstructed by another piece
-    * 
-    * @param from
-    *           The point the piece is moving from.
-    * @param to
-    *           The point the piece is moving to.
-    * @return True if the move is obstructed, else false
-    */
-   boolean isObstructed(Point from, Point to);
-
-
-   /**
-    * Determines if the Pieces in the two points the same color. Returns true if
-    * both cells contain pieces and the pieces are the same color.
-    * 
-    * @param point1
-    *           The first test point.
-    * @param point2
-    *           The point comparing the first point to.
-    * @return True if both cells contain pieces of the same color.
-    */
-   boolean areSameColor(Point point1, Point point2);
 
 
    /**
@@ -189,10 +117,13 @@ public interface Board {
 
 
    /**
+    * Returns true if there are two pieces in the nominated cell and their status
+    * is merged.
     * 
-    * @param cell
-    * @return
+    * @param point
+    *           The position of the cell to be inspected.
+    * @return True if the cell contains a merged pair of pieces, else false.
     */
-   Cell getCell(Point cell);
+   boolean isMergedPiece(Point point);
 
 }

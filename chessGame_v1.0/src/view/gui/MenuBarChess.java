@@ -1,8 +1,5 @@
 package view.gui;
 
-import java.awt.Color;
-import java.awt.Font;
-
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -15,15 +12,20 @@ import controllers.RegisterListener;
 import view_interfaces.FontsAndColors;
 import view_interfaces.View;
 
+/**
+ * A menu bar for the Chess Like Game
+ * 
+ * @author Bernard O'Meara, s8358478,
+ *
+ */
 @SuppressWarnings("serial")
 public class MenuBarChess extends JMenuBar implements FontsAndColors {
 	
 	public MenuBarChess(View viewModel) {
-		
 		setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 		
 		add(gameMenu(viewModel));
-		add(helpMenu(viewModel));
+		add(helpMenu());
 	}
 
 
@@ -69,24 +71,18 @@ public class MenuBarChess extends JMenuBar implements FontsAndColors {
    
 
 	/**
-	 * A menu bar item that provides help and information
+	 * A menu bar item that provides information about the game
 	 * 
-	 * @param viewModel The class handling user interface logic
 	 * @return The menu item for help and instructions
 	 */
-	private JMenu helpMenu(View viewModel) {
+	private JMenu helpMenu() {
 	   JMenu helpMenu = new JMenu("Help");
       helpMenu.setFont(FONT20);
       
-      JMenuItem help = new JMenuItem("Help");
-      help.setFont(FONT20);
-      
       JMenuItem about = new JMenuItem("About");
       about.setFont(FONT20);
-      
-//      about.addActionListener(new NewGameListener(viewModel));
+      // TODO lambda a dialog of info
 
-      helpMenu.add(help);
       helpMenu.add(about);
       
       return helpMenu;

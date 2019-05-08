@@ -8,42 +8,47 @@ import enums.Colr;
 import enums.Type;
 
 /**
- * Bishop subclass for Chess Like Game
- * April 2019
+ * Bishop subclass for Chess Like Game April 2019
  * 
  * @author Bernard O'Meara + Ben Hunter
  *
  */
 public class Bishop extends AbstractPiece {
-	
-	private static List<Point> moveVectors = null;
+   private static List<Point> moveVectors = null;
 
 
-	public Bishop(Colr color) {
-		super(Type.BISHOP, color);
-		initMoveVector();
-	}
-	
-	/**
-	 * Initializes the vector of movements that the piece
-	 * could make if unobstructed.
-	 */
-	private void initMoveVector() {
-		moveVectors = new ArrayList<>();
-		
-		moveVectors.add(new Point(1, 1));
-		moveVectors.add(new Point(2, 2));
-		moveVectors.add(new Point(-1, 1));
-		moveVectors.add(new Point(-2, 2));
-		moveVectors.add(new Point(1, -1));
-		moveVectors.add(new Point(2, -2));
-		moveVectors.add(new Point(-1, -1));
-		moveVectors.add(new Point(-2, -2));
-	}
+   public Bishop(Colr color) {
+      super(Type.BISHOP, color);
+      initMoveVector();
+   }
 
-	@Override
-	public List<Point> getPotentialMoves() {
-		return Collections.unmodifiableList(moveVectors);
-	}
+
+   /**
+    * Initializes the vector of movements that the piece could make if not
+    * obstructed.
+    */
+   private void initMoveVector() {
+      moveVectors = new ArrayList<>();
+
+      moveVectors.add(new Point(1, 1));
+      moveVectors.add(new Point(2, 2));
+      moveVectors.add(new Point(-1, 1));
+      moveVectors.add(new Point(-2, 2));
+      moveVectors.add(new Point(1, -1));
+      moveVectors.add(new Point(2, -2));
+      moveVectors.add(new Point(-1, -1));
+      moveVectors.add(new Point(-2, -2));
+   }
+
+
+   /*
+    * (non-Javadoc)
+    * 
+    * @see model.AbstractPiece#getPotentialMoves()
+    */
+   @Override
+   public List<Point> getPotentialMoves() {
+      return Collections.unmodifiableList(moveVectors);
+   }
 
 }
