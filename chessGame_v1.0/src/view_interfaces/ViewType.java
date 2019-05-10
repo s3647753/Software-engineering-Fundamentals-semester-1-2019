@@ -103,7 +103,7 @@ public interface ViewType {
     * @param colr
     *           The color of the player whose turn it is.
     */
-   public void setPlayerTurn(Colr colr);
+   public void setPlayerTurn(String message);
 
 
    /**
