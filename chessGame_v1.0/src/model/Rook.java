@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import enums.Colr;
@@ -15,21 +14,20 @@ import enums.Type;
  */
 
 public class Rook extends AbstractPiece {
-   private static List<Point> moveVectors = null;
-
 
    public Rook(Colr color) {
-      super(Type.ROOK, color);
-      initMoveVector();
+      super(Type.ROOK, color, vectors());
    }
 
 
    /**
     * Initializes the vector of movements that the piece could make if not
     * obstructed.
+    * 
+    * @return The vectors that apply to this piece type
     */
-   private void initMoveVector() {
-      moveVectors = new ArrayList<>();
+   private static List<Point> vectors() {
+      List<Point> moveVectors = new ArrayList<>();
 
       moveVectors.add(new Point(1, 0));
       moveVectors.add(new Point(2, 0));
@@ -39,17 +37,8 @@ public class Rook extends AbstractPiece {
       moveVectors.add(new Point(0, 2));
       moveVectors.add(new Point(0, -1));
       moveVectors.add(new Point(0, -2));
-   }
 
-
-   /*
-    * (non-Javadoc)
-    * 
-    * @see model.AbstractPiece#getPotentialMoves()
-    */
-   @Override
-   public List<Point> getPotentialMoves() {
-      return Collections.unmodifiableList(moveVectors);
+      return moveVectors;
    }
 
 }
