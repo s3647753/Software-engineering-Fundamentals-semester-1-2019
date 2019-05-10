@@ -186,8 +186,8 @@ public class GuiView extends JFrame implements ViewType {
     * @see view_interfaces.ViewType#setPlayerTurn(enums.Colr)
     */
    @Override
-   public void setPlayerTurn(Colr color) {
-      toolbar.setTurnColor(color == Colr.WHITE ? "Whites Turn" : "Blacks Turn");
+   public void setPlayerTurn(String message) {
+      toolbar.setTurnColor(message);
    }
 
 
