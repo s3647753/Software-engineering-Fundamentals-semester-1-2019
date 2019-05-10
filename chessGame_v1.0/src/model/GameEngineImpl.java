@@ -24,21 +24,18 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	private Board board;
 
 	private Map<Colr, Player> playerList = new HashMap<Colr, Player>();
-	
-	//current placeholder, may not be final
 	private Map<Colr, Integer> turns = new HashMap<Colr, Integer>();
-
-	private int maxMove;
-
+	private Colr currentTurnColour;
+	
 	private RegisterLogin login;
-	private Colr currentTurn;
+	
 	private String statusMessage = "";
 
 	private boolean gameRunning;
 
 	private Colr winner;
 
-
+	
 	public GameEngineImpl(Board board) {
 		this.board = board;
 		login = new RegisterLogin();
@@ -47,7 +44,6 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		turns.put(Colr.WHITE, 0);
 		turns.put(Colr.BLACK, 0);
 		gameRunning = false;
-		maxMove = 0;
 	}
 
 
@@ -61,9 +57,9 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			playerList.replace(Colr.WHITE, new PlayerImpl(playerWhite));
 			playerList.replace(Colr.BLACK, new PlayerImpl(playerBlack));
 
-			currentTurn = Colr.WHITE;
+			currentTurnColour = Colr.WHITE;
 			
-			maxMove = (player1TurnLimit+player2TurnLimit)/2;
+			int maxMove = (player1TurnLimit+player2TurnLimit)/2;
 				
 			turns.replace(Colr.WHITE, maxMove);
 			turns.replace(Colr.BLACK, maxMove);
@@ -78,6 +74,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			notifyAllObservers("Player Does not exist");
 			newGameMade = false;
 		}
+		
 		return newGameMade;
 	}
 
@@ -96,7 +93,56 @@ public class GameEngineImpl extends Observable implements GameEngine {
 
 	@Override
 	public boolean movePlayer(Point from, Point to) {
+		
 		List<Piece> pieces = board.getPiecesAt(from);
+		boolean moveSuccessful = false;
+		int piecesTaken = 0;
+		String message = null;
+		boolean moveAllowed = true;
+		
+		if(turnLimitReached()) {
+			moveAllowed = false;
+			moveSuccessful = false;
+		}else if(pieces.size()==0) {
+			moveAllowed = false;
+			moveSuccessful = false;
+			message = "No piece in location";
+		}else if(pieces.get(0).getColor() != currentTurnColour) {
+			moveAllowed = false;
+			moveSuccessful = false;
+			message = "It is " + currentTurnColour + "'s move";
+		}
+		
+		if(moveAllowed) {
+			try {
+				piecesTaken = board.movePiece(from, to);
+				moveSuccessful = true;
+				reduceMoves();
+				message = "Piece moved";
+			}catch(IllegalMoveException e){
+				moveSuccessful = false;
+				message = "Move not Legal";
+			}catch(PieceNotFoundException e) {
+				moveSuccessful = false;
+				message = "No piece in location";
+			}
+			
+			increaseScore(piecesTaken);
+			swapTurn();
+			notifyAllObservers(message);
+			
+			if(turnLimitReached() || allOpposingPieceGone()) {
+				endGame();
+			}
+		}else {
+			if(!turnLimitReached()) {
+				notifyAllObservers(message);
+			}
+		}
+		
+		return moveSuccessful;
+		
+		/*List<Piece> pieces = board.getPiecesAt(from);
 		boolean moveSuccessful = false;
 		int piecesTaken = 0;
 		String message = null;
@@ -132,74 +178,72 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			moveSuccessful = false;
 			message = "No piece in location";
 		}
-		return moveSuccessful;
+		
+		return moveSuccessful;*/
 	}
 	
-	
-	private boolean allOpposingPieceGone() {
-		Colr opposingColour;
-		
-		if(currentTurn == Colr.WHITE) {
-			opposingColour = Colr.BLACK;
-		}else {
-			opposingColour = Colr.WHITE;
-		}
-		
-		return board.allPiecesGone(opposingColour);
-	}
 	
 	@Override
 	public int getPlayerScore(Colr colour) {
 		return playerList.get(colour).getPoints();
 	}
-	
-
-	private void swapTurn() {
-		if(currentTurn == Colr.WHITE) {
-			currentTurn = Colr.BLACK;
-		}else {
-			currentTurn = Colr.WHITE;
-		}
-	}
 
 
 	@Override
 	public Colr whoseTurn() {
-		return currentTurn;
+		return currentTurnColour;
 	}
 
-
+	
 	@Override
-	public String register(String username, String password) {
+	public boolean register(String username, String password) {
 		String message;
-		
+		boolean registerSuccess;
 		try {
 			login.registerPlayer(username, password);
 			message = "Username " + username + " has successfully registered";
+			registerSuccess = true;
 		}catch(DuplicateNameException e) {
 			message = "Username " + username + " already exists";
+			registerSuccess = false;
+		}
 		
-		}
-		return message;
+		notifyAllObservers(message);
+		
+		return registerSuccess;
 	}
 	
 
 	@Override
-	public String login(String username, String password) {
+	public boolean login(String username, String password) {
 		String message = username + " has successfully logged in";
-		try{
-			login.loginPlayer(username, password);
-		}catch(PlayerNotFoundException e) {
-			message = "Player with username " + username + " does not exist";
-		}catch(WrongPassException e) {
-			message = "Password incorrect";
+		boolean loginSuccess;
+		
+		//temp until implemented in login
+		if(login.getPlayerList().contains(username)) {
+			message = username + " is already logged in";
+			loginSuccess = false;
+		}else {
+			try{
+				login.loginPlayer(username, password);
+				loginSuccess = true;
+			}catch(PlayerNotFoundException e) {
+				message = "Player with username " + username + " does not exist";
+				loginSuccess = false;
+			}catch(WrongPassException e) {
+				message = "Password incorrect";
+				loginSuccess = false;
+			}
 		}
-		return message;
+		
+		notifyAllObservers(message);
+		
+		return loginSuccess;
 	}
 
 	
 	@Override
-	public String logout(String username) {
+	public boolean logout(String username) {
 		boolean logoutSuccessful = login.logoutPlayer(username);
 		String message;
 		if(logoutSuccessful) {
@@ -207,7 +251,10 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		}else {
 			message = username + " was not succcessfully logged out";
 		}
-		return message;
+		
+		notifyAllObservers(message);
+		
+		return logoutSuccessful;
 	}
 
 	
@@ -228,69 +275,6 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		return board;
 	}
 
-
-	private void reduceMoves() {
-		int playerTurn = turns.get(currentTurn);
-		playerTurn--;
-		turns.replace(currentTurn, playerTurn);
-	}
-
-	
-	private void endGame() {		
-		gameRunning = false;
-		maxMove = 0;
-		
-		turns.replace(Colr.WHITE, 0);
-		turns.replace(Colr.BLACK, 0);
-		
-		//board.resetBoard();
-		
-		if(playerList.get(Colr.WHITE).getPoints() > playerList.get(Colr.BLACK).getPoints()) {
-			winner = Colr.WHITE;
-		}else if(playerList.get(Colr.WHITE).getPoints() < playerList.get(Colr.BLACK).getPoints()) {
-			winner = Colr.BLACK;
-		}else {
-			winner = null;
-		}
-		//playerList.get(Colr.WHITE).resetScore();
-		//playerList.get(Colr.BLACK).resetScore();
-
-		if(winner != null) {
-			notifyAllObservers("Game complete, " + playerList.get(winner).getName() + " Wins");
-		}else {
-			notifyAllObservers("Game complete, tied game");
-		}
-	}
-
-	private void increaseScore(int piecesTaken) {
-		if(piecesTaken==1) {
-			playerList.get(currentTurn).increaseScore(5);
-		}else if(piecesTaken==2) {
-			playerList.get(currentTurn).increaseScore(10);
-		}
-	}
-	
-	
-	private boolean turnLimitReached() {
-		boolean gameOver;
-		
-		if(turns.get(Colr.WHITE) == 0 && turns.get(Colr.BLACK) == 0) {
-			gameOver = true;
-			
-		}else {
-			gameOver = false;
-		}
-		
-		return gameOver;
-	}
-
-	
-	private void notifyAllObservers(String message) {
-		statusMessage = message;
-		setChanged();
-		notifyObservers(gameRunning);
-	}
-
 	
 	@Override
 	public Player getWinner() {
@@ -308,7 +292,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	public boolean split(Point point) {
 		boolean splitSuccess;
 		String message;
-		if(board.getPiecesAt(point).get(0).getColor() == currentTurn) {
+		if(board.getPiecesAt(point).get(0).getColor() == currentTurnColour) {
 			if(board.isMerged(point)) {
 				board.split(point);
 				reduceMoves();
@@ -321,9 +305,10 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			}
 		}else {
 			splitSuccess = false;
-			message = "It is " + currentTurn + "'s move";
+			message = "It is " + currentTurnColour + "'s move";
 		}
 		notifyAllObservers(message);
+		
 		return splitSuccess;
 	}
 
@@ -333,5 +318,86 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		return turns.get(Colr.BLACK);
 	}
 
+	
+	private void notifyAllObservers(String message) {
+		statusMessage = message;
+		setChanged();
+		notifyObservers(gameRunning);
+	}
+	
+	
+	private boolean allOpposingPieceGone() {
+		Colr opposingColour;
+		
+		if(currentTurnColour == Colr.WHITE) {
+			opposingColour = Colr.BLACK;
+		}else {
+			opposingColour = Colr.WHITE;
+		}
+		
+		return board.allPiecesGone(opposingColour);
+	}
 
+	
+	private void increaseScore(int piecesTaken) {
+		if(piecesTaken==1) {
+			playerList.get(currentTurnColour).increaseScore(5);
+		}else if(piecesTaken==2) {
+			playerList.get(currentTurnColour).increaseScore(10);
+		}
+	}
+	
+	
+	private boolean turnLimitReached() {
+		boolean gameOver;
+		
+		if(turns.get(Colr.WHITE) == 0 && turns.get(Colr.BLACK) == 0) {
+			gameOver = true;
+			
+		}else {
+			gameOver = false;
+		}
+		
+		return gameOver;
+	}
+	
+	
+	private void reduceMoves() {
+		int playerTurn = turns.get(currentTurnColour);
+		playerTurn--;
+		turns.replace(currentTurnColour, playerTurn);
+	}
+
+	
+	private void endGame() {		
+		gameRunning = false;
+		
+		turns.replace(Colr.WHITE, 0);
+		turns.replace(Colr.BLACK, 0);
+		
+		if(playerList.get(Colr.WHITE).getPoints() > playerList.get(Colr.BLACK).getPoints()) {
+			winner = Colr.WHITE;
+		}else if(playerList.get(Colr.WHITE).getPoints() < playerList.get(Colr.BLACK).getPoints()) {
+			winner = Colr.BLACK;
+		}else {
+			winner = null;
+		}
+		
+		if(winner != null) {
+			notifyAllObservers("Game complete, " + playerList.get(winner).getName() + " Wins");
+		}else {
+			notifyAllObservers("Game complete, tied game");
+		}
+	}
+	
+	
+	private void swapTurn() {
+		if(currentTurnColour == Colr.WHITE) {
+			currentTurnColour = Colr.BLACK;
+		}else {
+			currentTurnColour = Colr.WHITE;
+		}
+	}
+	
+	
 }
