@@ -5,7 +5,7 @@ import enums.Colr;
 public interface Player {
 	
 	
-	public void setColour(Colr colour);
+	//public void setColour(Colr colour);
 	/**
 	 * Returns the name of the player
 	 * @return player name as string
@@ -21,8 +21,8 @@ public interface Player {
 	/**
 	 * Returns the colour of the player
 	 * @return player colour as Colr
-	 */
-	public Colr getColour();
+	 *//*
+	public Colr getColour();*/
 	
 	/**
 	 * Increase the player's score by the number given
