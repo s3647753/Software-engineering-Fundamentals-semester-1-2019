@@ -13,12 +13,12 @@ import model_Interfaces.Player;
 public class PlayerImpl implements Player{
 	String name;
 	int points;
-	Colr colour;
+	//Colr colour;
 	
 	public PlayerImpl(String name){
 		this.name = name;
 		points = 0;
-		colour = null;
+		//colour = null;
 	}
 	
 	
@@ -34,12 +34,12 @@ public class PlayerImpl implements Player{
 	}
 
 	
-	@Override
+	/*@Override
 	public Colr getColour() {
 		// TODO Auto-generated method stub
 		return colour;
 	}
-	
+	*/
 
 	@Override
 	public void increaseScore(int increaseAmount) {
@@ -53,8 +53,8 @@ public class PlayerImpl implements Player{
 	}
 	
 
-	@Override
+	/*@Override
 	public void setColour(Colr colour) {
 		this.colour = colour;
-	}
+	}*/
 }
