@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import enums.Colr;
@@ -14,21 +13,20 @@ import enums.Type;
  *
  */
 public class Knight extends AbstractPiece {
-   private static List<Point> moveVectors = null;
-
 
    public Knight(Colr color) {
-      super(Type.KNIGHT, color);
-      initMoveVector();
+      super(Type.KNIGHT, color, vectors());
    }
 
 
    /**
     * Initializes the vector of movements that the piece could make if not
     * obstructed.
+    * 
+    * @return The vectors that apply to this piece type
     */
-   private void initMoveVector() {
-      moveVectors = new ArrayList<>();
+   private static List<Point> vectors() {
+      List<Point> moveVectors = new ArrayList<>();
 
       moveVectors.add(new Point(2, 1));
       moveVectors.add(new Point(2, -1));
@@ -38,17 +36,8 @@ public class Knight extends AbstractPiece {
       moveVectors.add(new Point(1, -2));
       moveVectors.add(new Point(-1, 2));
       moveVectors.add(new Point(-1, -2));
-   }
 
-
-   /*
-    * (non-Javadoc)
-    * 
-    * @see model.AbstractPiece#getPotentialMoves()
-    */
-   @Override
-   public List<Point> getPotentialMoves() {
-      return Collections.unmodifiableList(moveVectors);
+      return moveVectors;
    }
 
 }
