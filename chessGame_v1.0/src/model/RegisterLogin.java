@@ -158,7 +158,13 @@ public class RegisterLogin {
 			md.update(inputString.getBytes(StandardCharsets.UTF_8));
 			byte[] hash = md.digest();
 			// convert the bytes of the hash to hex because hex is cool
-			hashString = DatatypeConverter.printHexBinary(hash);
+			// thanks to Bernie for this byte-to-string conversion!
+			StringBuilder sb = new StringBuilder();
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+
+            hashString = sb.toString();
 		} catch (NoSuchAlgorithmException e) {
 			// this should never happen, but i made the getInstance parameter a constant
 			// anyway just to make sure.
