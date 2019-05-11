@@ -27,7 +27,7 @@ public class BoardImpIntegrationlTest {
 
    private Board board;
    private Piece piece;
-   private Point point;
+   private Point point, from, to;
    private static Map<Integer, Point> points;
 
 
@@ -144,17 +144,17 @@ public class BoardImpIntegrationlTest {
       // assert that the point contains only the white knight
       assertEquals(new Knight(Colr.WHITE), board.getPiecesAt(point).get(0));
       assertEquals(1, board.getPiecesAt(point).size());
-      
+
       // move the white knight away
       board.movePiece(point, points.get(33));
-      
+
       // the cell should now be empty
       assertEquals(0, board.getPiecesAt(point).size());
 
    }
-   
-   
-// testing getLegalMoves from a knight
+
+
+   // testing getLegalMoves from a knight
    @Test
    public void testGetLegalMoves_Knight() {
       List<Point> moves = board.getLegalMoves(points.get(52));
@@ -170,4 +170,88 @@ public class BoardImpIntegrationlTest {
 
    }
 
+
+   // testing legal moves returned from a merged piece
+   // white bishop and knight merging at point(3,3)
+   @Test
+   public void testGetLegalMoves_MergedPiece()
+         throws IllegalMoveException, PieceNotFoundException {
+
+      // add two pieces to a point near the middle of the board
+      point = points.get(33);
+
+      // set up the merged piece
+      board.movePiece(points.get(51), point);
+      board.movePiece(points.get(52), point);
+
+      List<Point> moves = board.getLegalMoves(point);
+
+      // there should be fourteen legal moves
+      assertEquals("number of legal moves", 14, moves.size());
+
+      // test one each of the Bishops moves an the Knights move
+      assertTrue(moves.contains(points.get(11)));
+      assertTrue(moves.contains(points.get(12)));
+
+   }
+
+
+   // testing moving a single piece
+   @Test
+   public void testMoveASinglePiece_1()
+         throws IllegalMoveException, PieceNotFoundException {
+
+      // moving a piece to an empty cell
+      point = points.get(30);
+      assertEquals("testing the square is empty", 0,
+            board.getPiecesAt(point).size());
+      board.movePiece(points.get(50), point);
+      assertEquals("testing the square is not empty", 1,
+            board.getPiecesAt(point).size());
+
+      // set up to take the oponents piece
+      point = points.get(11);
+      board.movePiece(points.get(51), points.get(33));
+      board.movePiece(points.get(33), point);
+
+      // moving to cell containing a single enemy piece
+      assertEquals("take an enemy piece and get num pieces takes", 1,
+            board.movePiece(points.get(03), point));
+      assertEquals("number of pieces in square", 1,
+            board.getPiecesAt(point).size());
+      assertEquals(new Knight(Colr.BLACK), board.getPiecesAt(point).get(0));
+
+   }
+
+
+   @Test
+   public void testMergePieces()
+         throws PieceNotFoundException, IllegalMoveException {
+
+      // moving to a cell and merging
+      point = points.get(01);
+      assertEquals("testing the square is size 1", 1,
+            board.getPiecesAt(point).size());
+      board.movePiece(points.get(00), point);
+
+      // the square should hold two pieces after the merge
+      assertEquals("testing the square is not empty", 2,
+            board.getPiecesAt(point).size());
+
+      // test piece types in the square
+      assertEquals(new Bishop(Colr.BLACK), board.getPiecesAt(point).get(0));
+      assertEquals(new Rook(Colr.BLACK), board.getPiecesAt(point).get(1));
+
+      // test that the status is merged
+      assertTrue("checking merged status", board.isMerged(point));
+   }
+   
+   
+   @Test(expected = IllegalMoveException.class)
+   public void testMoveSinglePiece_IllegalMove()
+         throws IllegalMoveException, PieceNotFoundException {
+
+      // the argument piece does not match the piece in the cell
+      board.movePiece(points.get(25), points.get(45));
+   }
 }
