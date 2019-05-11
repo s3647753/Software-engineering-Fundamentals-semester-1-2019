@@ -68,7 +68,7 @@ public interface GameEngine {
 	 * @param password The players password
 	 * @return The message to be displayed to the player
 	 */
-	public String register(String username, String password);
+	public boolean register(String username, String password);
 	
 	/**
 	 * Requests the login of a player
@@ -79,7 +79,7 @@ public interface GameEngine {
 	 * @param password The players password
 	 * @return The message to be displayed to the player
 	 */
-	public String login(String username, String password);
+	public boolean login(String username, String password);
 	
 	
 	/**
@@ -90,7 +90,7 @@ public interface GameEngine {
 	 * @param name The players name
 	 * @return The message to be displayed to the player
 	 */
-	public String logout(String username);
+	public boolean logout(String username);
 	
 	
 	/**
@@ -119,14 +119,44 @@ public interface GameEngine {
 	public Board getBoard();
 	
 	
-	//TODO create proper comments for these methods
+	/**
+	 * Returns the colour of a winner 
+	 * 
+	 * @return winner as Colr
+	 */
 	public Player getWinner();
 
+	
+	/**
+	 * Returns the current status message of the game engine
+	 * 
+	 * @return status message as string
+	 */
 	public String getStatus();
 	
+	
+	/**
+	 * Splits the pieces at the point given on the board
+	 * 
+	 * @param location on board as point
+	 * @return whether split was successful or not
+	 */
 	public boolean split(Point point);
 	
+	
+	/**
+	 * Returns the amount of turns remaining in the current game
+	 * 
+	 * @return turns remaining for black as an int
+	 */
 	public int turnsRemaining();
 	
+	
+	/**
+	 * Returns the the player score for the colour given
+	 * 
+	 * @param colour of player as Colr
+	 * @return player score
+	 */
 	public int getPlayerScore(Colr colour);
 }
