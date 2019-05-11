@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import javax.xml.bind.DatatypeConverter;
-
 /**
  * this class handles all login functions, and stores the list of currently
  * logged in players. also contains a bunch of utility functions used by the
@@ -27,7 +25,7 @@ public class RegisterLogin {
 	private static final String SHA_256 = "SHA-256";
 	private static final String REGISTERED_PLAYERS_FILENAME = "registered_players.txt";
 	private static final String FILE_DELIMITER = ":";
-	
+
 	// this list stores all logged in players.
 	private ArrayList<String> playerList;
 
@@ -51,20 +49,22 @@ public class RegisterLogin {
 	 *                                 players file
 	 * @throws WrongPassException      if the entered password didn't match the one
 	 *                                 in the registered players file
+	 * @throws PlayerLoggedInException when the player is already logged in.
 	 * @author Shaun Davis
 	 */
-	public void loginPlayer(String username, String password) throws PlayerNotFoundException, WrongPassException {
-		String passHash = getPlayerHash(username);
+	public void loginPlayer(String username, String password) throws PlayerNotFoundException, WrongPassException, PlayerLoggedInException {
+		if (!playerList.contains(username)) {
+			String passHash = getPlayerHash(username);
 
-		if (passHash.equals(stringToSHA256(password, username))) {
-			// the password hashes match!
-			playerList.add(username);
+			if (passHash.equals(stringToSHA256(password, username))) {
+				// the password hashes match!
+				playerList.add(username);
+			} else {
+				throw new WrongPassException();
+			}
 		} else {
-			throw new WrongPassException();
-
-			// TODO: what happens if the player is already logged in? throw another
-			// exception maybe?
-
+			// player's already logged in!
+			throw new PlayerLoggedInException();
 		}
 	}
 
@@ -160,11 +160,11 @@ public class RegisterLogin {
 			// convert the bytes of the hash to hex because hex is cool
 			// thanks to Bernie for this byte-to-string conversion!
 			StringBuilder sb = new StringBuilder();
-            for (byte b : hash) {
-                sb.append(String.format("%02x", b));
-            }
+			for (byte b : hash) {
+				sb.append(String.format("%02x", b));
+			}
 
-            hashString = sb.toString();
+			hashString = sb.toString();
 		} catch (NoSuchAlgorithmException e) {
 			// this should never happen, but i made the getInstance parameter a constant
 			// anyway just to make sure.
