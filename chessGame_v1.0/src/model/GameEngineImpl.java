@@ -29,7 +29,8 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	
 	private RegisterLogin login;
 	
-	private String statusMessage = "";
+	private String statusMessage;
+	private String infoMessage;
 
 	private boolean gameRunning;
 
@@ -44,6 +45,8 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		turns.put(Colr.WHITE, 0);
 		turns.put(Colr.BLACK, 0);
 		gameRunning = false;
+		statusMessage = "";
+		infoMessage = "";
 	}
 
 
@@ -69,9 +72,9 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			
 			board.resetBoard();
 			
-			notifyAllObservers("New Game");
+			notifyAllObservers("New Game", "Whites Turn");
 		}else {
-			notifyAllObservers("Player Does not exist");
+			notifyAllObservers("Player Does not exist", "");
 			newGameMade = false;
 		}
 		
@@ -129,14 +132,14 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			
 			increaseScore(piecesTaken);
 			swapTurn();
-			notifyAllObservers(message);
+			notifyAllObservers(message, currentTurnColour + "'s Move");
 			
 			if(turnLimitReached() || allOpposingPieceGone()) {
 				endGame();
 			}
 		}else {
 			if(!turnLimitReached()) {
-				notifyAllObservers(message);
+				notifyAllObservers(message, currentTurnColour + "'s Move");
 			}
 		}
 		
@@ -193,7 +196,13 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	public Colr whoseTurn() {
 		return currentTurnColour;
 	}
-
+	
+	
+	@Override
+	public boolean gameRunning() {
+		return gameRunning;
+	}
+	
 	
 	@Override
 	public boolean register(String username, String password) {
@@ -208,7 +217,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			registerSuccess = false;
 		}
 		
-		notifyAllObservers(message);
+		notifyAllObservers(message, infoMessage);
 		
 		return registerSuccess;
 	}
@@ -219,24 +228,21 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		String message = username + " has successfully logged in";
 		boolean loginSuccess;
 		
-		//temp until implemented in login
-		if(login.getPlayerList().contains(username)) {
-			message = username + " is already logged in";
+		try{
+			login.loginPlayer(username, password);
+			loginSuccess = true;
+		}catch(PlayerNotFoundException e) {
+			message = "Player with username " + username + " does not exist";
 			loginSuccess = false;
-		}else {
-			try{
-				login.loginPlayer(username, password);
-				loginSuccess = true;
-			}catch(PlayerNotFoundException e) {
-				message = "Player with username " + username + " does not exist";
-				loginSuccess = false;
-			}catch(WrongPassException e) {
-				message = "Password incorrect";
-				loginSuccess = false;
-			}
+		}catch(WrongPassException e) {
+			message = "Password incorrect";
+			loginSuccess = false;
+		} catch (PlayerLoggedInException e) {
+			message = "Player already logged in";
+			loginSuccess = false;
 		}
-		
-		notifyAllObservers(message);
+	
+		notifyAllObservers(message, infoMessage);
 		
 		return loginSuccess;
 	}
@@ -252,7 +258,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			message = username + " was not succcessfully logged out";
 		}
 		
-		notifyAllObservers(message);
+		notifyAllObservers(message, infoMessage);
 		
 		return logoutSuccessful;
 	}
@@ -287,6 +293,10 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		return statusMessage;
 	}
 	
+	@Override
+	public String getInfoMessage() {
+		return infoMessage;
+	}
 	
 	@Override
 	public boolean split(Point point) {
@@ -307,7 +317,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			splitSuccess = false;
 			message = "It is " + currentTurnColour + "'s move";
 		}
-		notifyAllObservers(message);
+		notifyAllObservers(message, currentTurnColour + "'s Move");
 		
 		return splitSuccess;
 	}
@@ -319,8 +329,9 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	}
 
 	
-	private void notifyAllObservers(String message) {
-		statusMessage = message;
+	private void notifyAllObservers(String statusMessage, String infoMessage) {
+		this.statusMessage = statusMessage;
+		this.infoMessage = infoMessage;
 		setChanged();
 		notifyObservers(gameRunning);
 	}
@@ -384,9 +395,9 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		}
 		
 		if(winner != null) {
-			notifyAllObservers("Game complete, " + playerList.get(winner).getName() + " Wins");
+			notifyAllObservers(playerList.get(winner).getName() + " Wins", "Game Over");
 		}else {
-			notifyAllObservers("Game complete, tied game");
+			notifyAllObservers("Tied game", "Game Over");
 		}
 	}
 	
