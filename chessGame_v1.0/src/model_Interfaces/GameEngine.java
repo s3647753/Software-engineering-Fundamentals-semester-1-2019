@@ -134,6 +134,13 @@ public interface GameEngine {
 	 */
 	public String getStatus();
 	
+	/**
+	 * Returns the current info message of the game engine
+	 * 
+	 * @return info message as string
+	 */
+	public String getInfoMessage();
+	
 	
 	/**
 	 * Splits the pieces at the point given on the board
@@ -159,4 +166,11 @@ public interface GameEngine {
 	 * @return player score
 	 */
 	public int getPlayerScore(Colr colour);
+	
+	/**
+	 * Returns whether a game is running or not
+	 * 
+	 * @return whether game is running as a boolean
+	 */
+	public boolean gameRunning();
 }
