@@ -22,223 +22,235 @@ import view_interfaces.View;
  *
  */
 public class ViewModel implements View {
-	private ViewType ui;
-	private GameEngine engine;
-	private Point from = null;
-	private Point to = null;
-	private List<Point> legalMoves;
-	private boolean gameStarted = false;
+   private ViewType ui;
+   private GameEngine engine;
+   private Point from = null;
+   private Point to = null;
+   private List<Point> legalMoves;
+   private boolean gameStarted = false;
 
-	public ViewModel(GameEngine engine, ViewType userInterface) {
-		this.engine = engine;
-		ui = userInterface;
 
-		legalMoves = new ArrayList<>();
-	}
+   public ViewModel(GameEngine engine, ViewType userInterface) {
+      this.engine = engine;
+      ui = userInterface;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see view_interfaces.View#init()
-	 */
-	@Override
-	public void init() {
-		ui.initView(this, engine.getBoard());
-		engine.setView(this);
-	}
+      legalMoves = new ArrayList<>();
+   }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see view_interfaces.View#registerPlayer()
-	 */
-	@Override
-	public void registerPlayer() {
-		ui.setStatus("Register a new Player");
 
-		try {
-			String[] namePassword = ui.registerPlayer();
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.View#init()
+    */
+   @Override
+   public void init() {
+      ui.initView(this, engine.getBoard());
+      engine.setView(this);
+   }
 
-			engine.register(namePassword[0], namePassword[1]);
 
-		} catch (OperationCancelledException e) {
-			ui.setStatus("> Registration Cancelled");
-		}
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.View#registerPlayer()
+    */
+   @Override
+   public void registerPlayer() {
+      ui.setStatus("Register a new Player");
 
-	}
+      try {
+         String[] namePassword = ui.registerPlayer();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see view_interfaces.View#loginPlayer()
-	 */
-	@Override
-	public void loginPlayer() {
-		ui.setStatus("Login a Player");
+         engine.register(namePassword[0], namePassword[1]);
 
-		try {
-			String[] namePassword = ui.loginPlayer();
+      } catch (OperationCancelledException e) {
+         ui.setStatus("> Registration Cancelled");
+      }
 
-			engine.login(namePassword[0], namePassword[1]);
+   }
 
-		} catch (OperationCancelledException e) {
-			ui.setStatus("> Login Cancelled");
-		}
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see view_interfaces.View#logoutPlayer()
-	 */
-	@Override
-	public void logoutPlayer() {
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.View#loginPlayer()
+    */
+   @Override
+   public void loginPlayer() {
+      ui.setStatus("Login a Player");
 
-		try {
-			engine.logout(ui.logoutPlayer(engine.getLoggedInPlayerNames()));
+      try {
+         String[] namePassword = ui.loginPlayer();
 
-		} catch (OperationCancelledException e) {
-			ui.setStatus(e.getMessage());
-		}
-	}
+         engine.login(namePassword[0], namePassword[1]);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
-	 */
-	@Override
-	public void update(Observable observable, Object gameStarted) {
+      } catch (OperationCancelledException e) {
+         ui.setStatus("> Login Cancelled");
+      }
+   }
 
-		if (this.gameStarted = (boolean) gameStarted) {
-			ui.setPlayerTurn((engine.whoseTurn() == Colr.WHITE ? 
-					"Whites Turn" : "Blacks Turn"));
-		} else {
-			ui.setPlayerTurn("Game Over");
-		}
 
-		ui.setStatus(engine.getStatus());
-		ui.updateBoard(board());
-		ui.setMovesRemaining(engine.turnsRemaining());
-		ui.setPlayerScores(engine.getPlayerScore(Colr.WHITE),
-				engine.getPlayerScore(Colr.BLACK));
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.View#logoutPlayer()
+    */
+   @Override
+   public void logoutPlayer() {
 
-	}
+      try {
+         engine.logout(ui.logoutPlayer(engine.getLoggedInPlayerNames()));
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see view_interfaces.View#split()
-	 */
-	@Override
-	public void split() {
-		if (from != null && engine.split(from)) {
+      } catch (OperationCancelledException e) {
+         ui.setStatus(e.getMessage());
+      }
+   }
 
-			ui.highlight(from, false);
-			ui.showLegalMoves(board().getLegalMoves(from), false);
-			ui.setMerged(board().isMergedPiece(from));
 
-			from = null;
-			to = null;
-		}
-	}
+   /*
+    * (non-Javadoc)
+    * 
+    * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+    */
+   @Override
+   public void update(Observable observable, Object gameStarted) {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see view_interfaces.View#newGame()
-	 */
-	@Override
-	public void newGame() {
-		List<String> names = engine.getLoggedInPlayerNames();
-		String[] preferences;
+      ui.setPlayerTurn(engine.getInfoMessage());
+      ui.setStatus(engine.getStatus());
+      ui.updateBoard(board());
+      ui.setMovesRemaining(engine.turnsRemaining());
+      ui.setPlayerScores(engine.getPlayerScore(Colr.WHITE),
+            engine.getPlayerScore(Colr.BLACK));
 
-		try {
-			preferences = ui.newGame(names);
+   }
 
-			if (gameStarted = engine.newGame(preferences[0], preferences[1],
-					Integer.valueOf(preferences[2]),
-					Integer.valueOf(preferences[3]))) {
 
-				ui.setPlayerNames(preferences[0], preferences[1]);
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.View#split()
+    */
+   @Override
+   public void split() {
+      if (from != null && engine.split(from)) {
 
-				ui.setPlayerScores(engine.getPlayerScore(Colr.WHITE),
-						engine.getPlayerScore(Colr.BLACK));
+         ui.highlight(from, false);
+         ui.showLegalMoves(board().getLegalMoves(from), false);
+         ui.setMerged(board().isMergedPiece(from));
 
-				ui.setStatus("New Game started");
-			}
+         from = null;
+         to = null;
+      }
+   }
 
-		} catch (OperationCancelledException e) {
-			ui.setStatus("New Game cancelled");
-			gameStarted = false;
-		} catch (PlayersNotLoggedInException e) {
-			ui.setStatus(e.getMessage());
-			gameStarted = false;
-		}
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see view_interfaces.View#squareSelected(model.Point)
-	 */
-	@Override
-	public void squareSelected(Point point) {
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.View#newGame()
+    */
+   @Override
+   public void newGame() {
+      List<String> names = engine.getLoggedInPlayerNames();
+      String[] preferences;
 
-		// game has not been started
-		if (!gameStarted) {
-			ui.setStatus("Setup New Game before playing");
-			return;
-		}
+      try {
+         preferences = ui.newGame(names);
 
-		// moving from
-		if (from == null && engine.getBoard().getPiecesAt(point).size() != 0
-				&& engine.getBoard().getPiecesAt(point).get(0)
-						.getColor() == engine.whoseTurn()) {
+         if (gameStarted = engine.newGame(preferences[0], preferences[1],
+               Integer.valueOf(preferences[2]),
+               Integer.valueOf(preferences[3]))) {
 
-			from = point;
-			ui.setStatus("Piece Selected");
+            ui.setPlayerNames(preferences[0], preferences[1]);
 
-			// highlight the selected piece
-			ui.highlight(point, true);
+            ui.setPlayerScores(engine.getPlayerScore(Colr.WHITE),
+                  engine.getPlayerScore(Colr.BLACK));
 
-			// mark the legal moves
-			legalMoves = board().getLegalMoves(from);
-			ui.showLegalMoves(legalMoves, true);
+            ui.setStatus("New Game started");
+         }
 
-			// setting the split button logic
-			ui.setMerged(board().isMergedPiece(from));
+      } catch (OperationCancelledException e) {
+         ui.setStatus("New Game cancelled");
+         gameStarted = false;
+      } catch (PlayersNotLoggedInException e) {
+         ui.setStatus(e.getMessage());
+         gameStarted = false;
+      }
+   }
 
-		}
 
-		// moving to
-		else if (from != null && engine.getLegalMoves(from).contains(point)) {
-			to = point;
-			engine.movePlayer(from, to);
-			ui.setStatus(engine.getStatus());
-			;
+   /*
+    * (non-Javadoc)
+    * 
+    * @see view_interfaces.View#squareSelected(model.Point)
+    */
+   @Override
+   public void squareSelected(Point point) {
 
-			// reset for the next move
-			ui.highlight(from, false);
-			ui.showLegalMoves(legalMoves, false);
-			from = null;
-			to = null;
-		}
+      // game has not been started
+      if (!gameStarted) {
+         ui.setStatus("Setup New Game before playing");
+         return;
+      }
 
-		// player made illegal selection
-		else {
-			ui.setStatus("Illegal selection");
-		}
+      // moving from
+      if (from == null && engine.getBoard().getPiecesAt(point).size() != 0
+            && engine.gameRunning() && engine.getLegalMoves(point).size() > 0
+            && engine.getBoard().getPiecesAt(point).get(0).getColor() == engine
+                  .whoseTurn()) {
 
-	}
+         from = point;
+         ui.setStatus("Piece Selected");
 
-	/**
-	 * Gets the current game board from the game engine.
-	 * 
-	 * @return The current game board.
-	 */
-	private Board board() {
-		return engine.getBoard();
-	}
+         // highlight the selected piece
+         ui.highlight(point, true);
+
+         // mark the legal moves
+         legalMoves = board().getLegalMoves(from);
+         ui.showLegalMoves(legalMoves, true);
+
+         // setting the split button logic
+         ui.setMerged(board().isMergedPiece(from));
+
+      }
+
+      // cancel the from selection
+      else if (from != null && point.equals(from)) {
+         ui.highlight(from, false);
+         ui.showLegalMoves(legalMoves, false);
+         from = null;
+      }
+
+      // moving to
+      else if (from != null && engine.getLegalMoves(from).contains(point)) {
+         to = point;
+
+         engine.movePlayer(from, to);
+         ui.setStatus(engine.getStatus());
+
+         // reset for the next move
+         ui.highlight(from, false);
+         ui.showLegalMoves(legalMoves, false);
+         from = null;
+         to = null;
+      }
+
+      // player made illegal selection
+      else {
+         ui.setStatus("Illegal selection");
+      }
+
+   }
+
+
+   /**
+    * Gets the current game board from the game engine.
+    * 
+    * @return The current game board.
+    */
+   private Board board() {
+      return engine.getBoard();
+   }
 
 }
