@@ -5,6 +5,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import controllers.AboutListener;
 import controllers.LoginListener;
 import controllers.LogoutListener;
 import controllers.NewGameListener;
@@ -81,7 +82,7 @@ public class MenuBarChess extends JMenuBar implements FontsAndColors {
       
       JMenuItem about = new JMenuItem("About");
       about.setFont(FONT20);
-      // TODO lambda a dialog of info
+      about.addActionListener(new AboutListener());
 
       helpMenu.add(about);
       

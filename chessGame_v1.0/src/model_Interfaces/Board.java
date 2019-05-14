@@ -28,10 +28,12 @@ public interface Board {
 
 
    /**
-    * Returns true if there are two pieces in the cell and their state is merged,
-    * else false.
+    * Returns true if there are two pieces in the nominated cell and their status
+    * is merged.
     * 
-    * @return True if the cell contains a merged piece
+    * @param point
+    *           The position of the cell to be inspected.
+    * @return True if the cell contains a merged pair of pieces, else false.
     */
    public boolean isMerged(Point point);
 
@@ -114,16 +116,5 @@ public interface Board {
     * @return True if there are no pieces left of the color, else false
     */
    boolean allPiecesGone(Colr colour);
-
-
-   /**
-    * Returns true if there are two pieces in the nominated cell and their status
-    * is merged.
-    * 
-    * @param point
-    *           The position of the cell to be inspected.
-    * @return True if the cell contains a merged pair of pieces, else false.
-    */
-   boolean isMergedPiece(Point point);
 
 }
