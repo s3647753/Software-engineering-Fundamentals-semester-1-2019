@@ -229,17 +229,6 @@ public class BoardImpl implements Board {
    /*
     * (non-Javadoc)
     * 
-    * @see model_Interfaces.Board#isMergedPiece(model.Point)
-    */
-   @Override
-   public boolean isMergedPiece(Point point) {
-      return getCell(point).isMerged();
-   }
-
-
-   /*
-    * (non-Javadoc)
-    * 
     * @see model_Interfaces.Board#split(model.Point)
     */
    @Override
@@ -367,7 +356,7 @@ public class BoardImpl implements Board {
       int deltaC = Math.abs(from.getCol() - to.getCol());
 
       if (deltaR != 1 && deltaC != 1) {
-         
+
          // find the mid point
          int midR = (from.getRow() + to.getRow()) / 2;
          int midC = (from.getCol() + to.getCol()) / 2;

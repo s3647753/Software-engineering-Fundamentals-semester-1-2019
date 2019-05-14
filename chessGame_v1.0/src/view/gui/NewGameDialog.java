@@ -102,7 +102,9 @@ public class NewGameDialog implements FontsAndColors {
 
       if (userInput[0].equals(userInput[1]) ||
             !userInput[2].matches("\\d+") ||
-            !userInput[3].matches("\\d+")) {
+            !userInput[3].matches("\\d+") ||
+            Integer.valueOf(userInput[2]) < 1 ||
+            Integer.valueOf(userInput[3]) < 1) {
          valid = false;
       }
 

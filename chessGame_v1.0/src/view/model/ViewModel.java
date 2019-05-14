@@ -137,7 +137,7 @@ public class ViewModel implements View {
 
          ui.highlight(from, false);
          ui.showLegalMoves(board().getLegalMoves(from), false);
-         ui.setMerged(board().isMergedPiece(from));
+         ui.setMerged(board().isMerged(from));
 
          from = null;
          to = null;
@@ -197,8 +197,8 @@ public class ViewModel implements View {
       // moving from
       if (from == null && engine.getBoard().getPiecesAt(point).size() != 0
             && engine.gameRunning() && engine.getLegalMoves(point).size() > 0
-            && engine.getBoard().getPiecesAt(point).get(0).getColor() == engine
-                  .whoseTurn()) {
+            && engine.getBoard().getPiecesAt(point).get(0).getColor() 
+            == engine.whoseTurn()) {
 
          from = point;
          ui.setStatus("Piece Selected");
@@ -211,7 +211,7 @@ public class ViewModel implements View {
          ui.showLegalMoves(legalMoves, true);
 
          // setting the split button logic
-         ui.setMerged(board().isMergedPiece(from));
+         ui.setMerged(board().isMerged(from));
 
       }
 
