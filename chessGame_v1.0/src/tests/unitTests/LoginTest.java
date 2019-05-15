@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import model.PlayerLoggedInException;
 import model.PlayerNotFoundException;
 import model.RegisterLogin;
 import model.WrongPassException;
@@ -19,7 +20,7 @@ public class LoginTest {
 
 	private static final String TEST_PASS = "password";
 	private static final String TEST_NAME = "testman";
-	private static final String EXP_HASH = "5E884898DA28047151D0E56F8DC6292773603D0D6AABBDD62A11EF721D1542D8";
+	private static final String EXP_HASH = "291a752915ac205f04d5fb28e2767fad45eed740acd9f3b0eb716f49a1952c5d";
 
 	private static RegisterLogin testLogin;
 
@@ -30,7 +31,7 @@ public class LoginTest {
 
 	@Test
 	public void testSHA() {
-		assertEquals("The hashes didn't match.", EXP_HASH, testLogin.stringToSHA256(TEST_PASS));
+		assertEquals("The hashes didn't match.", EXP_HASH, testLogin.stringToSHA256(TEST_PASS, TEST_NAME));
 	}
 
 	@Test
@@ -41,19 +42,25 @@ public class LoginTest {
 	}
 
 	@Test(expected = PlayerNotFoundException.class)
-	public void testPlayerNotFound() throws PlayerNotFoundException, WrongPassException {
+	public void testPlayerNotFound() throws PlayerNotFoundException, WrongPassException, PlayerLoggedInException {
 		testLogin.loginPlayer("me", "not a password");
 	}
 
 	@Test(expected = WrongPassException.class)
-	public void testWrongPass() throws PlayerNotFoundException, WrongPassException {
+	public void testWrongPass() throws PlayerNotFoundException, WrongPassException, PlayerLoggedInException {
 		testLogin.loginPlayer(TEST_NAME, "the wrong password!");
 	}
 
 	@Test
-	public void testLogin() throws PlayerNotFoundException, WrongPassException {
+	public void testLogin() throws PlayerNotFoundException, WrongPassException, PlayerLoggedInException {
 		testLogin.loginPlayer(TEST_NAME, TEST_PASS);
 		assertEquals("The player wasn't logged in correctly.", true, testLogin.getPlayerList().contains(TEST_NAME));
+	}
+	
+	@Test(expected = PlayerLoggedInException.class)
+	public void testLoggedIn() throws PlayerNotFoundException, WrongPassException, PlayerLoggedInException {
+		testLogin.loginPlayer(TEST_NAME, TEST_PASS);
+		testLogin.loginPlayer(TEST_NAME, TEST_PASS);
 	}
 
 }
