@@ -33,12 +33,7 @@ public interface GameEngine {
 	 */
 	void setView(View view);
 	
-	/**
-	 * Adds a game board for the game engine to use
-	 *  
-	 * @param The gameboard to be used by the engine
-	 */
-	public void addBoard(Board board);
+	
 	
 	/**
 	 * Moves a player from point A to point B
