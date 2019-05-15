@@ -53,9 +53,22 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	@Override
 	public boolean newGame(String playerWhite, String playerBlack, int player1TurnLimit, int player2TurnLimit) {
 		boolean newGameMade;
-		if(login.getPlayerList().contains(playerWhite) && login.getPlayerList().contains(playerBlack)) {
+		boolean newGameAllowed;
+		String message = "";
+		//average of turns < 1
+		if((player1TurnLimit+player2TurnLimit)/2 < 1) {
+			newGameAllowed = false;
+			message = "Turn limit cannot be less than 1";
+		}else if(!login.getPlayerList().contains(playerWhite) || 
+				 !login.getPlayerList().contains(playerBlack)) {
+			newGameAllowed = false;
+			message = "Player Does not exist";
+		}else {
+			newGameAllowed = true;
+		}
+		
+		if(newGameAllowed){
 			board.resetBoard();
-			
 			
 			playerList.replace(Colr.WHITE, new PlayerImpl(playerWhite));
 			playerList.replace(Colr.BLACK, new PlayerImpl(playerBlack));
@@ -63,7 +76,6 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			currentTurnColour = Colr.WHITE;
 			
 			int maxMove = (player1TurnLimit+player2TurnLimit)/2;
-				
 			turns.replace(Colr.WHITE, maxMove);
 			turns.replace(Colr.BLACK, maxMove);
 
@@ -72,9 +84,9 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			
 			board.resetBoard();
 			
-			notifyAllObservers("New Game", "Whites Turn");
+			notifyAllObservers("New Game", "White's Turn");
 		}else {
-			notifyAllObservers("Player Does not exist", "");
+			notifyAllObservers(message, "");
 			newGameMade = false;
 		}
 		
@@ -85,12 +97,6 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	@Override
 	public void setView(View view) {
 		addObserver(view);
-	}
-
-
-	@Override
-	public void addBoard(Board board) {
-		this.board = board;
 	}
 	
 
@@ -104,9 +110,11 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		boolean moveAllowed = true;
 		
 		if(turnLimitReached()) {
+			System.out.println("turnLimitReached");
 			moveAllowed = false;
 			moveSuccessful = false;
 		}else if(pieces.size()==0) {
+			
 			moveAllowed = false;
 			moveSuccessful = false;
 			message = "No piece in location";
@@ -145,65 +153,38 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		
 		return moveSuccessful;
 		
-		/*List<Piece> pieces = board.getPiecesAt(from);
-		boolean moveSuccessful = false;
-		int piecesTaken = 0;
-		String message = null;
-		if(pieces.size()!=0) {
-			if(pieces.get(0).getColor() == currentTurn) {
-				if(!turnLimitReached()) {
-					try {
-						piecesTaken = board.movePiece(from, to);
-						moveSuccessful = true;
-						reduceMoves();
-						message = "Piece moved";
-					}catch(IllegalMoveException e){
-						moveSuccessful = false;
-						message = "Move not Legal";
-					}catch(PieceNotFoundException e) {
-						moveSuccessful = false;
-						message = "No piece in location";
-					}
-					
-					increaseScore(piecesTaken);
-					swapTurn();
-					notifyAllObservers(message);
-					
-					if(turnLimitReached() || allOpposingPieceGone()) {
-						endGame();
-					}
-				}
+	}
+	
+	
+	@Override
+	public boolean split(Point point) {
+		boolean splitSuccess;
+		String message;
+		if(board.getPiecesAt(point).get(0).getColor() == currentTurnColour) {
+			splitSuccess = board.split(point);
+			if(splitSuccess) {
+				reduceMoves();
+				swapTurn();
+				message = "Merged piece split";
 			}else {
-				moveSuccessful = false;
-				message = "It is " + currentTurn + "'s move";
+				message = "Piece cannot be split";
 			}
 		}else {
-			moveSuccessful = false;
-			message = "No piece in location";
+			splitSuccess = false;
+			message = "It is " + currentTurnColour + "'s move";
 		}
 		
-		return moveSuccessful;*/
+		if(turnLimitReached() || allOpposingPieceGone()) {
+			endGame();
+		}else {
+			notifyAllObservers(message, currentTurnColour + "'s Move");
+		}
+		
+		return splitSuccess;
 	}
 	
 	
-	@Override
-	public int getPlayerScore(Colr colour) {
-		return playerList.get(colour).getPoints();
-	}
 
-
-	@Override
-	public Colr whoseTurn() {
-		return currentTurnColour;
-	}
-	
-	
-	@Override
-	public boolean gameRunning() {
-		return gameRunning;
-	}
-	
-	
 	@Override
 	public boolean register(String username, String password) {
 		String message;
@@ -262,6 +243,23 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		
 		return logoutSuccessful;
 	}
+	
+	@Override
+	public int getPlayerScore(Colr colour) {
+		return playerList.get(colour).getPoints();
+	}
+
+
+	@Override
+	public Colr whoseTurn() {
+		return currentTurnColour;
+	}
+	
+	
+	@Override
+	public boolean gameRunning() {
+		return gameRunning;
+	}
 
 	
 	@Override
@@ -296,30 +294,6 @@ public class GameEngineImpl extends Observable implements GameEngine {
 	@Override
 	public String getInfoMessage() {
 		return infoMessage;
-	}
-	
-	@Override
-	public boolean split(Point point) {
-		boolean splitSuccess;
-		String message;
-		if(board.getPiecesAt(point).get(0).getColor() == currentTurnColour) {
-			if(board.isMerged(point)) {
-				board.split(point);
-				reduceMoves();
-				swapTurn();
-				splitSuccess = true;
-				message = "Merged piece split";
-			}else {
-				splitSuccess = false;
-				message = "Piece cannot be split";
-			}
-		}else {
-			splitSuccess = false;
-			message = "It is " + currentTurnColour + "'s move";
-		}
-		notifyAllObservers(message, currentTurnColour + "'s Move");
-		
-		return splitSuccess;
 	}
 
 
