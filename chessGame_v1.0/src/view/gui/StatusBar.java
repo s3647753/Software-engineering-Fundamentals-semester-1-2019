@@ -70,7 +70,7 @@ public class StatusBar extends JPanel implements FontsAndColors {
     * @param remaining
     *           The number of moves to display
     */
-   void setMovesRemaining(int remaining) {
+   public void setMovesRemaining(int remaining) {
       movesRemaining.setText(String.valueOf(remaining));
    }
 
@@ -81,7 +81,7 @@ public class StatusBar extends JPanel implements FontsAndColors {
     * @param message
     *           The message to display
     */
-   void setMessage(String message) {
+   public void setMessage(String message) {
       statusMsg.setText(message);
    }
 }

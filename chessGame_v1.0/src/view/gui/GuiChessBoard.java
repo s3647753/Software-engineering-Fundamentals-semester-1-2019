@@ -22,32 +22,19 @@ import view_interfaces.View;
  */
 @SuppressWarnings("serial")
 public class GuiChessBoard extends JPanel {
-   private View viewModel;
-   Map<Point, BoardSquare> squares;
+   private Map<Point, BoardSquare> squares;
+   Point point;
 
 
    public GuiChessBoard(View viewModel, Board board) {
-      this.viewModel = viewModel;
       squares = new HashMap<>();
 
-      setLayout(new GridLayout(board.WIDTH, board.HEIGHT));
-      init(board);
+      setLayout(new GridLayout(Board.WIDTH, Board.HEIGHT));
 
-   }
-
-
-   /**
-    * Initializes the GUI board with squares containing images of either the
-    * background color or the piece occupying the square.
-    * 
-    * @param board
-    *           The collection of squares that make up the board.
-    */
-   public void init(Board board) {
-      Point point;
-
-      for (int row = 0; row < board.HEIGHT; row++) {
-         for (int col = 0; col < board.WIDTH; col++) {
+      // Initializes the GUI board with squares containing images of either the
+      // background color or the piece occupying the square including the background.
+      for (int row = 0; row < Board.HEIGHT; row++) {
+         for (int col = 0; col < Board.WIDTH; col++) {
             point = new Point(row, col);
 
             squares.put(point, new BoardSquare(
@@ -59,6 +46,7 @@ public class GuiChessBoard extends JPanel {
             add(squares.get(point));
          }
       }
+
    }
 
 
@@ -71,8 +59,8 @@ public class GuiChessBoard extends JPanel {
    public void update(Board board) {
 
       for (Point point : squares.keySet()) {
-         squares.get(point).setImage(String.format("images/%s.png",
-               board.getCode(point)));
+         squares.get(point)
+               .setImage(String.format("images/%s.png", board.getCode(point)));
       }
    }
 
