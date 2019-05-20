@@ -148,8 +148,7 @@ public class Cell {
    public boolean isLegal(Piece piece) {
       boolean isLegal = true;
 
-      if (pieces.size() == 1
-            && piece.equals(pieces.get(0))) {
+      if (pieces.size() == 1 && piece.equals(pieces.get(0))) {
          isLegal = false;
       }
 
@@ -220,21 +219,6 @@ public class Cell {
 
       return sj.toString();
    }
-
-//
-//   /*
-//    * (non-Javadoc)
-//    * 
-//    * @see java.lang.Object#equals(java.lang.Object)
-//    */
-//   @Override
-//   public boolean equals(Object that) {
-//      if (this.getClass() != that.getClass()) {
-//         return false;
-//      }
-//
-//      return this.toString().equals(((Cell) that).toString());
-//   }
 
 
    /*

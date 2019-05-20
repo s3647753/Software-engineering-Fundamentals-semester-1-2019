@@ -17,29 +17,31 @@ import view.model.ViewModel;
  *
  */
 
-public class ChessLikeGame {	
+public class ChessLikeGame {
 
-	/**
-	 * Main entry point for Chess-Like_Game
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new ChessLikeGame().startGame();
+   /**
+    * Main entry point for Chess-Like_Game
+    * 
+    * @param args
+    */
+   public static void main(String[] args) {
+      new ChessLikeGame().startGame();
 
-	}
-	
-	/**
-	 * Initializes the major components and Starts the ChessLikeGame
-	 * 
-	 */
-	private void startGame() {
-	   ViewType viewType = new GuiView();
-		Board board = new BoardImpl();
-		GameEngine engine = new GameEngineImpl(board);
-		
-		View viewModel = new ViewModel(engine, viewType);
-		viewModel.init();
+   }
 
-	}
+
+   /**
+    * Initializes the major components and Starts the ChessLikeGame
+    * 
+    */
+   private void startGame() {
+      ViewType viewType = new GuiView();
+      Board board = new BoardImpl();
+      GameEngine engine = new GameEngineImpl(board);
+
+      View viewModel = new ViewModel(engine, viewType);
+      viewModel.init();
+
+   }
 
 }
