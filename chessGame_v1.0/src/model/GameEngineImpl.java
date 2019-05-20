@@ -109,12 +109,15 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		String message = null;
 		boolean moveAllowed = true;
 		
-		if(turnLimitReached()) {
+		if(!gameRunning) {
+			System.out.println("game not running");
+			moveAllowed = false;
+			moveSuccessful = false;
+		}else if(turnLimitReached()) {
 			System.out.println("turnLimitReached");
 			moveAllowed = false;
 			moveSuccessful = false;
 		}else if(pieces.size()==0) {
-			
 			moveAllowed = false;
 			moveSuccessful = false;
 			message = "No piece in location";
@@ -139,12 +142,15 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			}
 			
 			increaseScore(piecesTaken);
+			
 			swapTurn();
 			notifyAllObservers(message, currentTurnColour + "'s Move");
 			
 			if(turnLimitReached() || allOpposingPieceGone()) {
 				endGame();
 			}
+			
+			
 		}else {
 			if(!turnLimitReached()) {
 				notifyAllObservers(message, currentTurnColour + "'s Move");
@@ -176,6 +182,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		
 		if(turnLimitReached() || allOpposingPieceGone()) {
 			endGame();
+			System.out.println("TEST");
 		}else {
 			notifyAllObservers(message, currentTurnColour + "'s Move");
 		}
@@ -320,7 +327,8 @@ public class GameEngineImpl extends Observable implements GameEngine {
 			opposingColour = Colr.WHITE;
 		}
 		
-		return board.allPiecesGone(opposingColour);
+		boolean piecesGone = board.allPiecesGone(opposingColour) || board.allPiecesGone(currentTurnColour);
+		return piecesGone;
 	}
 
 	
@@ -342,6 +350,7 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		}else {
 			gameOver = false;
 		}
+		System.out.println("TURN LIMIT REACHED" + gameOver);
 		
 		return gameOver;
 	}
