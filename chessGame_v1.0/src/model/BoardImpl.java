@@ -368,24 +368,6 @@ public class BoardImpl implements Board {
       }
 
       return obstructed;
-
-      // int deltaR = Math.abs(from.getRow() - to.getRow());
-      // int deltaC = Math.abs(from.getCol() - to.getCol());
-      //
-      // // case where the move cannot be obstructed
-      // if (deltaR == 1 || deltaC == 1) {
-      // return false;
-      // }
-      //
-      // // find the mid point
-      // int midR = (from.getRow() + to.getRow()) / 2;
-      // int midC = (from.getCol() + to.getCol()) / 2;
-      //
-      // if (getCell(midR, midC).getPieces().size() > 0) {
-      // return true;
-      // }
-      //
-      // return false;
    }
 
 

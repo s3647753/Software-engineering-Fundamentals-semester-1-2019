@@ -7,7 +7,7 @@ import enums.Type;
 import model_Interfaces.Piece;
 
 /**
- * Abstract Piece class for Chess Like Game April 2019
+ * Abstract Piece class for Chess Like Game
  * 
  * @author Bernard O'Meara + Ben Hunter
  *
