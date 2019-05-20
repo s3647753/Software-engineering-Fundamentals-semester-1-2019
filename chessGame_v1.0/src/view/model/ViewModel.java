@@ -27,7 +27,6 @@ public class ViewModel implements View {
    private Point from = null;
    private Point to = null;
    private List<Point> legalMoves;
-   private boolean gameStarted = false;
 
 
    public ViewModel(GameEngine engine, ViewType userInterface) {
@@ -158,7 +157,7 @@ public class ViewModel implements View {
       try {
          preferences = ui.newGame(names);
 
-         if (gameStarted = engine.newGame(preferences[0], preferences[1],
+         if (engine.newGame(preferences[0], preferences[1],
                Integer.valueOf(preferences[2]),
                Integer.valueOf(preferences[3]))) {
 
@@ -172,10 +171,8 @@ public class ViewModel implements View {
 
       } catch (OperationCancelledException e) {
          ui.setStatus("New Game cancelled");
-         gameStarted = false;
       } catch (PlayersNotLoggedInException e) {
          ui.setStatus(e.getMessage());
-         gameStarted = false;
       }
    }
 
@@ -189,7 +186,7 @@ public class ViewModel implements View {
    public void squareSelected(Point point) {
 
       // game has not been started
-      if (!gameStarted) {
+      if (!engine.gameRunning()) {
          ui.setStatus("Setup New Game before playing");
          return;
       }
