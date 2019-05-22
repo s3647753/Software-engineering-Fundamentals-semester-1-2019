@@ -8,6 +8,7 @@ package model;
  *
  */
 
+@SuppressWarnings("serial")
 public class PlayerLoggedInException extends Exception {
 
 	public PlayerLoggedInException() {
