@@ -382,6 +382,13 @@ public class GameEngineImpl extends Observable implements GameEngine {
 		}else {
 			notifyAllObservers("Tied game", "Game Over");
 		}
+		
+		/*Doesn't currently matter much that we reset scores as the player objects are
+		discarded every game with new ones made
+		but could leave us open to changing the game in the future to keep 
+		player objects so things like wins could be kept track of*/
+		playerList.get(Colr.WHITE).resetScore();
+		playerList.get(Colr.BLACK).resetScore();
 	}
 	
 	
